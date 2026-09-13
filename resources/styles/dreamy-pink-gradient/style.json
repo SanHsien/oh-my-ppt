@@ -1,0 +1,23 @@
+{
+  "style": "dreamy-pink-gradient",
+  "name": {
+    "zh": "漸變美學·櫻粉霧藍",
+    "en": "Dreamy Pink Gradient"
+  },
+  "description": "櫻粉霧紫深靛漸變，夢幻浪漫詩意",
+  "category": "活力 · 創意",
+  "aliases": [
+    "漸變",
+    "櫻粉",
+    "霧藍",
+    "dreamy",
+    "gradient",
+    "夢幻"
+  ],
+  "styleCase": "時尚潮流、婚慶浪漫、品牌營銷",
+  "imageGeneration": {
+    "prompt": "Dreamy romantic sky in blush pink, misty lavender-blue and deep indigo, with soft clouds, crescent moon, drifting petals, tiny stars and translucent liquid forms. Use frosted glow and gentle gradients with roomy negative space. Do not render text, logos, UI, watermarks, hard edges, photorealism, or dense compositions."
+  },
+  "version": "2.0.2",
+  "source": "builtin"
+}

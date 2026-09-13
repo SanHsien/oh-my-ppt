@@ -1,0 +1,20 @@
+{
+  "style": "rainbow-gradient",
+  "name": {
+    "zh": "彩虹漸變",
+    "en": "Rainbow Gradient"
+  },
+  "description": "彩虹在白底流動，每一幀都是慶祝的理由",
+  "category": "效果 · 戲劇",
+  "aliases": [
+    "rainbow",
+    "彩虹",
+    "歡樂"
+  ],
+  "styleCase": "年度慶典、品牌營銷、親子兒童",
+  "imageGeneration": {
+    "prompt": "Joyful flowing rainbow silk ribbons on a clean white field, using a soft seven-color spectrum, airy celebratory motion and a modern abstract poster aesthetic. Keep the composition light with room for slide content. Do not render text, logos, UI, watermarks, hard borders, photorealistic fabric clutter, or a busy background."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

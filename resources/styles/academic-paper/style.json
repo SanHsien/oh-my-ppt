@@ -1,0 +1,18 @@
+{
+  "style": "academic-paper",
+  "name": {
+    "zh": "學術論文",
+    "en": "Academic Paper"
+  },
+  "description": "黑墨藍鏈落在論文白上，學術嚴謹自帶說服力",
+  "category": "淺色 · 專業",
+  "aliases": [
+    "academic",
+    "論文",
+    "學術",
+    "研究"
+  ],
+  "styleCase": "學術研究、教學科普、商業彙報",
+  "version": "2.0.1",
+  "source": "builtin"
+}

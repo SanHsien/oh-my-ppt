@@ -1,0 +1,17 @@
+{
+  "style": "gruvbox-dark",
+  "name": {
+    "zh": "Gruvbox 暗",
+    "en": "Gruvbox Dark"
+  },
+  "description": "琥珀與苔綠在暖灰中燃燒，終端美學從未如此溫暖",
+  "category": "深色 · 科技",
+  "aliases": [
+    "gruvbox",
+    "復古深色",
+    "terminal"
+  ],
+  "styleCase": "技術分享、教學科普、產品發佈",
+  "version": "2.0.1",
+  "source": "builtin"
+}

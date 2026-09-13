@@ -1,0 +1,22 @@
+{
+  "style": "red-gold-ceremony",
+  "name": {
+    "zh": "初心紅典",
+    "en": "Red Gold Ceremony"
+  },
+  "description": "正紅與鎏金構成的莊重儀式感風格",
+  "category": "正式 · 莊重",
+  "aliases": [
+    "紅金",
+    "儀式",
+    "政務",
+    "典禮",
+    "ceremony"
+  ],
+  "styleCase": "主題教育、政府工作總結、企業年會、儀式致辭、文化紀念",
+  "imageGeneration": {
+    "prompt": "Dignified ceremonial visual for a formal Chinese presentation: rich crimson field, restrained champagne-gold light, monumental architectural or symbolic detail appropriate to the subject, balanced symmetry, and a clear calm area for titles. Keep the treatment elegant and respectful, with fine paper or metal texture rather than spectacle. Do not render readable text, flags, emblems, logos, watermarks, UI, crowded people, kitsch gold effects, or cartoon illustration."
+  },
+  "version": "1.0.0",
+  "source": "builtin"
+}

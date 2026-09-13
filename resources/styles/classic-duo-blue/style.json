@@ -1,0 +1,20 @@
+{
+  "style": "classic-duo-blue",
+  "name": {
+    "zh": "經典雙色·米黃深藍",
+    "en": "Classic Duo Blue"
+  },
+  "description": "暖米黃配深海藍，高級沉穩書卷氣",
+  "category": "淺色 · 專業",
+  "aliases": [
+    "雙色",
+    "米黃",
+    "深藍",
+    "classic",
+    "duo",
+    "高級"
+  ],
+  "styleCase": "商業彙報、學術研究、傳統文化",
+  "version": "2.0.1",
+  "source": "builtin"
+}

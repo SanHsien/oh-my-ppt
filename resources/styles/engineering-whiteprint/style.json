@@ -1,0 +1,18 @@
+{
+  "style": "engineering-whiteprint",
+  "name": {
+    "zh": "工程白圖",
+    "en": "Engineering Whiteprint"
+  },
+  "description": "座標紙上海軍墨線勾勒藍圖，工程思維可視化",
+  "category": "淺色 · 專業",
+  "aliases": [
+    "engineering",
+    "工程",
+    "白圖",
+    "座標紙"
+  ],
+  "styleCase": "技術分享、商業彙報、產品發佈",
+  "version": "2.0.1",
+  "source": "builtin"
+}

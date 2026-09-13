@@ -1,0 +1,20 @@
+{
+  "style": "healing-color-card",
+  "name": {
+    "zh": "情緒療愈色卡",
+    "en": "Healing Color Card"
+  },
+  "description": "薰衣草暖桃薄荷，柔軟治癒情緒色",
+  "category": "淺色 · 柔和",
+  "aliases": [
+    "療愈",
+    "情緒",
+    "薰衣草",
+    "薄荷",
+    "healing",
+    "柔軟"
+  ],
+  "styleCase": "療愈冥想、生活方式、親子兒童",
+  "version": "2.0.1",
+  "source": "builtin"
+}

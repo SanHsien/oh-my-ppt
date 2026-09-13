@@ -1,0 +1,21 @@
+{
+  "style": "bauhaus",
+  "name": {
+    "zh": "包豪斯",
+    "en": "Bauhaus"
+  },
+  "description": "原色碰撞的幾何宣言，每一頁都是蒙德里安式的視覺震動",
+  "category": "大膽 · 宣言",
+  "aliases": [
+    "bauhaus",
+    "包豪斯",
+    "幾何",
+    "原色"
+  ],
+  "styleCase": "藝術視覺、品牌營銷、產品發佈",
+  "imageGeneration": {
+    "prompt": "Bauhaus abstract composition with bold red, yellow and cobalt-blue circles, triangles and rectangles on a warm paper canvas. Use precise asymmetric balance, crisp edges and subtle screen-print texture with room for slide content. Do not render text, logos, UI, watermarks, gradients, photorealism, or decorative frames."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

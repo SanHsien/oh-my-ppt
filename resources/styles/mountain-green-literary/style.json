@@ -1,0 +1,24 @@
+{
+  "style": "mountain-green-literary",
+  "name": {
+    "zh": "山野蔥鬱",
+    "en": "Mountain Green Literary"
+  },
+  "description": "深綠山巒黃草地的文藝夏日",
+  "category": "插畫 · 手繪",
+  "aliases": [
+    "山野",
+    "夏天",
+    "深綠",
+    "文藝",
+    "奔跑",
+    "mountain",
+    "山巒"
+  ],
+  "styleCase": "旅遊出行、教學科普、生活方式",
+  "imageGeneration": {
+    "prompt": "Literary hand-painted summer mountain landscape with layered deep-green hills, a sunlit yellow-green meadow and two children seen from behind running into the distance when relevant. Use loose watercolor brush texture, simple color blocks and a poetic open composition. Do not render text, logos, UI, watermarks, photorealism, or crowded detail."
+  },
+  "version": "2.0.2",
+  "source": "builtin"
+}

@@ -1,0 +1,19 @@
+{
+  "style": "soft-pastel",
+  "name": {
+    "zh": "柔和馬卡龍",
+    "en": "Soft Pastel"
+  },
+  "description": "馬卡龍三色在畫布上輕輕暈開，柔軟得像一聲早安",
+  "category": "淺色 · 柔和",
+  "aliases": [
+    "pastel",
+    "soft",
+    "馬卡龍",
+    "柔和",
+    "soft-pastel"
+  ],
+  "styleCase": "產品發佈、生活方式、親子兒童",
+  "version": "2.0.1",
+  "source": "builtin"
+}

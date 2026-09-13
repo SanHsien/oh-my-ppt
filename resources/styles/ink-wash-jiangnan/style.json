@@ -1,0 +1,22 @@
+{
+  "style": "ink-wash-jiangnan",
+  "name": {
+    "zh": "水墨江南",
+    "en": "Ink Wash Jiangnan"
+  },
+  "description": "水墨意境，江南煙雨的東方詩意",
+  "category": "東方 · 國風",
+  "aliases": [
+    "水墨",
+    "江南",
+    "ink wash",
+    "jiangnan",
+    "中國風"
+  ],
+  "styleCase": "傳統文化、療愈冥想、藝術視覺",
+  "imageGeneration": {
+    "prompt": "Traditional Chinese ink-wash Jiangnan water town with an arched stone bridge, black-canopied boat, willow trees, white walls, dark tiled roofs and misty distant hills. Use rice-paper texture, restrained vermilion accents and poetic whitespace. Do not render text, seal lettering, logos, UI, watermarks, heavy saturation, or photorealism."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

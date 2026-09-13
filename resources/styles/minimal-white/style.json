@@ -1,0 +1,20 @@
+{
+  "style": "minimal-white",
+  "name": {
+    "zh": "極簡白",
+    "en": "Minimal White"
+  },
+  "description": "剋制到極致的高級感，留白是最有力的表達",
+  "category": "淺色 · 極簡",
+  "aliases": [
+    "minimal",
+    "light",
+    "簡約",
+    "簡約白",
+    "clean",
+    "minimal-light"
+  ],
+  "styleCase": "技術分享、商業彙報、教學科普",
+  "version": "2.0.1",
+  "source": "builtin"
+}

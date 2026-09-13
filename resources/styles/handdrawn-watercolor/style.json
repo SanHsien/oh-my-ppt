@@ -1,0 +1,22 @@
+{
+  "style": "handdrawn-watercolor",
+  "name": {
+    "zh": "治癒手繪水彩",
+    "en": "Handdrawn Watercolor"
+  },
+  "description": "低飽和暖色與海洋藍交織，治癒感從紙面上流淌而出",
+  "category": "插畫 · 手繪",
+  "aliases": [
+    "水彩繪本風",
+    "治癒插畫風",
+    "手繪風",
+    "手繪",
+    "水彩"
+  ],
+  "styleCase": "教學科普、療愈冥想、親子兒童",
+  "imageGeneration": {
+    "prompt": "Gentle hand-drawn watercolor storybook scene related to the slide subject, with soft pencil outlines, low-saturation warm cream, pale ocean blue and coral accents. Use airy paper texture, imperfect brushwork and a calm focal area with generous negative space. Do not render text, logos, UI, watermarks, harsh geometry, glossy 3D, or photorealism."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

@@ -1,0 +1,22 @@
+{
+  "style": "cream-pastel",
+  "name": {
+    "zh": "奶油溫柔 · 高級感",
+    "en": "Cream Pastel"
+  },
+  "description": "奶油白豆沙粉抹茶綠的溫柔高級風",
+  "category": "淺色 · 柔和",
+  "aliases": [
+    "奶油",
+    "溫柔",
+    "豆沙粉",
+    "抹茶",
+    "高級"
+  ],
+  "styleCase": "餐飲美食、生活方式、親子兒童",
+  "imageGeneration": {
+    "prompt": "Minimal lifestyle still life with eucalyptus leaves, olive branches and cotton stems on a creamy off-white surface. Use muted blush-pink and matcha-green accents, soft natural daylight and a tactile matte calm, preserving generous text-safe space. Do not render words, logos, UI, watermarks, clutter, hard shadows, or high-saturation colors."
+  },
+  "version": "2.0.2",
+  "source": "builtin"
+}

@@ -1,0 +1,22 @@
+{
+  "style": "neon-haze",
+  "name": {
+    "zh": "深色彌散 · 氛圍拉滿",
+    "en": "Neon Haze"
+  },
+  "description": "深藍紫底疊加霓虹彌散光的氛圍感",
+  "category": "深色 · 沉穩",
+  "aliases": [
+    "彌散光",
+    "深色",
+    "霓虹",
+    "氛圍",
+    "賽博"
+  ],
+  "styleCase": "影視音樂、產品發佈、品牌營銷",
+  "imageGeneration": {
+    "prompt": "Atmospheric abstract cyberpunk haze on a deep blue-violet ground, with softly diffused magenta, electric blue and cyan light blooms, restrained grid mist and cinematic depth. Keep the image spacious and text-safe. Do not render words, logos, UI, watermarks, sharp neon typography, or busy machinery."
+  },
+  "version": "2.0.2",
+  "source": "builtin"
+}

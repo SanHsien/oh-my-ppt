@@ -1,0 +1,17 @@
+{
+  "style": "vaporwave",
+  "name": {
+    "zh": "蒸汽波",
+    "en": "Vaporwave"
+  },
+  "description": "深紫漸變中粉紅與青藍暈染，懷舊美學抵達意識深處",
+  "category": "效果 · 戲劇",
+  "aliases": [
+    "vaporwave",
+    "蒸汽",
+    "美學"
+  ],
+  "styleCase": "時尚潮流、藝術視覺、品牌營銷",
+  "version": "2.0.2",
+  "source": "builtin"
+}

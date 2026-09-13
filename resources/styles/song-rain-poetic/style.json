@@ -1,0 +1,23 @@
+{
+  "style": "song-rain-poetic",
+  "name": {
+    "zh": "宋人生活·聽雨",
+    "en": "Song Rain Poetic"
+  },
+  "description": "霧藍嫩綠暖黃，宋人聽雨新中式",
+  "category": "東方 · 國風",
+  "aliases": [
+    "宋人",
+    "聽雨",
+    "新中式",
+    "song",
+    "rain",
+    "生活美學"
+  ],
+  "styleCase": "傳統文化、療愈冥想、生活方式",
+  "imageGeneration": {
+    "prompt": "Elegant Song-dynasty Chinese ink-and-wash rainy courtyard with blue-tiled eaves, banana leaves, a tea cup, oil-paper umbrella, lattice window and distant mountains. Use misty blue, tender green and warm lamp-yellow accents on rice paper with poetic negative space. Do not render text, seal lettering, logos, UI, watermarks, photorealism, or dense architecture."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

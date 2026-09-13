@@ -1,0 +1,21 @@
+{
+  "style": "rose-pine",
+  "name": {
+    "zh": "玫瑰松",
+    "en": "Rose Pine"
+  },
+  "description": "暗紫森林裏玫瑰靜默綻放，設計感與代碼溫柔共存",
+  "category": "深色 · 科技",
+  "aliases": [
+    "rose",
+    "pine",
+    "玫瑰",
+    "柔和暗色"
+  ],
+  "styleCase": "技術分享、藝術視覺、教學科普",
+  "imageGeneration": {
+    "prompt": "Moody poetic still life of a single muted rose among dark pine silhouettes at purple-black dusk, with soft rose-pink highlights and restrained pine-teal accents. Use atmospheric painterly light, a calm focal point and generous negative space. Do not render text, logos, UI, watermarks, glossy 3D, or dense floral arrangements."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

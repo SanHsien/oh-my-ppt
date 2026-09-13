@@ -1,0 +1,17 @@
+{
+  "style": "blueprint",
+  "name": {
+    "zh": "藍圖",
+    "en": "Blueprint"
+  },
+  "description": "深藍底上淺藍線條織就網格，建築師的夢想畫布",
+  "category": "效果 · 戲劇",
+  "aliases": [
+    "blueprint",
+    "工程",
+    "架構"
+  ],
+  "styleCase": "技術分享、產品發佈、商業彙報",
+  "version": "2.0.1",
+  "source": "builtin"
+}

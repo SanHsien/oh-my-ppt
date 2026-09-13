@@ -1,0 +1,242 @@
+import {
+  SECTION_AGENDA_OUTLINE_MARKER,
+  isInternalDocumentPlanPageReason,
+  isSectionAgendaReason,
+  type DocumentPlanAgendaItem,
+  type DocumentPlanPageSkeletonItem,
+  type OutlineItem,
+  type PageReferenceContext,
+  type SourceDocumentPlan
+} from '@shared/generation'
+
+const MAX_SOURCE_PLAN_PAGES = 500
+const LAYOUT_INTENTS = new Set([
+  'cover',
+  'data-focus',
+  'comparison',
+  'timeline',
+  'concept',
+  'process',
+  'summary',
+  'quote',
+  'image-focus'
+])
+
+const getObject = (value: unknown): Record<string, unknown> | null =>
+  value && typeof value === 'object' && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null
+
+const readPositiveInt = (value: unknown): number | null => {
+  const n = Number(value)
+  return Number.isFinite(n) && n >= 1 ? Math.floor(n) : null
+}
+
+const readString = (value: unknown): string => (typeof value === 'string' ? value.trim() : '')
+
+const readArray = (value: unknown): unknown[] => {
+  if (Array.isArray(value)) return value
+  if (typeof value !== 'string' || !value.trim()) return []
+  try {
+    const parsed = JSON.parse(value) as unknown
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
+const normalizeAgendaItems = (value: unknown): DocumentPlanAgendaItem[] | undefined => {
+  const agendaItems = readArray(value)
+    .slice(0, MAX_SOURCE_PLAN_PAGES)
+    .map((item) => {
+      const record = getObject(item)
+      if (!record) return null
+      const title = readString(record.title)
+      const lineStart = readPositiveInt(record.lineStart ?? record.line_start)
+      return title && lineStart ? { title, lineStart } : null
+    })
+    .filter((item): item is DocumentPlanAgendaItem => Boolean(item))
+  return agendaItems.length > 0 ? agendaItems : undefined
+}
+
+const normalizeSourcePlanReason = (reason: string): string =>
+  reason && !isInternalDocumentPlanPageReason(reason) ? reason : ''
+
+const normalizeSourcePlanItem = (
+  value: unknown,
+  fallbackPageNumber: number
+): DocumentPlanPageSkeletonItem | null => {
+  const record = getObject(value)
+  if (!record) return null
+  const pageNumber = readPositiveInt(record.pageNumber) ?? fallbackPageNumber
+  const title = readString(record.title) || `Slide ${pageNumber}`
+  const role = record.role === 'chapter-divider' ? 'chapter-divider' : 'content'
+  const sourceHeading = readString(record.sourceHeading)
+  const headingLevel = readPositiveInt(record.headingLevel) ?? 1
+  const lineStart = readPositiveInt(record.lineStart) ?? 1
+  const lineEnd = readPositiveInt(record.lineEnd) ?? lineStart
+  const reason = readString(record.reason)
+  const agendaItems = normalizeAgendaItems(record.agendaItems ?? record.agenda_items_json)
+  if (!sourceHeading || lineEnd < lineStart) return null
+  return {
+    pageNumber,
+    title,
+    role,
+    sourceHeading,
+    headingLevel,
+    lineStart,
+    lineEnd,
+    reason: normalizeSourcePlanReason(reason),
+    ...(agendaItems ? { agendaItems } : {})
+  }
+}
+
+export const normalizeSourcePlan = (value: unknown): SourceDocumentPlan | null => {
+  const record = getObject(value)
+  if (!record) return null
+  const sourcePlanRecord = getObject(record.sourcePlan) ?? record
+  const rawSkeleton = sourcePlanRecord.pageSkeleton
+  if (!Array.isArray(rawSkeleton)) return null
+  const pageSkeleton = rawSkeleton
+    .slice(0, MAX_SOURCE_PLAN_PAGES)
+    .map((item, index) => normalizeSourcePlanItem(item, index + 1))
+    .filter((item): item is DocumentPlanPageSkeletonItem => item !== null)
+  if (pageSkeleton.length === 0) return null
+  const confidence =
+    sourcePlanRecord.confidence === 'medium' || sourcePlanRecord.confidence === 'low'
+      ? sourcePlanRecord.confidence
+      : 'high'
+  return {
+    version: 1,
+    confidence,
+    sourceDocumentPath: readString(sourcePlanRecord.sourceDocumentPath) || undefined,
+    sourceDocumentName: readString(sourcePlanRecord.sourceDocumentName) || undefined,
+    pageSkeleton
+  }
+}
+
+export const sourcePlanFromSkeletonRows = (rows: unknown[]): SourceDocumentPlan | null => {
+  if (rows.length === 0) return null
+  const first = getObject(rows[0])
+  if (!first) return null
+  const pageSkeleton = rows
+    .map((row, index) => {
+      const record = getObject(row)
+      if (!record) return null
+      return normalizeSourcePlanItem(
+        {
+          pageNumber: record.page_number ?? record.pageNumber,
+          title: record.title,
+          role: record.role,
+          sourceHeading: record.source_heading ?? record.sourceHeading,
+          headingLevel: record.heading_level ?? record.headingLevel,
+          lineStart: record.line_start ?? record.lineStart,
+          lineEnd: record.line_end ?? record.lineEnd,
+          reason: record.reason,
+          agendaItems: record.agenda_items_json ?? record.agendaItems
+        },
+        index + 1
+      )
+    })
+    .filter((item): item is DocumentPlanPageSkeletonItem => item !== null)
+  if (pageSkeleton.length === 0) return null
+  const confidence =
+    first.confidence === 'medium' || first.confidence === 'low' ? first.confidence : 'high'
+  return {
+    version: 1,
+    confidence,
+    sourceDocumentPath:
+      readString(first.source_document_path ?? first.sourceDocumentPath) || undefined,
+    sourceDocumentName:
+      readString(first.source_document_name ?? first.sourceDocumentName) || undefined,
+    pageSkeleton
+  }
+}
+
+export const userMessageRequestsOutlineRestructure = (value: string): boolean =>
+  /重排|重組|重新規劃|壓縮|合併|拆分|刪減|精簡.*頁|改成\s*\d+\s*頁|做成\s*\d+\s*頁|只做\s*\d+\s*頁|rewrite.*outline|replan|restructure|compress|merge|split|make\s+it\s+\d+\s+(?:slides|pages)/i.test(
+    value
+  )
+
+export const canUseSourcePlanDirectly = (args: {
+  sourcePlan: SourceDocumentPlan | null | undefined
+  totalPages: number
+  userMessage: string
+}): boolean =>
+  Boolean(
+    args.sourcePlan &&
+    args.sourcePlan.confidence === 'high' &&
+    args.sourcePlan.pageSkeleton.length === args.totalPages &&
+    !userMessageRequestsOutlineRestructure(args.userMessage)
+  )
+
+export const resolvePageReferenceContext = (args: {
+  referenceDocumentPath?: string
+  sourcePlan: SourceDocumentPlan | null | undefined
+  pageNumber: number
+}): PageReferenceContext | null => {
+  const referenceDocumentPath = args.referenceDocumentPath?.trim()
+  if (!referenceDocumentPath || !args.sourcePlan) return null
+  const sourceDocumentPath = args.sourcePlan.sourceDocumentPath?.trim()
+  if (sourceDocumentPath && sourceDocumentPath !== referenceDocumentPath) return null
+  const item = args.sourcePlan.pageSkeleton.find((candidate) => candidate.pageNumber === args.pageNumber)
+  if (!item) return null
+  const isSectionAgenda = Boolean(item.agendaItems?.length) || isSectionAgendaReason(item.reason)
+  return {
+    referenceDocumentPath,
+    sourceHeading: item.sourceHeading,
+    sourceRange: {
+      lineStart: item.lineStart,
+      lineEnd: item.lineEnd
+    },
+    agendaItems: item.agendaItems,
+    isSectionAgenda
+  }
+}
+
+const inferLayoutIntentFromSkeletonTitle = (
+  item: SourceDocumentPlan['pageSkeleton'][number]
+): OutlineItem['layoutIntent'] => {
+  const text = `${item.title}\n${item.sourceHeading}`
+  if (item.agendaItems?.length || isSectionAgendaReason(item.reason)) return 'summary'
+  if (item.role === 'chapter-divider') return 'cover'
+  if (/指標|數據|收入|增長|下降|比例|金額|率|metric|revenue|growth|decline|kpi|%|\d/.test(text)) {
+    return 'data-focus'
+  }
+  if (/對比|比較|差異|競品|comparison|versus|vs\.?/i.test(text)) return 'comparison'
+  if (/流程|步驟|路徑|機制|workflow|process|step|how to/i.test(text)) return 'process'
+  if (/計劃|階段|路線|節奏|timeline|roadmap|phase|schedule/i.test(text)) return 'timeline'
+  if (/總結|結論|覆盤|summary|conclusion|takeaway/i.test(text)) return 'summary'
+  return 'concept'
+}
+
+export const mapSourcePlanToOutlineItems = (sourcePlan: SourceDocumentPlan): OutlineItem[] =>
+  sourcePlan.pageSkeleton.map((item) => {
+    const inferredLayoutIntent = inferLayoutIntentFromSkeletonTitle(item)
+    const isSectionAgenda = Boolean(item.agendaItems?.length) || isSectionAgendaReason(item.reason)
+    const agendaItemsMetadata = item.agendaItems?.length
+      ? `Agenda items JSON: ${JSON.stringify(item.agendaItems)}`
+      : ''
+    return {
+      title: item.title,
+      contentOutline: (isSectionAgenda
+        ? [
+            SECTION_AGENDA_OUTLINE_MARKER,
+            `Source heading: ${item.sourceHeading}`,
+            `Source range: lines ${item.lineStart}-${item.lineEnd}`,
+            agendaItemsMetadata,
+            !agendaItemsMetadata && item.reason ? `Page purpose: ${item.reason}` : ''
+          ]
+        : [
+            `Source heading: ${item.sourceHeading}`,
+            `Source range: lines ${item.lineStart}-${item.lineEnd}`,
+            `Page role: ${item.role}`,
+            item.reason ? `Page purpose: ${item.reason}` : ''
+          ])
+        .filter(Boolean)
+        .join('\n'),
+      layoutIntent: LAYOUT_INTENTS.has(inferredLayoutIntent || '')
+        ? inferredLayoutIntent
+        : 'concept'
+    }
+  })

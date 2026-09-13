@@ -1,0 +1,11 @@
+{
+  "repo": "https://github.com/arcsin1/oh-my-ppt.git",
+  "branch": "main",
+  "reviewed_through": "6d1b08bf3b0c91bb25c4372fa67222f40e086720",
+  "reviewed_date": "2026-09-12",
+  "notes": "Fork created from upstream main 6d1b08b (feat: v2.5.0 doc). PR baseline 143, issue baseline 142. Windows 11 first maintenance setup.",
+  "reviewed_pr_through": 143,
+  "reviewed_issue_through": 142,
+  "website": "https://www.ohmyppt.cc",
+  "reviewed_website_version": "2.5.2"
+}

@@ -1,0 +1,23 @@
+{
+  "style": "oriental-poetic-illustration",
+  "name": {
+    "zh": "東方意境插畫",
+    "en": "Oriental Poetic Illustration"
+  },
+  "description": "竹影月色，禪意詩畫的東方插畫",
+  "category": "東方 · 國風",
+  "aliases": [
+    "東方",
+    "禪意",
+    "竹影",
+    "oriental",
+    "zen",
+    "詩意"
+  ],
+  "styleCase": "傳統文化、療愈冥想、教學科普",
+  "imageGeneration": {
+    "prompt": "Serene East Asian ink-and-wash illustration with bamboo silhouettes, a moon, drifting mist, rocks and a small stone lantern on warm rice paper. Use restrained green, blue and vermilion accents with poetic negative space. Do not render text, seal lettering, logos, UI, watermarks, photorealism, or dense ornament."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

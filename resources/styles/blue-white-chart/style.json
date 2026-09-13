@@ -1,0 +1,18 @@
+{
+  "style": "blue-white-chart",
+  "name": {
+    "zh": "藍白商務圖表",
+    "en": "Blue White Chart"
+  },
+  "description": "冷靜專業的數據彙報風",
+  "category": "淺色 · 專業",
+  "aliases": [
+    "藍色商務",
+    "企業數據彙報",
+    "諮詢圖表風",
+    "藍白邏輯圖"
+  ],
+  "styleCase": "商業彙報、年度慶典、學術研究",
+  "version": "2.0.1",
+  "source": "builtin"
+}

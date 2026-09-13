@@ -1,0 +1,21 @@
+{
+  "style": "retro-tv",
+  "name": {
+    "zh": "復古電視",
+    "en": "Retro Tv"
+  },
+  "description": "暖黃屏幕閃爍琥珀光，時間倒流回客廳裏的CRT",
+  "category": "雜誌 · 編輯",
+  "aliases": [
+    "retro",
+    "tv",
+    "復古",
+    "CRT"
+  ],
+  "styleCase": "雜誌編輯、品牌營銷、生活方式",
+  "imageGeneration": {
+    "prompt": "Nostalgic 1980s CRT television glowing warm amber in a cozy cream-colored living room, with subtle scanlines, analog grain and tasteful retro illustration texture. Keep the object clearly framed with space for slide content. Do not render readable screen text, logos, UI, watermarks, people, or excessive visual clutter."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

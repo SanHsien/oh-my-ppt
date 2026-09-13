@@ -1,0 +1,19 @@
+{
+  "style": "cobalt-sunshine",
+  "name": {
+    "zh": "明黃鈷藍 · 活力專業",
+    "en": "Cobalt Sunshine"
+  },
+  "description": "明黃與鈷藍的高飽和互補色撞色",
+  "category": "活力 · 創意",
+  "aliases": [
+    "明黃鈷藍",
+    "互補色",
+    "活力",
+    "專業",
+    "撞色"
+  ],
+  "styleCase": "融資路演、產品發佈、品牌營銷",
+  "version": "2.0.1",
+  "source": "builtin"
+}

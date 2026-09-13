@@ -1,0 +1,20 @@
+{
+  "style": "midcentury",
+  "name": {
+    "zh": "世紀中葉",
+    "en": "Midcentury"
+  },
+  "description": "芥末黃遇上焦橙與青，世紀中葉的客廳永遠舒適",
+  "category": "雜誌 · 編輯",
+  "aliases": [
+    "midcentury",
+    "復古",
+    "家居"
+  ],
+  "styleCase": "雜誌編輯、藝術視覺、生活方式",
+  "imageGeneration": {
+    "prompt": "Mid-century modern interior photograph with warm cream walls, mustard yellow, burnt orange and teal accents, iconic curved furniture and organic geometric decor. Use soft daylight, tasteful vintage editorial styling and uncluttered negative space. Do not render people, text, logos, UI, watermarks, or anachronistic furniture."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

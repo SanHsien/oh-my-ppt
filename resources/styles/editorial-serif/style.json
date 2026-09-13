@@ -1,0 +1,20 @@
+{
+  "style": "editorial-serif",
+  "name": {
+    "zh": "雜誌襯線",
+    "en": "Editorial Serif"
+  },
+  "description": "奶油紙上襯線娓娓道來，故事感從標題開始流淌",
+  "category": "雜誌 · 編輯",
+  "aliases": [
+    "editorial",
+    "serif",
+    "magazine",
+    "雜誌",
+    "編排",
+    "襯線"
+  ],
+  "styleCase": "雜誌編輯、藝術視覺、品牌營銷",
+  "version": "2.0.1",
+  "source": "builtin"
+}

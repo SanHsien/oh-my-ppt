@@ -20,6 +20,7 @@ docs/*.md
 !docs/DEVELOPMENT.md
 !docs/DECISIONS.md
 !docs/UPSTREAM.md
+!docs/THEME_MIDNIGHT_FOREST.md
 docs/.DS_Store
 docs/design/*
 

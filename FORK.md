@@ -24,7 +24,7 @@
 | `README.en.md` | 英文鏡像說明檔 |
 | `AGENTS.md` 開頭 overlay | 指向本檔；下文保留上游產品規範與 React 元件指引 |
 | `FORK.md` / `NOTICE.md` / `CLAUDE.md` / `GEMINI.md` / `REVIEW.md` | 本 fork 的治理與 AI 維護單一真相源 |
-| `深色主題（Midnight Forest）` | **本 fork 獨家原創**的高對比暗黑森林護眼主題，支援標題列與側欄一鍵即時切換、跟隨系統、5 層表面層級與高對比文字 |
+| `深色主題（Midnight Forest）` | **本 fork 獨家原創**的高對比暗黑森林護眼主題，支援標題列與側欄一鍵即時切換、跟隨系統、5 層表面層級與高對比文字（規範見 [`docs/THEME_MIDNIGHT_FOREST.md`](docs/THEME_MIDNIGHT_FOREST.md)） |
 | `內建說明中心（/help）` | 離線原生說明中心，整合常見問題、模型配置手冊與思考模型參數速查，徹底移除上游外鏈 |
 | `docs/help/` | 本地離線說明手冊系列（常見問答、模型配置、思考模型參數） |
 | `docs/DEVELOPMENT.md`、`docs/DECISIONS.md`、`docs/UPSTREAM.md` | Windows 原生開發步驟、決策記錄與上游追蹤 |

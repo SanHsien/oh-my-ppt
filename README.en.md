@@ -119,7 +119,7 @@ In addition to the core capabilities of Oh My PPT, this maintenance fork introdu
 1. 🌙 **Exclusive "Midnight Forest" Dark Mode Theme**:
    - An ergonomic, high-contrast dark theme designed for extended presentation authoring, adhering to WCAG AAA contrast standards.
    - Structured across a 5-tier elevation hierarchy (Canvas `#111411` → Nav `#151a14` → Cards `#191f18` → Inputs `#20291f` → Popovers `#222c21`), eliminating surface inversion contrast issues.
-   - Instant toggle buttons located directly on both the window titlebar and sidebar header, supporting Light, Dark, and System modes with automatic OS appearance synchronization.
+   - Instant toggle buttons located directly on both the window titlebar and sidebar header, supporting Light, Dark, and System modes with automatic OS appearance synchronization. See [`docs/THEME_MIDNIGHT_FOREST.md`](docs/THEME_MIDNIGHT_FOREST.md) for full design system specifications.
 
 2. 📖 **Built-in Offline Help Center (`/help`)**:
    - Comprehensive offline guides covering FAQs, AI model setup (OpenAI, Claude, Gemini, DeepSeek, Ollama, Qwen), and Thinking/Reasoning JSON parameter references.

@@ -33,6 +33,7 @@ MAINTAINED_DOCUMENTS = (
     "CONTRIBUTING.md",
     "SECURITY.md",
     "REVIEW.md",
+    "docs/THEME_MIDNIGHT_FOREST.md",
     "docs/DEVELOPMENT.md",
     "docs/DECISIONS.md",
     "docs/UPSTREAM.md",

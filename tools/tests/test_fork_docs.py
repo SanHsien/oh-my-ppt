@@ -35,6 +35,7 @@ def test_required_overlay_files_exist() -> None:
         "CONTRIBUTING.md",
         "SECURITY.md",
         "REVIEW.md",
+        "docs/THEME_MIDNIGHT_FOREST.md",
         "docs/DEVELOPMENT.md",
         "docs/DECISIONS.md",
         "docs/UPSTREAM.md",

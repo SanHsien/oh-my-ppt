@@ -179,7 +179,7 @@ export function ModelSplitButton({
       {hasMultiple && (
         <>
           <ButtonGroupSeparator
-            className={isPrimary ? 'bg-white/20' : 'my-2 bg-[#d8ccb5]/80'}
+            className={isPrimary ? 'bg-white/20' : 'my-1.5 bg-[#c4b59d] dark:bg-[#384e33]'}
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

@@ -611,3 +611,98 @@ body {
   background-color: #3c5634 !important;
   color: #ffffff !important;
 }
+
+/* --------------------------------------------------------------------------
+   Professional Sonner Toast Notification Styling for Dark Mode (Image #10)
+   -------------------------------------------------------------------------- */
+.dark [data-sonner-toaster],
+[data-theme="dark"] [data-sonner-toaster] {
+  --normal-bg: #1c241b;
+  --normal-border: rgba(140, 175, 125, 0.35);
+  --normal-text: #f2f7ed;
+}
+
+.dark [data-sonner-toast],
+[data-theme="dark"] [data-sonner-toast] {
+  background: #1d251c !important;
+  border: 1px solid rgba(140, 175, 125, 0.35) !important;
+  color: #f2f7ed !important;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark [data-sonner-toast] [data-title],
+[data-theme="dark"] [data-sonner-toast] [data-title] {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.dark [data-sonner-toast] [data-description],
+[data-theme="dark"] [data-sonner-toast] [data-description] {
+  color: #c9dbbe !important;
+}
+
+.dark [data-sonner-toast][data-type="warning"],
+[data-theme="dark"] [data-sonner-toast][data-type="warning"] {
+  background: #252015 !important;
+  border-color: rgba(225, 165, 65, 0.45) !important;
+}
+
+.dark [data-sonner-toast][data-type="warning"] [data-title],
+[data-theme="dark"] [data-sonner-toast][data-type="warning"] [data-title] {
+  color: #fbdf9d !important;
+  font-weight: 600 !important;
+}
+
+.dark [data-sonner-toast][data-type="warning"] [data-description],
+[data-theme="dark"] [data-sonner-toast][data-type="warning"] [data-description] {
+  color: #f0dba9 !important;
+}
+
+.dark [data-sonner-toast][data-type="error"],
+[data-theme="dark"] [data-sonner-toast][data-type="error"] {
+  background: #271616 !important;
+  border-color: rgba(235, 95, 85, 0.45) !important;
+}
+
+.dark [data-sonner-toast][data-type="error"] [data-title],
+[data-theme="dark"] [data-sonner-toast][data-type="error"] [data-title] {
+  color: #ffb8b8 !important;
+  font-weight: 600 !important;
+}
+
+.dark [data-sonner-toast][data-type="error"] [data-description],
+[data-theme="dark"] [data-sonner-toast][data-type="error"] [data-description] {
+  color: #f2bcbc !important;
+}
+
+.dark [data-sonner-toast][data-type="success"],
+[data-theme="dark"] [data-sonner-toast][data-type="success"] {
+  background: #172618 !important;
+  border-color: rgba(105, 185, 95, 0.45) !important;
+}
+
+.dark [data-sonner-toast][data-type="success"] [data-title],
+[data-theme="dark"] [data-sonner-toast][data-type="success"] [data-title] {
+  color: #a3f0bd !important;
+  font-weight: 600 !important;
+}
+
+.dark [data-sonner-toast][data-type="success"] [data-description],
+[data-theme="dark"] [data-sonner-toast][data-type="success"] [data-description] {
+  color: #c9f5d7 !important;
+}
+
+.dark [data-sonner-toast] [data-close-button],
+[data-theme="dark"] [data-sonner-toast] [data-close-button] {
+  background: #253022 !important;
+  color: #e4eedf !important;
+  border: 1px solid rgba(140, 175, 125, 0.35) !important;
+}
+
+/* Invert Chart Cards and White containers (Image #6) */
+.dark .bg-white,
+[data-theme="dark"] .bg-white {
+  background-color: #191f18 !important;
+  border-color: rgba(135, 165, 120, 0.22) !important;
+  color: #f2f7ed !important;
+}

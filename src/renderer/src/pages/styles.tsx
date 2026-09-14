@@ -344,16 +344,16 @@ export function StylesPage(): React.JSX.Element {
         <p className="mt-2 text-[12px] text-muted-foreground">{t('styles.description')}</p>
       </div>
 
-      <div className="mb-5 rounded-lg border border-[#d8ccb5]/75 bg-[#fff9ef]/76 p-3">
+      <div className="mb-5 rounded-lg border border-[#d8ccb5]/75 bg-[#fff9ef]/76 dark:border-[#33442e] dark:bg-[#161c15] p-3">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex min-h-9 flex-1 items-center gap-2 rounded-md border border-[#d8ccb5]/80 bg-white/80 px-2.5">
+          <div className="flex min-h-9 flex-1 items-center gap-2 rounded-md border border-[#d8ccb5]/80 bg-white/80 dark:border-[#364930] dark:bg-[#20291f] px-2.5">
             <Search className="h-4 w-4 shrink-0 text-[#7c6a4c]/60" />
             <input
               type="text"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder={t('styles.searchPlaceholder')}
-              className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+              className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground dark:placeholder:text-[#8ea383]"
             />
             {query ? (
               <button

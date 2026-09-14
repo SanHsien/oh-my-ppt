@@ -85,8 +85,8 @@ export function TokenUsageDashboard(): React.JSX.Element {
       label: t('settings.usageTotalTokens'),
       value: totalTokens,
       icon: Coins,
-      bg: 'bg-[#d4e4c1]',
-      border: 'border-[#c8d6ba]',
+      bg: 'bg-[#d4e4c1] dark:bg-[#202f1d]',
+      border: 'border-[#c8d6ba] dark:border-[#384f33]',
       iconBg: 'bg-[#5d6b4d]',
       blob: 'bg-[#8fbc8f]/30'
     },
@@ -94,8 +94,8 @@ export function TokenUsageDashboard(): React.JSX.Element {
       label: t('settings.usageInputTokens'),
       value: inputTokens,
       icon: ArrowDownToLine,
-      bg: 'bg-[#e8e0d0]',
-      border: 'border-[#d9cfbd]',
+      bg: 'bg-[#e8e0d0] dark:bg-[#252a22]',
+      border: 'border-[#d9cfbd] dark:border-[#3a4435]',
       iconBg: 'bg-[#6f8a5b]',
       blob: 'bg-[#d4e4c1]/55'
     },
@@ -103,8 +103,8 @@ export function TokenUsageDashboard(): React.JSX.Element {
       label: t('settings.usageOutputTokens'),
       value: outputTokens,
       icon: ArrowUpFromLine,
-      bg: 'bg-[#f5f1e8]',
-      border: 'border-[#e0d8c8]',
+      bg: 'bg-[#f5f1e8] dark:bg-[#222720]',
+      border: 'border-[#e0d8c8] dark:border-[#3a4435]',
       iconBg: 'bg-[#b18f5e]',
       blob: 'bg-[#c8b89e]/30'
     },
@@ -112,8 +112,8 @@ export function TokenUsageDashboard(): React.JSX.Element {
       label: t('settings.usageCalls'),
       value: callCount,
       icon: Activity,
-      bg: 'bg-[#d4e4c1]',
-      border: 'border-[#a9bd97]',
+      bg: 'bg-[#d4e4c1] dark:bg-[#1d2a1b]',
+      border: 'border-[#a9bd97] dark:border-[#354c30]',
       iconBg: 'bg-[#3e4a32]',
       blob: 'bg-[#5d6b4d]/22'
     }
@@ -412,7 +412,7 @@ export function TokenUsageDashboard(): React.JSX.Element {
           size="sm"
           disabled={loading}
           onClick={() => setRefreshKey((value) => value + 1)}
-          className="h-8 text-[#5D6B4D] hover:text-[#3E4A32]"
+          className="h-8 text-[#5D6B4D] hover:text-[#3E4A32] dark:text-[#f2f7ed]"
         >
           <RefreshCw className={`mr-1.5 h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
           {t('settings.usageRefresh')}
@@ -420,7 +420,7 @@ export function TokenUsageDashboard(): React.JSX.Element {
       </div>
 
       {error ? (
-        <div className="rounded-2xl border border-[#C8B89E] bg-[#E8E0D0] p-4 text-sm text-[#3E4A32]">
+        <div className="rounded-2xl border border-[#C8B89E] bg-[#E8E0D0] p-4 text-sm text-[#3E4A32] dark:text-[#f2f7ed]">
           {error}
         </div>
       ) : null}
@@ -444,10 +444,10 @@ export function TokenUsageDashboard(): React.JSX.Element {
                 </div>
               </div>
               <div className="relative mt-4">
-                <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#5d6b4d]">
+                <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#5d6b4d] dark:text-[#a0b599]">
                   {card.label}
                 </p>
-                <p className="organic-serif mt-1.5 text-[24px] font-semibold leading-none text-[#3e4a32]">
+                <p className="organic-serif mt-1.5 text-[24px] font-semibold leading-none text-[#3e4a32] dark:text-[#ffffff]">
                   {card.value.toLocaleString()}
                 </p>
               </div>
@@ -456,8 +456,8 @@ export function TokenUsageDashboard(): React.JSX.Element {
         })}
       </div>
 
-      <div className="rounded-2xl bg-white p-5">
-        <h3 className="organic-serif mb-3 text-base font-semibold text-[#3E4A32]">
+      <div className="rounded-2xl bg-white dark:bg-[#191f18] dark:border dark:border-[#2f3f29] p-5">
+        <h3 className="organic-serif mb-3 text-base font-semibold text-[#3E4A32] dark:text-[#f2f7ed]">
           {t('settings.usageTodayHourly')}
         </h3>
         <div className="h-[clamp(200px,20vw,320px)]">
@@ -472,8 +472,8 @@ export function TokenUsageDashboard(): React.JSX.Element {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1.65fr)_minmax(280px,1fr)]">
-        <div className="flex h-full flex-col rounded-2xl bg-white p-5">
-          <h3 className="organic-serif mb-3 text-base font-semibold text-[#3E4A32]">
+        <div className="flex h-full flex-col rounded-2xl bg-white dark:bg-[#191f18] dark:border dark:border-[#2f3f29] p-5">
+          <h3 className="organic-serif mb-3 text-base font-semibold text-[#3E4A32] dark:text-[#f2f7ed]">
             {t('settings.usageTrend')}
           </h3>
           <div className="min-h-[240px] flex-1">
@@ -487,8 +487,8 @@ export function TokenUsageDashboard(): React.JSX.Element {
           </div>
         </div>
 
-        <div className="rounded-2xl bg-white p-5">
-          <h3 className="organic-serif mb-3 text-base font-semibold text-[#3E4A32]">
+        <div className="rounded-2xl bg-white dark:bg-[#191f18] dark:border dark:border-[#2f3f29] p-5">
+          <h3 className="organic-serif mb-3 text-base font-semibold text-[#3E4A32] dark:text-[#f2f7ed]">
             {t('settings.usageByModel')}
           </h3>
           {modelRows.length ? (
@@ -508,7 +508,7 @@ export function TokenUsageDashboard(): React.JSX.Element {
                           style={{ backgroundColor: color }}
                         />
                         <span
-                          className="min-w-0 flex-1 truncate text-[#3E4A32]"
+                          className="min-w-0 flex-1 truncate text-[#3E4A32] dark:text-[#f2f7ed]"
                           title={`${item.provider} / ${item.model}`}
                         >
                           {item.model}

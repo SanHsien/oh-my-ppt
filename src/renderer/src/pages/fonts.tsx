@@ -393,7 +393,7 @@ export function FontsPage(): React.JSX.Element {
                   {fileEntries.map((entry, i) => (
                     <tr key={entry.path} className="border-b border-[#d8ccb5]/30 align-middle">
                       <td className="py-1.5 pr-2">
-                        <span className="block truncate text-[#33402a]">
+                        <span className="block truncate text-[#33402a] dark:text-[#f2f7ed]">
                           {entry.path.split(/[\\/]/).pop() || entry.path}
                         </span>
                       </td>
@@ -477,13 +477,13 @@ export function FontsPage(): React.JSX.Element {
                 {userFonts.map((font) => (
                   <div
                     key={font.id}
-                    className="group flex items-center justify-between gap-3 rounded-lg border border-[#d8ccb5]/80 bg-[#fffdf8]/78 p-3 transition-all hover:border-[#c4b89e]/90 hover:shadow-[0_8px_20px_rgba(90,72,52,0.1)]"
+                    className="group flex items-center justify-between gap-3 rounded-lg border border-[#d8ccb5]/80 bg-[#fffdf8]/78 dark:border-[#364930] dark:bg-[#20291f] p-3 transition-all hover:border-[#c4b89e]/90 hover:shadow-[0_8px_20px_rgba(90,72,52,0.1)]"
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-[#33402a]">{font.family}</p>
+                      <p className="truncate text-sm font-medium text-[#33402a] dark:text-[#f2f7ed]">{font.family}</p>
                       {previewReady && (
                         <p
-                          className="mt-1 truncate text-lg text-[#5a6650]/80"
+                          className="mt-1 truncate text-lg text-[#5a6650]/80 dark:text-[#f2f7ed]"
                           style={{ fontFamily: `"${font.family}", sans-serif` }}
                         >
                           {previewText(font.scripts)}
@@ -531,7 +531,7 @@ export function FontsPage(): React.JSX.Element {
                   {t('fonts.googleFontsDesc')}
                 </p>
               </div>
-              <span className="rounded-full bg-[#e9efde] px-2.5 py-0.5 text-[11px] font-medium text-[#506141]">
+              <span className="rounded-full bg-[#e9efde] dark:bg-[#2d3d29] px-2.5 py-0.5 text-[11px] font-medium text-[#506141] dark:text-[#cbe0c5]">
                 {googleFonts.length}
               </span>
             </div>
@@ -542,17 +542,17 @@ export function FontsPage(): React.JSX.Element {
                 {googleFonts.map((font) => (
                   <div
                     key={font.id}
-                    className="rounded-lg border border-[#d8ccb5]/60 bg-[#fffdf8]/50 px-3 py-2.5 transition-colors hover:border-[#c4b89e]/80 hover:bg-[#fffdf8]"
+                    className="rounded-lg border border-[#d8ccb5]/60 bg-[#fffdf8]/50 dark:border-[#364930] dark:bg-[#20291f] px-3 py-2.5 transition-colors hover:border-[#c4b89e]/80 hover:bg-[#fffdf8]"
                   >
                     {previewReady && (
                       <p
-                        className="truncate text-lg text-[#5a6650]/80"
+                        className="truncate text-lg text-[#5a6650]/80 dark:text-[#f2f7ed]"
                         style={{ fontFamily: `"${font.family}", sans-serif` }}
                       >
                         {previewText(font.scripts)}
                       </p>
                     )}
-                    <p className="text-sm font-medium text-[#33402a]">{font.family}</p>
+                    <p className="text-sm font-medium text-[#33402a] dark:text-[#f2f7ed]">{font.family}</p>
                     <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs">
                       <span className={`rounded-md border px-1.5 py-0.5 font-medium ${roleClassName(font.role)}`}>
                         {roleToLabel(font.role)}

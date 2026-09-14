@@ -143,10 +143,10 @@ export function HomePage(): ReactElement {
               <Sparkles className="h-3.5 w-3.5 text-[#5d6b4d]" />
               {t('home.eyebrow')}
             </div>
-            <h1 className="organic-serif mt-5 text-[32px] font-semibold leading-none text-[#3e4a32] sm:text-[40px]">
+            <h1 className="organic-serif mt-5 text-[32px] font-semibold leading-none text-[#3e4a32] dark:text-[#f2f7ed] sm:text-[40px]">
               {t('thinking.homeTitle')}
             </h1>
-            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-[#5d6b4d]">
+            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-[#5d6b4d] dark:text-[#b0c4a8]">
               {t('thinking.homeDescription')}
             </p>
           </div>
@@ -157,7 +157,7 @@ export function HomePage(): ReactElement {
         <button
           type="button"
           onClick={() => void handleQuickCreate()}
-          className="group relative flex min-h-[240px] flex-col overflow-hidden rounded-[2rem] border border-[#e0d8c8] bg-[#e8e0d0] p-7 text-left shadow-[0_14px_34px_rgba(86,73,54,0.12)] transition-colors hover:border-[#c8b89e] hover:bg-[#e5dccb] disabled:cursor-not-allowed disabled:opacity-65"
+          className="group relative flex min-h-[240px] flex-col overflow-hidden rounded-[2rem] border border-[#e0d8c8] bg-[#e8e0d0] dark:bg-[#1e261c] dark:border-[#33442e] dark:hover:bg-[#253023] p-7 text-left shadow-[0_14px_34px_rgba(86,73,54,0.12)] transition-colors hover:border-[#c8b89e] hover:bg-[#e5dccb] disabled:cursor-not-allowed disabled:opacity-65"
         >
           <div className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-[30%_70%_70%_30%/30%_30%_70%_70%] bg-[#d4e4c1]/70 transition-transform group-hover:scale-110" />
           <div className="pointer-events-none absolute -bottom-14 left-10 h-28 w-40 rounded-[8%_92%_12%_88%/78%_22%_78%_22%] bg-[#c8b89e]/35" />
@@ -166,16 +166,16 @@ export function HomePage(): ReactElement {
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[10%_90%_16%_84%/78%_22%_78%_22%] bg-[#8fbc8f] text-white shadow-[0_10px_22px_rgba(93,107,77,0.18)]">
               <FileText className="h-5 w-5" />
             </div>
-            <span className="rounded-full bg-[#fffdf8]/84 px-3 py-1.5 text-[11px] font-semibold text-[#5d6b4d] shadow-[0_6px_14px_rgba(86,73,54,0.08)]">
+            <span className="rounded-full bg-[#fffdf8]/84 dark:bg-[#2a3627] px-3 py-1.5 text-[11px] font-semibold text-[#5d6b4d] dark:text-[#c4d7be] shadow-[0_6px_14px_rgba(86,73,54,0.08)]">
               {t('thinking.quickCreateBadge')}
             </span>
           </div>
 
           <div className="relative mt-7">
-            <h2 className="organic-serif text-[30px] font-semibold leading-none text-[#3e4a32]">
+            <h2 className="organic-serif text-[30px] font-semibold leading-none text-[#3e4a32] dark:text-[#f2f7ed]">
               {t('thinking.quickCreate')}
             </h2>
-            <p className="mt-3 max-w-[32rem] text-[14px] leading-relaxed text-[#5d6b4d]">
+            <p className="mt-3 max-w-[32rem] text-[14px] leading-relaxed text-[#5d6b4d] dark:text-[#b0c4a8]">
               {t('thinking.quickCreateDescription')}
             </p>
           </div>
@@ -191,7 +191,7 @@ export function HomePage(): ReactElement {
         <button
           type="button"
           onClick={() => void handleExplore()}
-          className="group relative flex min-h-[240px] flex-col overflow-hidden rounded-[2rem] border border-[#c8d6ba] bg-[#d4e4c1] p-7 text-left shadow-[0_14px_34px_rgba(86,73,54,0.12)] transition-colors hover:border-[#a9bd97] hover:bg-[#cedfb8]"
+          className="group relative flex min-h-[240px] flex-col overflow-hidden rounded-[2rem] border border-[#c8d6ba] bg-[#d4e4c1] dark:bg-[#233120] dark:border-[#384e33] dark:hover:bg-[#2a3a27] p-7 text-left shadow-[0_14px_34px_rgba(86,73,54,0.12)] transition-colors hover:border-[#a9bd97] hover:bg-[#cedfb8]"
         >
           <div className="pointer-events-none absolute -bottom-12 -left-10 h-36 w-36 rounded-[30%_70%_70%_30%/30%_30%_70%_70%] bg-[#8fbc8f]/28 transition-transform group-hover:scale-110" />
           <div className="pointer-events-none absolute right-8 top-9 h-24 w-32 rounded-[8%_92%_12%_88%/78%_22%_78%_22%] bg-[#f5f1e8]/55" />
@@ -200,16 +200,16 @@ export function HomePage(): ReactElement {
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[10%_90%_16%_84%/78%_22%_78%_22%] bg-[#5d6b4d] text-white shadow-[0_10px_22px_rgba(93,107,77,0.18)]">
               <MessageCircle className="h-5 w-5" />
             </div>
-            <span className="rounded-full bg-[#fffdf8]/84 px-3 py-1.5 text-[11px] font-semibold text-[#5d6b4d] shadow-[0_6px_14px_rgba(86,73,54,0.08)]">
+            <span className="rounded-full bg-[#fffdf8]/84 dark:bg-[#2a3627] px-3 py-1.5 text-[11px] font-semibold text-[#5d6b4d] dark:text-[#c4d7be] shadow-[0_6px_14px_rgba(86,73,54,0.08)]">
               {t('thinking.exploreProjectBadge')}
             </span>
           </div>
 
           <div className="relative mt-7">
-            <h2 className="organic-serif text-[30px] font-semibold leading-none text-[#3e4a32]">
+            <h2 className="organic-serif text-[30px] font-semibold leading-none text-[#3e4a32] dark:text-[#f2f7ed]">
               {t('thinking.exploreProject')}
             </h2>
-            <p className="mt-3 max-w-[32rem] text-[14px] leading-relaxed text-[#5d6b4d]">
+            <p className="mt-3 max-w-[32rem] text-[14px] leading-relaxed text-[#5d6b4d] dark:text-[#b0c4a8]">
               {t('thinking.exploreProjectDescription')}
             </p>
           </div>
@@ -226,7 +226,7 @@ export function HomePage(): ReactElement {
           type="button"
           onClick={() => void handleImportPptxClick()}
           disabled={importingPptx}
-          className="group relative flex min-h-[240px] flex-col overflow-hidden rounded-[2rem] border border-[#d9cfbd] bg-[#f5f1e8] p-7 text-left shadow-[0_14px_34px_rgba(86,73,54,0.10)] transition-colors hover:border-[#c8b89e] hover:bg-[#efe7d8] disabled:cursor-not-allowed disabled:opacity-65"
+          className="group relative flex min-h-[240px] flex-col overflow-hidden rounded-[2rem] border border-[#d9cfbd] bg-[#f5f1e8] dark:bg-[#1d251b] dark:border-[#32422b] dark:hover:bg-[#232e20] p-7 text-left shadow-[0_14px_34px_rgba(86,73,54,0.10)] transition-colors hover:border-[#c8b89e] hover:bg-[#efe7d8] disabled:cursor-not-allowed disabled:opacity-65"
         >
           <div className="pointer-events-none absolute -right-14 -bottom-12 h-36 w-36 rounded-[30%_70%_70%_30%/30%_30%_70%_70%] bg-[#c8b89e]/30 transition-transform group-hover:scale-110" />
           <div className="pointer-events-none absolute left-8 top-9 h-24 w-32 rounded-[8%_92%_12%_88%/78%_22%_78%_22%] bg-[#d4e4c1]/45" />
@@ -235,16 +235,16 @@ export function HomePage(): ReactElement {
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[10%_90%_16%_84%/78%_22%_78%_22%] bg-[#b18f5e] text-white shadow-[0_10px_22px_rgba(86,73,54,0.16)]">
               <FileUp className="h-5 w-5" />
             </div>
-            <span className="rounded-full bg-[#fffdf8]/84 px-3 py-1.5 text-[11px] font-semibold text-[#7c6a4c] shadow-[0_6px_14px_rgba(86,73,54,0.08)]">
+            <span className="rounded-full bg-[#fffdf8]/84 dark:bg-[#2a3627] px-3 py-1.5 text-[11px] font-semibold text-[#7c6a4c] dark:text-[#d6c79f] shadow-[0_6px_14px_rgba(86,73,54,0.08)]">
               PPTX
             </span>
           </div>
 
           <div className="relative mt-7">
-            <h2 className="organic-serif text-[30px] font-semibold leading-none text-[#3e4a32]">
+            <h2 className="organic-serif text-[30px] font-semibold leading-none text-[#3e4a32] dark:text-[#f2f7ed]">
               {t('home.importPptx')}
             </h2>
-            <p className="mt-3 max-w-[32rem] text-[14px] leading-relaxed text-[#5d6b4d]">
+            <p className="mt-3 max-w-[32rem] text-[14px] leading-relaxed text-[#5d6b4d] dark:text-[#b0c4a8]">
               {t('home.importPptxTooltip', { maxSize: MAX_PPTX_SIZE_MB })}
             </p>
           </div>

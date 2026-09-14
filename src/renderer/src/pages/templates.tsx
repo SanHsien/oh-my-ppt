@@ -248,7 +248,7 @@ export function TemplatesPage(): React.JSX.Element {
             </p>
           </div>
           <div className="flex shrink-0 items-center gap-2">
-            <span className="rounded-md border border-[#d6c08d]/70 bg-[#fff7e8] px-2.5 py-1.5 text-xs font-medium text-[#7c6a4c]">
+            <span className="rounded-md border border-[#d6c08d]/70 bg-[#fff7e8] px-2.5 py-1.5 text-xs font-medium text-[#7c6a4c] dark:border-[#384e33] dark:bg-[#1e271d] dark:text-[#c4d6bd]">
               {t('templates.count', { count: templates.length })}
             </span>
             <ModelSplitButton

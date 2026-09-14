@@ -413,7 +413,7 @@ export function StylesPage(): React.JSX.Element {
               key={style.id}
               ref={!style.thumbnailPath && style.previewPath ? setItemRef(style.id) : undefined}
               data-style-card-id={style.id}
-              className="group overflow-hidden rounded-2xl border border-[#d8cfbc]/75 bg-white/70 text-left shadow-[0_4px_16px_rgba(93,107,77,0.08)] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(93,107,77,0.15)]"
+              className="group overflow-hidden rounded-2xl border border-[#d8cfbc]/75 bg-white/70 dark:border-[#33462f] dark:bg-[#192018] text-left shadow-[0_4px_16px_rgba(93,107,77,0.08)] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(0,0,0,0.45)]"
             >
               <div className="relative aspect-video overflow-hidden bg-[#f5f1e8]">
                 {style.thumbnailPath ? (
@@ -581,7 +581,7 @@ export function StylesPage(): React.JSX.Element {
               <div className="p-3">
                 {style.imageGenerationPrompt ? (
                   <div className="mb-2">
-                    <span className="inline-flex items-center gap-1 rounded-md border border-[#8fc49a]/70 bg-[#ecf8ee] px-1.5 py-0.5 text-[11px] font-medium leading-4 text-[#39724a]">
+                    <span className="inline-flex items-center gap-1 rounded-md border border-[#8fc49a]/70 bg-[#ecf8ee] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#39724a] dark:border-[#40683a] dark:bg-[#20361d] dark:text-[#a6f0b4]">
                       <Sparkles className="h-3 w-3" />
                       {t('styles.supportsImageGeneration')}
                     </span>
@@ -589,13 +589,13 @@ export function StylesPage(): React.JSX.Element {
                 ) : null}
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-[#3e4a32]">{style.label}</p>
-                    <p className="mt-0.5 text-[10px] font-medium text-[#718064]">
+                    <p className="truncate text-base font-bold text-[#2f3b28] dark:text-[#ffffff] tracking-tight">{style.label}</p>
+                    <p className="mt-1 text-xs font-semibold text-[#5a6b50] dark:text-[#a8c29e]">
                       {style.category} · {style.source || t('styles.sourceBuiltin')}
                     </p>
                   </div>
                 </div>
-                <p className="mt-2 line-clamp-2 text-xs leading-5 text-[#6f6658]">
+                <p className="mt-2.5 line-clamp-2 text-xs leading-relaxed text-[#55634b] dark:text-[#e0ebe0]">
                   {style.description || style.id}
                 </p>
                 {style.styleCase && (
@@ -603,7 +603,7 @@ export function StylesPage(): React.JSX.Element {
                     {parseStyleCases(style.styleCase).map((styleCase) => (
                       <span
                         key={styleCase}
-                        className="rounded-md border border-[#d6c08d]/80 bg-[#fff7e8] px-1.5 py-0.5 text-[11px] font-medium leading-4 text-[#8a7048]"
+                        className="rounded-md border border-[#d6c08d]/80 bg-[#fff7e8] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#8a7048] dark:border-[#3a5234] dark:bg-[#243322] dark:text-[#cce2c6]"
                       >
                         {styleCase}
                       </span>

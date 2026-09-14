@@ -70,14 +70,14 @@ export function TemplateCard({
       </button>
       <CardHeader className="pb-2">
         <CardTitle className="flex items-start justify-between gap-3 text-base">
-          <span className="min-w-0 truncate text-[#3e4a32]">{template.name}</span>
-          <span className="shrink-0 rounded-md border border-[#d6c08d]/80 bg-[#fff7e8] px-2 py-1 text-[11px] font-medium text-[#7c6a4c]">
+          <span className="min-w-0 truncate text-[#3e4a32] dark:text-[#ffffff] dark:text-[#ffffff] font-semibold">{template.name}</span>
+          <span className="shrink-0 rounded-md border border-[#d6c08d]/80 bg-[#fff7e8] px-2 py-1 text-[11px] font-medium text-[#7c6a4c] dark:border-[#384e33] dark:bg-[#1e271d] dark:text-[#c4d6bd]">
             {t('templates.pageCount', { count: template.pageCount })}
           </span>
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="line-clamp-2 min-h-[40px] text-xs leading-5 text-muted-foreground">
+        <p className="line-clamp-2 min-h-[40px] text-xs leading-5 text-muted-foreground dark:text-[#c5d6bf]">
           {template.description || t('templates.noDescription')}
         </p>
         {template.tags.length > 0 && (
@@ -175,11 +175,11 @@ export function TemplateEmptyState(): React.JSX.Element {
   return (
     <section className="flex min-h-[calc(100vh-220px)] items-center justify-center px-4 py-12">
       <div className="flex w-full max-w-[460px] flex-col items-center text-center">
-        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-lg border border-[#d7cab1] bg-[#fff9ef] text-[#617052] shadow-[0_6px_16px_rgba(78,88,62,0.08)]">
+        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-lg border border-[#d7cab1] bg-[#fff9ef] text-[#617052] dark:border-[#384e32] dark:bg-[#1e271d] dark:text-[#a0b599] shadow-[0_6px_16px_rgba(78,88,62,0.08)]">
           <LayoutTemplate className="h-8 w-8" />
         </div>
-        <h3 className="text-xl font-semibold text-[#3e4a32]">{t('templates.emptyTitle')}</h3>
-        <p className="mt-2 text-sm leading-6 text-[#7b705f]">{t('templates.emptyDescription')}</p>
+        <h3 className="text-xl font-semibold text-[#3e4a32] dark:text-[#ffffff]">{t('templates.emptyTitle')}</h3>
+        <p className="mt-2 text-sm leading-6 text-[#7b705f] dark:text-[#c5d6bf]">{t('templates.emptyDescription')}</p>
         <p className="mt-1 text-xs leading-5 text-[#95866f]">{t('templates.emptyHint')}</p>
       </div>
     </section>

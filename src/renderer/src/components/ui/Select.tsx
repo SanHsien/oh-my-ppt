@@ -14,7 +14,7 @@ export const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      'flex h-11 w-full items-center justify-between gap-2 rounded-lg border border-[#d8ccb5]/80 bg-[#fff9ef]/86 px-3 py-2 text-sm text-foreground shadow-[inset_0_1px_2px_rgba(77,63,46,0.08)] focus:outline-none focus:ring-2 focus:ring-[#8fbc8f] disabled:cursor-not-allowed disabled:opacity-50',
+      'flex h-11 w-full items-center justify-between gap-2 rounded-lg border border-[#d8ccb5]/80 bg-[#fff9ef]/86 px-3 py-2 text-sm text-foreground shadow-[inset_0_1px_2px_rgba(77,63,46,0.08)] focus:outline-none focus:ring-2 focus:ring-[#8fbc8f] disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#3a4d33] dark:bg-[#20291f] dark:text-[#ffffff] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.35)] dark:focus:border-[#78a964] dark:focus:ring-[#78a964]/40',
       '[&>span]:min-w-0 [&>span]:truncate [&>span]:whitespace-nowrap',
       className
     )}
@@ -34,7 +34,7 @@ export const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        'relative z-50 min-w-[8rem] max-h-64 overflow-hidden rounded-lg border border-[#d8ccb5]/85 bg-[#fff9ef] text-foreground shadow-[0_12px_28px_rgba(88,72,54,0.18)]',
+        'relative z-50 min-w-[8rem] max-h-64 overflow-hidden rounded-lg border border-[#d8ccb5]/85 bg-[#fff9ef] text-foreground shadow-[0_12px_28px_rgba(88,72,54,0.18)] dark:border-[#405638] dark:bg-[#222c21] dark:text-[#f4f8f1] dark:shadow-[0_16px_40px_rgba(0,0,0,0.65)]',
         position === 'popper' && 'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
         className
       )}
@@ -76,7 +76,7 @@ export const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full cursor-default select-none items-center rounded-md px-3 py-2 text-sm outline-none focus:bg-[#efe5d3]/70 data-[state=checked]:bg-[#dbe7ca] data-[state=checked]:text-[#2f3b28]',
+      'relative flex w-full cursor-default select-none items-center rounded-md px-3 py-2 text-sm outline-none transition-colors focus:bg-[#efe5d3]/70 data-[state=checked]:bg-[#dbe7ca] data-[state=checked]:text-[#2f3b28] dark:text-[#dce8d7] dark:focus:bg-[#32432d] dark:focus:text-[#ffffff] dark:data-[state=checked]:bg-[#3b5232] dark:data-[state=checked]:text-[#ffffff] dark:data-[state=checked]:font-semibold',
       '[&>span]:min-w-0 [&>span]:truncate [&>span]:whitespace-nowrap',
       className
     )}

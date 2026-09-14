@@ -23,7 +23,7 @@ export function Button({
         {
           'bg-gradient-to-r from-[#6f8159] to-[#4f613f] text-white shadow-lg shadow-[#5d6b4d]/30 hover:shadow-xl hover:shadow-[#5d6b4d]/40':
             variant === 'default',
-          'bg-gradient-to-r from-[#8fbc8f] to-[#6f8f64] text-[#2f3b28] shadow-lg shadow-[#7da77f]/30 hover:shadow-xl hover:shadow-[#7da77f]/40':
+          'bg-gradient-to-r from-[#8fbc8f] to-[#6f8f64] text-[#2f3b28] dark:from-[#5d7c4f] dark:to-[#415a35] dark:text-[#ffffff] dark:border dark:border-[#739a61]/40 shadow-lg shadow-[#7da77f]/30 hover:shadow-xl hover:shadow-[#7da77f]/40':
             variant === 'secondary',
           'bg-gradient-to-r from-[#c97a64] to-[#b15a58] text-white shadow-lg shadow-[#b15a58]/30 hover:shadow-xl hover:shadow-[#b15a58]/40':
             variant === 'destructive',

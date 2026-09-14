@@ -28,11 +28,11 @@ export function GeneralSettingsTab({
     <div className="space-y-4">
       <Card>
         <CardHeader className="p-5 pb-3">
-          <CardTitle className="text-base">{t('settings.interface')}</CardTitle>
+          <CardTitle className="text-base font-semibold text-foreground dark:text-[#f8fbf5]">{t('settings.interface')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 p-5 pt-0">
           <div>
-            <label className="mb-1.5 block text-sm font-medium">{t('settings.language')}</label>
+            <label className="mb-1.5 block text-sm font-medium text-foreground dark:text-[#e4eedf]">{t('settings.language')}</label>
             <Select value={lang} onValueChange={(v) => onLangChange(v === 'en' ? 'en' : 'zh')}>
               <SelectTrigger className="h-10">
                 <SelectValue placeholder={t('settings.languagePlaceholder')} />
@@ -45,7 +45,7 @@ export function GeneralSettingsTab({
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-medium">{t('settings.theme')}</label>
+            <label className="mb-1.5 block text-sm font-medium text-foreground dark:text-[#e4eedf]">{t('settings.theme')}</label>
             <Select value={theme || 'light'} onValueChange={onThemeChange}>
               <SelectTrigger className="h-10">
                 <SelectValue placeholder={t('settings.themePlaceholder')} />
@@ -62,11 +62,11 @@ export function GeneralSettingsTab({
 
       <Card>
         <CardHeader className="p-5 pb-3">
-          <CardTitle className="text-base">{t('settings.storage')}</CardTitle>
+          <CardTitle className="text-base font-semibold text-foreground dark:text-[#f8fbf5]">{t('settings.storage')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 p-5 pt-0">
           <div>
-            <label className="mb-1.5 block text-sm font-medium">{t('settings.storagePath')}</label>
+            <label className="mb-1.5 block text-sm font-medium text-foreground dark:text-[#e4eedf]">{t('settings.storagePath')}</label>
             <div className="flex gap-2">
               <Input
                 value={storagePath}
@@ -83,7 +83,7 @@ export function GeneralSettingsTab({
                 {t('settings.choose')}
               </Button>
             </div>
-            <p className="mt-2 text-xs text-muted-foreground">{t('settings.storageHint')}</p>
+            <p className="mt-2 text-xs text-muted-foreground dark:text-[#9ab090]">{t('settings.storageHint')}</p>
           </div>
         </CardContent>
       </Card>

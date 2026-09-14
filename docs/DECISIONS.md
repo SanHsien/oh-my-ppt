@@ -76,3 +76,16 @@
 6. 版本遞增為 `2.5.3`，重新編譯全量 Windows 安裝包與綠色可攜版，推送到最新 Release。
 
 **理由**：實現 100% 離線優先、零外連依賴，並建立全方位（Commit + PR + Issue + Website）上游異動感知機制。
+
+## 2026-09-14：設計並實作深色主題（Midnight Forest 暗黑森林）與切換機制
+
+**決定**：
+1. 設計專屬深色模式「Midnight Forest（暗黑森林）」：以深苔墨綠 `#141714` 為基底，搭配薄荷青柔白 `#e3e9dd`、沈穩綠石 `#7ba368` 與微光陰影，延續專案原生的自然有機美學。
+2. 實作完整深色主題切換支援：
+   - 在 `src/renderer/src/index.css` 定義 `.dark` 與 `[data-theme="dark"]` 之顏色變數、背景漸變與 `.soft-*` 卡片／輸入框陰影。
+   - 建立 `src/renderer/src/components/ThemeToggle.tsx` 元件，於頂部標題列（Titlebar）與側邊欄頂端提供即時切換按鈕。
+   - 於設定頁「通用設定」提供「淺色模式」、「深色模式」與「跟隨系統」三大主題選項，設定持久化於 SQLite 與 localStorage。
+   - 於 `App.tsx` 建立全局主題監聽與系統色彩偏好（`prefers-color-scheme`）聯動。
+3. 重新編譯產出全量 Windows 安裝程式與免安裝可攜版，更新發行至 GitHub Release。
+
+**理由**：提升低光環境下長時間製作與編輯簡報的視覺舒適度，落實使用者對黑暗模式的明確需求。

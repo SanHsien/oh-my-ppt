@@ -556,10 +556,15 @@ export function SettingsPage(): React.JSX.Element {
         <TabsContent value="general">
           <GeneralSettingsTab
             lang={lang}
+            theme={settings?.theme || 'light'}
             storagePath={storagePath}
             t={t}
             onChoosePath={() => void handleChoosePath()}
             onLangChange={setLang}
+            onThemeChange={(newTheme) => {
+              window.localStorage.setItem('oh-my-ppt:theme', newTheme)
+              void handleSaveSettings({ theme: newTheme })
+            }}
           />
         </TabsContent>
 

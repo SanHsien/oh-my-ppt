@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Routes, Route, Navigate, useLocation, matchPath } from 'react-router-dom'
 import { Sidebar } from './components/layout/Sidebar'
 import { WindowControls } from './components/layout/WindowControls'
+import { ThemeToggle } from './components/ThemeToggle'
+import { useSettingsStore } from './store/settingsStore'
 import { HomePage } from './pages/home'
 import { SessionCreatePage } from './pages/session-create'
 import { ThinkingDetailPage } from './pages/thinking-detail'
@@ -32,6 +34,40 @@ function App(): React.JSX.Element {
   const isHtmlEditorRoute = Boolean(matchPath('/edit-html/:id/*', location.pathname))
   const isThinkingRoute = Boolean(matchPath('/thinking', location.pathname))
   const [availableUpdate, setAvailableUpdate] = useState<UpdateAvailablePayload | null>(null)
+  const settings = useSettingsStore((s) => s.settings)
+  const fetchSettings = useSettingsStore((s) => s.fetchSettings)
+
+  useEffect(() => {
+    void fetchSettings()
+  }, [])
+
+  useEffect(() => {
+    const applyTheme = (theme: string) => {
+      const isDark =
+        theme === 'dark' ||
+        (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      if (isDark) {
+        document.documentElement.classList.add('dark')
+        document.documentElement.setAttribute('data-theme', 'dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+        document.documentElement.setAttribute('data-theme', 'light')
+      }
+    }
+
+    const currentTheme = settings?.theme || window.localStorage.getItem('oh-my-ppt:theme') || 'light'
+    applyTheme(currentTheme)
+
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    const handleMediaChange = () => {
+      const activeTheme = settings?.theme || window.localStorage.getItem('oh-my-ppt:theme') || 'light'
+      if (activeTheme === 'system') {
+        applyTheme('system')
+      }
+    }
+    media.addEventListener('change', handleMediaChange)
+    return () => media.removeEventListener('change', handleMediaChange)
+  }, [settings?.theme])
 
   useEffect(() => {
     const unsubscribe = ipc.onUpdateAvailable((update) => {
@@ -64,7 +100,8 @@ function App(): React.JSX.Element {
     <>
       <div className="h-full min-h-0 overflow-hidden bg-background text-foreground">
         <div className="flex h-full min-h-0 flex-col">
-          <div className="app-drag-region app-titlebar flex bg-background/85 backdrop-blur-xl">
+          <div className="app-drag-region app-titlebar flex items-center justify-end bg-background/85 px-2 backdrop-blur-xl">
+            <ThemeToggle className="app-no-drag mr-2" />
             <WindowControls />
           </div>
 

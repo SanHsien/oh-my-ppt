@@ -1,3 +1,4 @@
+import { ThemeToggle } from '../ThemeToggle'
 import { useEffect, useState } from 'react'
 import { cn } from '@renderer/lib/utils'
 import {
@@ -56,11 +57,14 @@ export function Sidebar(): React.JSX.Element {
   return (
     <aside className="flex h-full w-full flex-col bg-transparent">
       <div className="px-2 pt-1">
-        <div className="mt-1 flex items-center gap-1">
-          <img src={logoUrl} alt="Oh My PPT" className="h-14 w-14 select-none" draggable={false} />
-          <h1 className="organic-serif text-[22px] font-semibold leading-none text-[#3e4a32]">
-            Oh My PPT
-          </h1>
+        <div className="mt-1 flex items-center justify-between pr-2">
+          <div className="flex items-center gap-1">
+            <img src={logoUrl} alt="Oh My PPT" className="h-12 w-12 select-none" draggable={false} />
+            <h1 className="organic-serif text-[20px] font-semibold leading-none text-foreground">
+              Oh My PPT
+            </h1>
+          </div>
+          <ThemeToggle />
         </div>
         <p className="mt-1 text-[14px] text-[#7f876e] px-4">{t('nav.tagline')}</p>
       </div>

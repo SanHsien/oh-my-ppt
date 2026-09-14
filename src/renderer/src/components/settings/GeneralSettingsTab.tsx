@@ -7,18 +7,22 @@ import type { SettingsTranslate } from './types'
 
 interface GeneralSettingsTabProps {
   lang: 'zh' | 'en'
+  theme: string
   storagePath: string
   t: SettingsTranslate
   onChoosePath: () => void
   onLangChange: (lang: 'zh' | 'en') => void
+  onThemeChange: (theme: string) => void
 }
 
 export function GeneralSettingsTab({
   lang,
+  theme,
   storagePath,
   t,
   onChoosePath,
-  onLangChange
+  onLangChange,
+  onThemeChange
 }: GeneralSettingsTabProps): React.JSX.Element {
   return (
     <div className="space-y-4">
@@ -26,7 +30,7 @@ export function GeneralSettingsTab({
         <CardHeader className="p-5 pb-3">
           <CardTitle className="text-base">{t('settings.interface')}</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 p-5 pt-0">
+        <CardContent className="space-y-4 p-5 pt-0">
           <div>
             <label className="mb-1.5 block text-sm font-medium">{t('settings.language')}</label>
             <Select value={lang} onValueChange={(v) => onLangChange(v === 'en' ? 'en' : 'zh')}>
@@ -36,6 +40,20 @@ export function GeneralSettingsTab({
               <SelectContent>
                 <SelectItem value="zh">{t('settings.chinese')}</SelectItem>
                 <SelectItem value="en">{t('settings.english')}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-sm font-medium">{t('settings.theme')}</label>
+            <Select value={theme || 'light'} onValueChange={onThemeChange}>
+              <SelectTrigger className="h-10">
+                <SelectValue placeholder={t('settings.themePlaceholder')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="light">{t('settings.themeLight')}</SelectItem>
+                <SelectItem value="dark">{t('settings.themeDark')}</SelectItem>
+                <SelectItem value="system">{t('settings.themeSystem')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -72,3 +90,4 @@ export function GeneralSettingsTab({
     </div>
   )
 }
+

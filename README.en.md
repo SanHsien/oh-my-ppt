@@ -120,6 +120,18 @@ In addition to the core capabilities of Oh My PPT, this maintenance fork introdu
    - An ergonomic, high-contrast dark theme designed for extended presentation authoring, adhering to WCAG AAA contrast standards.
    - Structured across a 5-tier elevation hierarchy (Canvas `#111411` → Nav `#151a14` → Cards `#191f18` → Inputs `#20291f` → Popovers `#222c21`), eliminating surface inversion contrast issues.
    - Instant toggle buttons located directly on both the window titlebar and sidebar header, supporting Light, Dark, and System modes with automatic OS appearance synchronization. See [`docs/THEME_MIDNIGHT_FOREST.md`](docs/THEME_MIDNIGHT_FOREST.md) for full design system specifications.
+   - **Midnight Forest Color Architecture Matrix**:
+
+     | Hierarchy / Role | Hex Code | Semantic Role & Contrast Ratio |
+     |---|---|---|
+     | **Level 0 Canvas** | `#111411` | Deep moss charcoal base canvas |
+     | **Level 1 Sidebar** | `#151A14` | Navigation panel with subtle elevation |
+     | **Level 2 Cards** | `#191F18` | Solid dark card surface, zero blur |
+     | **Level 3 Form Controls** | `#20291F` | Input boxes, Select triggers |
+     | **Level 4 Overlays/Toasts**| `#222C21` / `#252015` | Dropdown menus, Sonner toasts |
+     | **Primary Text/Titles** | `#F2F7ED` / `#FFFFFF` | Bold pure white, contrast >13:1 (WCAG AAA) |
+     | **Secondary/Descriptions**| `#CDD9C7` / `#E0EBE0` | Crisp mint-sage, contrast >10:1 |
+     | **Muted/Chips** | `#A4BBA0` / `#A8C29E` | Clear pale sage, contrast >5.2:1 |
 
 2. 📖 **Built-in Offline Help Center (`/help`)**:
    - Comprehensive offline guides covering FAQs, AI model setup (OpenAI, Claude, Gemini, DeepSeek, Ollama, Qwen), and Thinking/Reasoning JSON parameter references.

@@ -11,6 +11,7 @@
 ![Electron](https://img.shields.io/badge/Electron-Desktop-47848f)
 ![React](https://img.shields.io/badge/React-App-61dafb)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6)
+![Theme](https://img.shields.io/badge/Theme-Midnight%20Forest%20Dark-2b3d26)
 
 **Oh My PPT — 本地優先的 AI 簡報生成與編輯工具**
 
@@ -37,6 +38,7 @@
 
 - [為什麼選擇 Oh My PPT](#why)
 - [核心功能](#features)
+- [Fork 獨創特色](#fork-features)
 - [使用流程](#workflow)
 - [舊 PPTX 範本匯入編輯](#pptx-import)
 - [匯出可編輯 PPTX 與多種格式](#export)
@@ -106,6 +108,29 @@ Oh My PPT 提供全新解法：
 <img width="600" alt="Oh My PPT - 編輯畫布" src="./docs/images/edit.webp" />
 
 > 註：上方截圖取自上游專案，介面文字初期為簡體中文，僅供參考；後續將以繁體中文重新截圖。
+
+---
+
+<a id="fork-features"></a>
+## 🌟 本 Fork 獨創特色與最新功能 (v2.5.3)
+
+本維護版本除延續 Oh My PPT 核心優勢外，獨家新增並最佳化以下功能：
+
+1. 🌙 **獨創「Midnight Forest 暗黑森林」深色主題**：
+   - 專為長時間夜間製作與編輯簡報打造的高對比護眼深色模式，嚴格依據 WCAG AAA 對比度規範設計。
+   - 建立 5 層表面層級架構（畫布底 `#111411` → 側欄 `#151a14` → 卡片 `#191f18` → 輸入框 `#20291f` → 下拉彈窗 `#222c21`），徹底解決「白底白字」或對比度不足的缺陷。
+   - 於**視窗頂部標題列**（視窗控制鈕旁）與**左側邊欄頭部**均配置了即時切換按鈕，支援「淺色模式 / 深色模式 / 跟隨系統」三檔模式，自動連動作業系統外觀外觀設定。
+
+2. 📖 **內建原生離線說明中心（`/help`）**：
+   - 完整收錄常見問題（FAQ）、各大 AI 模型（OpenAI、Claude、Gemini、DeepSeek、Ollama 等）配置指引，以及深度思考推理模型（R1、o1/o3、Claude 3.7）JSON 參數速查。
+   - 側邊欄「幫助文件」與設定頁「模型說明」全面改為站內原生切換，無需開啟瀏覽器，完全離線可用。
+   - 主進程版本更新檢查由上游官網轉向本 repo 專屬 GitHub Releases API，完全阻斷向原作者伺服器的背景通訊。
+
+3. 🪟 **純 Windows 11 原生架構維護**：
+   - 刪除所有非 Windows 平台的打包設定、二進位工具與分支代碼，極致精簡技術包袱。
+
+4. 🇹🇼 **全庫繁體中文化與去廣告**：
+   - 刪除簡中 README，統一繁體中文與英文說明，全量清理上游廣告、贊助 QR Code 與外部通訊群組。
 
 ---
 

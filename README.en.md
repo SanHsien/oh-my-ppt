@@ -11,6 +11,7 @@
 ![Electron](https://img.shields.io/badge/Electron-Desktop-47848f)
 ![React](https://img.shields.io/badge/React-App-61dafb)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6)
+![Theme](https://img.shields.io/badge/Theme-Midnight%20Forest%20Dark-2b3d26)
 
 **Oh My PPT — Local-first AI Slide Deck, Image Generation & Editing Workbench**
 
@@ -37,6 +38,7 @@
 
 - [Why Oh My PPT](#why)
 - [Core Features](#features)
+- [Fork-Exclusive Features](#fork-features)
 - [Workflow](#workflow)
 - [Import Legacy PPTX Templates for Editing](#pptx-import)
 - [Export Editable PPTX & Multiple Formats](#export)
@@ -106,6 +108,29 @@ Oh My PPT provides a fresh approach:
 <img width="600" alt="Oh My PPT - Editor" src="./docs/images/edit.webp" />
 
 > Note: The screenshots above are sourced from the upstream project for reference; they will be updated with new captures later.
+
+---
+
+<a id="fork-features"></a>
+## 🌟 Fork-Exclusive Features & What's New in v2.5.3
+
+In addition to the core capabilities of Oh My PPT, this maintenance fork introduces several exclusive enhancements:
+
+1. 🌙 **Exclusive "Midnight Forest" Dark Mode Theme**:
+   - An ergonomic, high-contrast dark theme designed for extended presentation authoring, adhering to WCAG AAA contrast standards.
+   - Structured across a 5-tier elevation hierarchy (Canvas `#111411` → Nav `#151a14` → Cards `#191f18` → Inputs `#20291f` → Popovers `#222c21`), eliminating surface inversion contrast issues.
+   - Instant toggle buttons located directly on both the window titlebar and sidebar header, supporting Light, Dark, and System modes with automatic OS appearance synchronization.
+
+2. 📖 **Built-in Offline Help Center (`/help`)**:
+   - Comprehensive offline guides covering FAQs, AI model setup (OpenAI, Claude, Gemini, DeepSeek, Ollama, Qwen), and Thinking/Reasoning JSON parameter references.
+   - Direct in-app navigation from the sidebar and settings, completely eliminating external links to the upstream website.
+   - Version update checks redirected to this repository's GitHub Releases API, blocking all upstream telemetry.
+
+3. 🪟 **Windows 11 Native-Only Architecture**:
+   - Completely pruned non-Windows binaries and cross-platform branches for an optimized, lightweight Windows 11 desktop experience.
+
+4. 🇹🇼 **Full Traditional Chinese Localization & Ad Removal**:
+   - Removed simplified Chinese README, aligned bilingual documentation, and purged all upstream advertisements and sponsor links.
 
 ---
 

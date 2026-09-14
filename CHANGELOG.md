@@ -1,5 +1,46 @@
 # 更新日誌 / Changelog
 
+## 2026-09-14 · v2.5.3 (SanHsien 維護版)
+
+### 中文
+
+- **本 Fork 獨創「Midnight Forest 暗黑森林」深色主題**：
+  - 專為長時間夜間製作與編輯簡報設計的高對比護眼深色模式，嚴格依據 WCAG AAA 對比度規範重構。
+  - 建立 5 層表面層級架構（畫布底 #111411 → 側欄 #151a14 → 卡片 #191f18 → 輸入框 #20291f → 下拉彈窗 #222c21），告別白底白字缺陷。
+  - 視窗頂部標題列與側邊欄頭部皆提供即時單鍵切換按鈕，支援在「淺色」、「深色」與「跟隨系統」三大模式間切換。
+- **內建原生離線說明中心（徹底移除上游外跳連結）**：
+  - 將上游官網全部教學與常見問題全量繁中化為 docs/help/ 離線指南手冊。
+  - 客戶端直接提供 /help 路由頁面，支援關鍵字即時搜尋、分類檢視與思考模型 JSON 參數一鍵複製。
+  - 側邊欄「幫助文件」與模型設定頁「模型說明」全面改為軟體內部原生跳轉，無需開啟瀏覽器亦可完全離線查閱。
+  - 主進程版本更新檢查由上游官網轉向本 repo 專屬 GitHub Releases API，完全阻絕背景向上游伺服器通訊。
+- **上游官網納入第四維度定期監控**：
+  - 擴充 tools/check_upstream_updates.py 與 tools/upstream_baseline.json。
+  - 每週維護門禁除了 Commit SHA、PR、Issue 外，定期自動檢查上游官方網站版本（version.json），異動時主動警報。
+- **純 Windows 11 原生架構維護**：
+  - 刪除所有非 Windows 平台的打包設定、二進位資源（build/entitlements.mac.plist、build/icons/icon.icns、resources/slide-pack-darwin-*）。
+  - 清理主進程與渲染進程中所有 darwin 分支邏輯，完全為 Windows 原生桌面環境最佳化。
+- **全專案繁體中文化與去廣告**：
+  - 刪除 README.zh-CN.md，README.md 與 README.en.md 內容結構完全對齊，無任何贊助與外部社群廣告。
+  - UI 語系檔（zh.ts）、84 組風格庫、文檔與單元測試全量繁中化。
+
+### English
+
+- **Fork-Exclusive "Midnight Forest" Dark Mode Theme**:
+  - Built an ergonomic, high-contrast dark mode tailored for long presentation design sessions, adhering to WCAG AAA contrast standards.
+  - Implemented a 5-tier elevation hierarchy (Canvas #111411 → Nav #151a14 → Cards #191f18 → Inputs #20291f → Popovers #222c21), eliminating surface inversion contrast issues.
+  - Placed instant theme toggle buttons on both the window titlebar and sidebar header, supporting Light, Dark, and System modes.
+- **Built-in Offline Traditional Chinese Help Center**:
+  - Integrated complete upstream help documentation into local docs/help/ guides with full Traditional Chinese localization.
+  - Added an in-app /help route with real-time search, tabbed navigation, and one-click JSON parameter copying.
+  - Replaced all external links to ohmyppt.cc in the sidebar and settings with native in-app navigation.
+  - Redirected app update checks to SanHsien/oh-my-ppt GitHub Releases API, eliminating telemetry to upstream servers.
+- **Upstream Documentation Website Tracking**:
+  - Extended tools/check_upstream_updates.py and upstream_baseline.json to monitor the upstream website (version.json) alongside git commits, PRs, and issues.
+- **Windows 11 Native-Only Architecture**:
+  - Removed all non-Windows binaries, build targets, and darwin branches for an uncompromised native Windows experience.
+- **Full Traditional Chinese Localization & Ad Removal**:
+  - Removed simplified Chinese README, aligned English and Traditional Chinese docs, purged all upstream advertisements and sponsor links.
+
 ## 2026-09-04 · v2.5.0
 
 ### 中文

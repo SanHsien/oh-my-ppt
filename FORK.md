@@ -7,7 +7,9 @@
 
 - **聚焦職場人與開發者的高效簡報工具**：自動產出大綱、排版與配圖，告別手動調整版面的痛苦，支援本地 Ollama 與各類 LLM。
 - **僅維護 Windows 版本**：專為 Windows 11 原生環境（PowerShell 7+）打造，已全數刪除 macOS 與 Linux 平台之打包設定、二進位工具與分支程式碼，不提供亦不維護非 Windows 平台。
-- **繁體中文首選入口**：公開入口改以繁體中文為主，英文鏡像放 [`README.en.md`](README.en.md)。
+- **本 Fork 獨創「Midnight Forest 暗黑森林」深色模式**：專為長時間簡報創作設計的高對比護眼深色主題，完全遵循 WCAG AAA 對比規範，支援視窗標題列與側邊欄一鍵即時切換。
+- **內建原生離線說明中心（`/help`）**：全離線繁體中文教學手冊、模型設定指引與思考模型 JSON 速查，完全阻斷上游外部連結。
+- **繁體中文首選入口與全庫繁中化**：公開入口改以繁體中文為主，英文鏡像放 [`README.en.md`](README.en.md)，全庫 UI 語系、風格庫與說明文件全面繁中化。
 - **建立可重現的維護門禁**：建立 Windows 原生一鍵 gate（`tools/dev_check.ps1`）、Windows CI 工作流程，以及逐筆審查的上游追蹤。
 - **保護商業隱私與安全**：強化本機離線優先機制與依賴審計，不外洩工作階段或私鑰憑證。
 
@@ -22,6 +24,9 @@
 | `README.en.md` | 英文鏡像說明檔 |
 | `AGENTS.md` 開頭 overlay | 指向本檔；下文保留上游產品規範與 React 元件指引 |
 | `FORK.md` / `NOTICE.md` / `CLAUDE.md` / `GEMINI.md` / `REVIEW.md` | 本 fork 的治理與 AI 維護單一真相源 |
+| `深色主題（Midnight Forest）` | **本 fork 獨家原創**的高對比暗黑森林護眼主題，支援標題列與側欄一鍵即時切換、跟隨系統、5 層表面層級與高對比文字 |
+| `內建說明中心（/help）` | 離線原生說明中心，整合常見問題、模型配置手冊與思考模型參數速查，徹底移除上游外鏈 |
+| `docs/help/` | 本地離線說明手冊系列（常見問答、模型配置、思考模型參數） |
 | `docs/DEVELOPMENT.md`、`docs/DECISIONS.md`、`docs/UPSTREAM.md` | Windows 原生開發步驟、決策記錄與上游追蹤 |
 | `tools/dev_check.ps1` | Windows 本機一鍵維護門禁（compileall、ruff、pytest、check_links） |
 | `tools/bootstrap_dev.ps1` | Windows 本機環境一鍵初始化 |

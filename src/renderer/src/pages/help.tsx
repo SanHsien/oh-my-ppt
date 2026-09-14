@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/Tabs'
 import { Card } from '../components/ui/Card'
 import { Input } from '../components/ui/Input'
-import { HelpCircle, Cpu, Brain, Check, Copy, Search, ExternalLink } from 'lucide-react'
+import { HelpCircle, Cpu, Brain, Check, Copy, Search } from 'lucide-react'
 
 const FAQ_ITEMS = [
   {

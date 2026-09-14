@@ -39,7 +39,7 @@ export class RendererErrorBoundary extends Component<
           >
             刷新應用
           </button>
-          {import.meta.env.DEV && (
+          {this.state.error && (
             <pre className="mt-4 max-h-32 overflow-auto whitespace-pre-wrap rounded-lg bg-black/5 p-3 text-left text-xs text-[#8f3f31]">
               {this.state.error.message}
             </pre>

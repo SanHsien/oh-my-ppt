@@ -59,6 +59,7 @@ const createModelVerificationSignature = (form: ModelForm): string =>
 
 export function SettingsPage(): React.JSX.Element {
   const {
+    settings,
     modelConfigs,
     imageModelConfigs,
     fetchSettings,
@@ -563,7 +564,7 @@ export function SettingsPage(): React.JSX.Element {
             onLangChange={setLang}
             onThemeChange={(newTheme) => {
               window.localStorage.setItem('oh-my-ppt:theme', newTheme)
-              void handleSaveSettings({ theme: newTheme })
+              void saveSettings({ theme: newTheme })
             }}
           />
         </TabsContent>

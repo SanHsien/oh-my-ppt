@@ -242,8 +242,8 @@ export function TemplatesPage(): React.JSX.Element {
         <p className="text-xs uppercase tracking-[0.22em] text-[#8a7e6c]">{t('templates.eyebrow')}</p>
         <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
-            <h1 className="organic-serif text-[32px] font-semibold leading-none text-[#3e4a32]">{t('templates.title')}</h1>
-            <p className="mt-2 text-[12px] text-muted-foreground">
+            <h1 className="organic-serif text-[32px] font-semibold leading-none text-[#1a2417] dark:text-[#ffffff]">{t('templates.title')}</h1>
+            <p className="mt-2 text-[12px] text-[#4e5e44] dark:text-[#a4bba0]">
               {t('templates.description')}
             </p>
           </div>
@@ -301,7 +301,7 @@ export function TemplatesPage(): React.JSX.Element {
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-medium text-[#34402c]">{t('templates.creatingEditable')}</p>
-                <p className="mt-1 truncate text-xs text-muted-foreground">{directCreatingTemplate.name}</p>
+                <p className="mt-1 truncate text-xs text-[#4e5e44] dark:text-[#a4bba0]">{directCreatingTemplate.name}</p>
               </div>
             </div>
           </div>
@@ -317,7 +317,7 @@ export function TemplatesPage(): React.JSX.Element {
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-medium text-[#34402c]">{t('templates.importingPptxTemplate')}</p>
-                <p className="mt-1 truncate text-xs text-muted-foreground">
+                <p className="mt-1 truncate text-xs text-[#4e5e44] dark:text-[#a4bba0]">
                   {pptxTemplateProgress || t('templates.pptxTemplatePreparing')}
                 </p>
               </div>

@@ -132,21 +132,21 @@ export function HomePage(): ReactElement {
   }, [])
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-9 text-[#3e4a32] lg:px-8">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-9 text-[#1a2417] dark:text-[#ffffff] lg:px-8">
       <section className="relative overflow-hidden border-b border-[#e0d8c8] pb-8">
         <div className="pointer-events-none absolute -right-10 -top-14 h-36 w-36 rounded-[38%_62%_44%_56%/55%_45%_55%_45%] bg-[#d4e4c1]/55" />
         <div className="pointer-events-none absolute bottom-3 right-28 h-16 w-28 rounded-[8%_92%_12%_88%/78%_22%_78%_22%] bg-[#c8b89e]/30" />
 
         <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#d4e4c1]/78 px-4 py-1.5 text-[11px] font-semibold text-[#3e4a32] shadow-[0_6px_14px_rgba(93,107,77,0.10)]">
-              <Sparkles className="h-3.5 w-3.5 text-[#5d6b4d]" />
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#d4e4c1]/78 px-4 py-1.5 text-[11px] font-semibold text-[#1a2417] dark:text-[#ffffff] shadow-[0_6px_14px_rgba(93,107,77,0.10)]">
+              <Sparkles className="h-3.5 w-3.5 text-[#37472e] dark:text-[#c5d8bf]" />
               {t('home.eyebrow')}
             </div>
-            <h1 className="organic-serif mt-5 text-[32px] font-semibold leading-none text-[#3e4a32] dark:text-[#f2f7ed] sm:text-[40px]">
+            <h1 className="organic-serif mt-5 text-[32px] font-semibold leading-none text-[#1a2417] dark:text-[#ffffff] dark:text-[#f2f7ed] sm:text-[40px]">
               {t('thinking.homeTitle')}
             </h1>
-            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-[#5d6b4d] dark:text-[#b0c4a8]">
+            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-[#37472e] dark:text-[#c5d8bf] dark:text-[#b0c4a8]">
               {t('thinking.homeDescription')}
             </p>
           </div>
@@ -166,16 +166,16 @@ export function HomePage(): ReactElement {
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[10%_90%_16%_84%/78%_22%_78%_22%] bg-[#8fbc8f] text-white shadow-[0_10px_22px_rgba(93,107,77,0.18)]">
               <FileText className="h-5 w-5" />
             </div>
-            <span className="rounded-full bg-[#fffdf8]/84 dark:bg-[#2a3627] px-3 py-1.5 text-[11px] font-semibold text-[#5d6b4d] dark:text-[#c4d7be] shadow-[0_6px_14px_rgba(86,73,54,0.08)]">
+            <span className="rounded-full bg-[#fffdf8]/84 dark:bg-[#2a3627] px-3 py-1.5 text-[11px] font-semibold text-[#37472e] dark:text-[#c5d8bf] dark:text-[#c4d7be] shadow-[0_6px_14px_rgba(86,73,54,0.08)]">
               {t('thinking.quickCreateBadge')}
             </span>
           </div>
 
           <div className="relative mt-7">
-            <h2 className="organic-serif text-[30px] font-semibold leading-none text-[#3e4a32] dark:text-[#f2f7ed]">
+            <h2 className="organic-serif text-[30px] font-semibold leading-none text-[#1a2417] dark:text-[#ffffff] dark:text-[#f2f7ed]">
               {t('thinking.quickCreate')}
             </h2>
-            <p className="mt-3 max-w-[32rem] text-[14px] leading-relaxed text-[#5d6b4d] dark:text-[#b0c4a8]">
+            <p className="mt-3 max-w-[32rem] text-[14px] leading-relaxed text-[#37472e] dark:text-[#c5d8bf] dark:text-[#b0c4a8]">
               {t('thinking.quickCreateDescription')}
             </p>
           </div>
@@ -200,16 +200,16 @@ export function HomePage(): ReactElement {
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[10%_90%_16%_84%/78%_22%_78%_22%] bg-[#5d6b4d] text-white shadow-[0_10px_22px_rgba(93,107,77,0.18)]">
               <MessageCircle className="h-5 w-5" />
             </div>
-            <span className="rounded-full bg-[#fffdf8]/84 dark:bg-[#2a3627] px-3 py-1.5 text-[11px] font-semibold text-[#5d6b4d] dark:text-[#c4d7be] shadow-[0_6px_14px_rgba(86,73,54,0.08)]">
+            <span className="rounded-full bg-[#fffdf8]/84 dark:bg-[#2a3627] px-3 py-1.5 text-[11px] font-semibold text-[#37472e] dark:text-[#c5d8bf] dark:text-[#c4d7be] shadow-[0_6px_14px_rgba(86,73,54,0.08)]">
               {t('thinking.exploreProjectBadge')}
             </span>
           </div>
 
           <div className="relative mt-7">
-            <h2 className="organic-serif text-[30px] font-semibold leading-none text-[#3e4a32] dark:text-[#f2f7ed]">
+            <h2 className="organic-serif text-[30px] font-semibold leading-none text-[#1a2417] dark:text-[#ffffff] dark:text-[#f2f7ed]">
               {t('thinking.exploreProject')}
             </h2>
-            <p className="mt-3 max-w-[32rem] text-[14px] leading-relaxed text-[#5d6b4d] dark:text-[#b0c4a8]">
+            <p className="mt-3 max-w-[32rem] text-[14px] leading-relaxed text-[#37472e] dark:text-[#c5d8bf] dark:text-[#b0c4a8]">
               {t('thinking.exploreProjectDescription')}
             </p>
           </div>
@@ -241,10 +241,10 @@ export function HomePage(): ReactElement {
           </div>
 
           <div className="relative mt-7">
-            <h2 className="organic-serif text-[30px] font-semibold leading-none text-[#3e4a32] dark:text-[#f2f7ed]">
+            <h2 className="organic-serif text-[30px] font-semibold leading-none text-[#1a2417] dark:text-[#ffffff] dark:text-[#f2f7ed]">
               {t('home.importPptx')}
             </h2>
-            <p className="mt-3 max-w-[32rem] text-[14px] leading-relaxed text-[#5d6b4d] dark:text-[#b0c4a8]">
+            <p className="mt-3 max-w-[32rem] text-[14px] leading-relaxed text-[#37472e] dark:text-[#c5d8bf] dark:text-[#b0c4a8]">
               {t('home.importPptxTooltip', { maxSize: MAX_PPTX_SIZE_MB })}
             </p>
           </div>

@@ -538,10 +538,10 @@ export function SettingsPage(): React.JSX.Element {
   return (
     <div className="mx-auto max-w-4xl p-6">
       <div className="mb-5">
-        <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+        <p className="text-xs uppercase tracking-[0.22em] text-[#4e5e44] dark:text-[#a4bba0]">
           {t('settings.eyebrow')}
         </p>
-        <h1 className="organic-serif mt-2 text-[32px] font-semibold leading-none text-[#3e4a32]">
+        <h1 className="organic-serif mt-2 text-[32px] font-semibold leading-none text-[#1a2417] dark:text-[#ffffff]">
           {t('settings.title')}
         </h1>
       </div>

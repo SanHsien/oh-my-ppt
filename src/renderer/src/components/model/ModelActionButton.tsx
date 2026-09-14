@@ -144,7 +144,7 @@ export function ModelSplitButton({
           ? hasMultiple
             ? 'rounded-full border-0 bg-gradient-to-r from-[#6f8159] to-[#4f613f] shadow-[0_10px_22px_rgba(93,107,77,0.24)]'
             : 'rounded-full border-0 bg-transparent'
-          : 'h-8 rounded-lg border-[#d8ccb5]/80 bg-[#fffdf8]/76 shadow-none',
+          : 'h-8 rounded-lg border border-[#c4b59d] bg-white text-[#1a2417] dark:border-[#384e32] dark:bg-[#1d271b] dark:text-[#f2f7ed] shadow-sm',
         disabledState && 'cursor-not-allowed opacity-50 shadow-none saturate-75',
         className
       )}
@@ -159,10 +159,10 @@ export function ModelSplitButton({
           hasMultiple
             ? isPrimary
               ? 'rounded-none bg-transparent px-4 text-white shadow-none hover:bg-white/10 hover:text-white hover:shadow-none'
-              : 'h-full rounded-none border-0 bg-transparent px-2.5 text-xs text-[#405333] shadow-none hover:bg-[#f3f7ed] hover:text-[#2f3b28] hover:shadow-none'
+              : 'h-full rounded-none border-0 bg-transparent px-2.5 text-xs font-semibold text-[#1a2417] dark:text-[#f2f7ed] dark:hover:bg-[#283624] dark:hover:text-[#ffffff] shadow-none hover:bg-[#f3f7ed] hover:text-[#2f3b28] hover:shadow-none'
             : isPrimary
               ? 'rounded-full'
-              : 'h-full rounded-lg border-0 bg-transparent px-2.5 text-xs text-[#405333] shadow-none hover:bg-[#f3f7ed] hover:text-[#2f3b28] hover:shadow-none',
+              : 'h-full rounded-lg border-0 bg-transparent px-2.5 text-xs font-semibold text-[#1a2417] dark:text-[#f2f7ed] dark:hover:bg-[#283624] dark:hover:text-[#ffffff] shadow-none hover:bg-[#f3f7ed] hover:text-[#2f3b28] hover:shadow-none',
           mainClassName
         )}
       >
@@ -191,7 +191,7 @@ export function ModelSplitButton({
                 className={cn(
                   isPrimary
                     ? 'shrink-0 rounded-none border-0 bg-transparent px-2.5 text-white shadow-none hover:bg-white/10 hover:text-white hover:shadow-none'
-                    : 'h-full w-8 shrink-0 rounded-none border-0 bg-transparent px-0 text-[#405333] shadow-none hover:bg-[#f3f7ed] hover:text-[#2f3b28] hover:shadow-none',
+                    : 'h-full w-8 shrink-0 rounded-none border-0 bg-transparent px-0 font-semibold text-[#1a2417] dark:text-[#f2f7ed] dark:hover:bg-[#283624] dark:hover:text-[#ffffff] shadow-none hover:bg-[#f3f7ed] hover:text-[#2f3b28] hover:shadow-none',
                   triggerClassName
                 )}
                 aria-label={t('settings.generationModel')}

@@ -411,12 +411,12 @@ export function SessionsPage(): React.JSX.Element {
   return (
     <div className="mx-auto w-full max-w-6xl p-6">
       <div className="mb-6">
-        <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+        <p className="text-xs uppercase tracking-[0.22em] text-[#4e5e44] dark:text-[#a4bba0]">
           {t('sessions.eyebrow')}
         </p>
         <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
-            <h1 className="organic-serif text-[32px] font-semibold leading-none text-[#3e4a32]">
+            <h1 className="organic-serif text-[32px] font-semibold leading-none text-[#1a2417] dark:text-[#ffffff]">
               {t('sessions.title')}
             </h1>
           </div>
@@ -441,7 +441,7 @@ export function SessionsPage(): React.JSX.Element {
                     variant="ghost"
                     size="sm"
                     aria-label={t('sessions.clearSearch')}
-                    className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 p-0 text-[#829071] hover:text-[#3e4a32]"
+                    className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 p-0 text-[#829071] hover:text-[#1a2417] dark:text-[#ffffff]"
                     onMouseDown={(event) => event.preventDefault()}
                     onClick={() => {
                       setSearchQuery('')
@@ -504,7 +504,7 @@ export function SessionsPage(): React.JSX.Element {
             <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-lg border border-[#d7cab1] bg-[#fff9ef] text-[#617052] shadow-[0_6px_16px_rgba(78,88,62,0.08)]">
               <FolderOpen className="h-8 w-8" />
             </div>
-            <h3 className="text-xl font-semibold text-[#3e4a32]">{t('sessions.emptyTitle')}</h3>
+            <h3 className="text-xl font-semibold text-[#1a2417] dark:text-[#ffffff]">{t('sessions.emptyTitle')}</h3>
             <p className="mt-2 text-sm leading-6 text-[#7b705f]">
               {t('sessions.emptyDescription')}
             </p>
@@ -520,9 +520,9 @@ export function SessionsPage(): React.JSX.Element {
       ) : filteredSessions.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-            <Search className="mb-4 h-10 w-10 text-muted-foreground" />
+            <Search className="mb-4 h-10 w-10 text-[#4e5e44] dark:text-[#a4bba0]" />
             <h3 className="mb-2 text-lg font-medium">{t('sessions.noSearchResultsTitle')}</h3>
-            <p className="text-muted-foreground">{t('sessions.noSearchResultsDescription')}</p>
+            <p className="text-[#4e5e44] dark:text-[#a4bba0]">{t('sessions.noSearchResultsDescription')}</p>
           </CardContent>
         </Card>
       ) : (
@@ -624,21 +624,21 @@ export function SessionsPage(): React.JSX.Element {
                     />
                   )}
                   <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
-                  <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-lg bg-[#fffaf0]/92 px-2.5 py-1 text-xs font-semibold text-[#3e4a32] shadow-[0_4px_12px_rgba(31,38,29,0.16)] backdrop-blur-sm">
+                  <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-lg bg-[#fffaf0]/92 px-2.5 py-1 text-xs font-semibold text-[#1a2417] dark:text-[#ffffff] shadow-[0_4px_12px_rgba(31,38,29,0.16)] backdrop-blur-sm">
                     <MessageSquare className="h-3 w-3" />
                     {actionText}
                   </span>
                 </div>
 
                 <div className="min-w-0 flex-1 p-4">
-                  <CardTitle className="line-clamp-2 min-h-10 text-base leading-5 text-[#3e4a32]">
+                  <CardTitle className="line-clamp-2 min-h-10 text-base leading-5 text-[#1a2417] dark:text-[#ffffff]">
                     {session.title}
                   </CardTitle>
                   <p className="mt-1.5 text-xs text-[#847866]">
                     {dayjs.unix(session.updated_at).format('YYYY/MM/DD HH:mm')}
                   </p>
 
-                  <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+                  <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs text-[#4e5e44] dark:text-[#a4bba0]">
                     <span
                       className={`rounded-lg border px-2 py-1 font-semibold ${statusClassName}`}
                     >
@@ -746,10 +746,10 @@ export function SessionsPage(): React.JSX.Element {
           >
             <div className="mb-4 flex items-start justify-between gap-3">
               <div>
-                <h2 className="text-base font-semibold text-[#3e4a32]">
+                <h2 className="text-base font-semibold text-[#1a2417] dark:text-[#ffffff]">
                   {t('sessions.editTitle')}
                 </h2>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="mt-1 text-xs text-[#4e5e44] dark:text-[#a4bba0]">
                   {t('sessions.renameDescription')}
                 </p>
               </div>

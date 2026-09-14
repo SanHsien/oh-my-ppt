@@ -66,7 +66,7 @@ export function Sidebar(): React.JSX.Element {
           </div>
           <ThemeToggle />
         </div>
-        <p className="mt-1 text-[14px] text-[#7f876e] px-4">{t('nav.tagline')}</p>
+        <p className="mt-1 text-[14px] text-[#4a5a3d] dark:text-[#a0b599] px-4">{t('nav.tagline')}</p>
       </div>
 
       <nav className="flex-1 space-y-1 px-3 pb-4 pt-5">
@@ -89,8 +89,8 @@ export function Sidebar(): React.JSX.Element {
               className={cn(
                 'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors',
                 isActive
-                  ? 'bg-[#dbe7ca]/80 text-[#2f3b28]'
-                  : 'text-[#58664a] hover:bg-[#efe5d3]/75 hover:text-[#38452f]'
+                  ? 'bg-[#dbe7ca]/80 text-[#142010] dark:text-[#ffffff]'
+                  : 'text-[#2d3d23] dark:text-[#c4d6bd] hover:bg-[#efe5d3]/75 hover:text-[#38452f]'
               )}
             >
               <item.icon className="w-4 h-4" />
@@ -100,7 +100,7 @@ export function Sidebar(): React.JSX.Element {
         })}
         <Link
           to="/help"
-          className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-[#58664a] transition-colors hover:bg-[#efe5d3]/75 hover:text-[#38452f]"
+          className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-[#2d3d23] dark:text-[#c4d6bd] transition-colors hover:bg-[#efe5d3]/75 hover:text-[#38452f]"
         >
           <CircleHelp className="h-4 w-4" />
           {t('nav.helpDocs')}

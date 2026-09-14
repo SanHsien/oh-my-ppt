@@ -30,17 +30,17 @@
 /* Custom theme */
 @theme {
   --color-background: #f5f1e8;
-  --color-foreground: #1a2417;
-  --color-card: rgba(255, 251, 244, 0.94);
-  --color-card-foreground: #1a2417;
+  --color-foreground: #1c2617;
+  --color-card: rgba(255, 251, 244, 0.95);
+  --color-card-foreground: #1c2617;
   --color-primary: #3d5031;
   --color-primary-foreground: #ffffff;
   --color-secondary: #e8dfcf;
-  --color-secondary-foreground: #2a3723;
+  --color-secondary-foreground: #2a3822;
   --color-muted: #ece3d2;
   --color-muted-foreground: #4e5e44;
   --color-accent: #d4e4c1;
-  --color-accent-foreground: #1a2417;
+  --color-accent-foreground: #1c2617;
   --color-destructive: #b15a58;
   --color-destructive-foreground: #ffffff;
   --color-border: rgba(135, 115, 85, 0.32);
@@ -705,69 +705,4 @@ body {
   background-color: #191f18 !important;
   border-color: rgba(135, 165, 120, 0.22) !important;
   color: #f2f7ed !important;
-}
-
-/* ==========================================================================
-   High-Contrast Light Mode Typographic Calibration (WCAG AAA)
-   - Upstream text was low-contrast pale olive/khaki (#3e4a32 / #7a8369: ~3.1:1)
-   - Deepened to authoritative forest charcoal (#1a2417: >11.5:1) and crisp sage (#4e5e44: >5.2:1)
-   ========================================================================== */
-
-:root {
-  --color-foreground: #1a2417;
-  --color-card-foreground: #1a2417;
-  --color-primary: #3d5031;
-  --color-secondary-foreground: #2a3723;
-  --color-muted-foreground: #4e5e44;
-}
-
-/* Sharpen legacy hardcoded low-contrast text classes in light mode */
-body:not(.dark) .text-\[\#3e4a32\],
-[data-theme="light"] .text-\[\#3e4a32\],
-body:not(.dark) .text-\[\#33402a\],
-[data-theme="light"] .text-\[\#33402a\] {
-  color: #1a2417 !important;
-}
-
-body:not(.dark) .text-\[\#5d6b4d\],
-body:not(.dark) .text-\[\#4f613f\],
-body:not(.dark) .text-\[\#4f5f42\],
-body:not(.dark) .text-\[\#4a5a3d\],
-body:not(.dark) .text-\[\#58664a\],
-body:not(.dark) .text-\[\#405333\],
-[data-theme="light"] .text-\[\#5d6b4d\],
-[data-theme="light"] .text-\[\#4f613f\],
-[data-theme="light"] .text-\[\#4f5f42\],
-[data-theme="light"] .text-\[\#4a5a3d\],
-[data-theme="light"] .text-\[\#58664a\],
-[data-theme="light"] .text-\[\#405333\] {
-  color: #2b3924 !important;
-}
-
-body:not(.dark) .text-\[\#6f6658\],
-body:not(.dark) .text-\[\#7b705f\],
-body:not(.dark) .text-\[\#7c6a4c\],
-body:not(.dark) .text-\[\#657058\],
-body:not(.dark) .text-\[\#6c795e\],
-body:not(.dark) .text-\[\#718064\],
-[data-theme="light"] .text-\[\#6f6658\],
-[data-theme="light"] .text-\[\#7b705f\],
-[data-theme="light"] .text-\[\#7c6a4c\],
-[data-theme="light"] .text-\[\#657058\],
-[data-theme="light"] .text-\[\#6c795e\],
-[data-theme="light"] .text-\[\#718064\] {
-  color: #3e4d35 !important;
-}
-
-body:not(.dark) .text-\[\#7f876e\],
-body:not(.dark) .text-\[\#7a8369\],
-body:not(.dark) .text-\[\#7a806c\],
-body:not(.dark) .text-\[\#8a9a7b\],
-body:not(.dark) .text-\[\#95866f\],
-[data-theme="light"] .text-\[\#7f876e\],
-[data-theme="light"] .text-\[\#7a8369\],
-[data-theme="light"] .text-\[\#7a806c\],
-[data-theme="light"] .text-\[\#8a9a7b\],
-[data-theme="light"] .text-\[\#95866f\] {
-  color: #4e5e44 !important;
 }

@@ -265,9 +265,9 @@ export function FontsPage(): React.JSX.Element {
   return (
     <div className="mx-auto w-full max-w-6xl p-6">
       <div className="mb-6">
-        <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">{t('fonts.eyebrow')}</p>
+        <p className="text-xs uppercase tracking-[0.22em] text-[#4e5e44] dark:text-[#a4bba0]">{t('fonts.eyebrow')}</p>
         <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="organic-serif text-[32px] font-semibold leading-none text-[#3e4a32]">
+          <h1 className="organic-serif text-[32px] font-semibold leading-none text-[#1a2417] dark:text-[#ffffff]">
             {t('fonts.title')}
           </h1>
           <div className="flex gap-2">
@@ -281,7 +281,7 @@ export function FontsPage(): React.JSX.Element {
             </Button>
           </div>
         </div>
-        <p className="mt-2 text-[12px] text-muted-foreground">
+        <p className="mt-2 text-[12px] text-[#4e5e44] dark:text-[#a4bba0]">
           {t('fonts.description')}
         </p>
       </div>
@@ -301,7 +301,7 @@ export function FontsPage(): React.JSX.Element {
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>{t('fonts.uploadDialogTitle')}</DialogTitle>
-              <DialogDescription className="text-xs text-muted-foreground/70">
+              <DialogDescription className="text-xs text-[#4e5e44] dark:text-[#a4bba0]/70">
                 {t('fonts.uploadDialogDescription')}{' '}
                 {t('fonts.uploadDialogDownloadPre')}{' '}
                 <a
@@ -381,7 +381,7 @@ export function FontsPage(): React.JSX.Element {
             </div>
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#d8ccb5]/60 text-xs text-muted-foreground">
+                <tr className="border-b border-[#d8ccb5]/60 text-xs text-[#4e5e44] dark:text-[#a4bba0]">
                   <th className="pb-1.5 text-left font-medium">File</th>
                   <th className="pb-1.5 text-center font-medium" style={{ width: 72 }}>Font Weight</th>
                   <th className="pb-1.5 text-center font-medium" style={{ width: 110 }}>Style</th>
@@ -393,7 +393,7 @@ export function FontsPage(): React.JSX.Element {
                   {fileEntries.map((entry, i) => (
                     <tr key={entry.path} className="border-b border-[#d8ccb5]/30 align-middle">
                       <td className="py-1.5 pr-2">
-                        <span className="block truncate text-[#33402a] dark:text-[#f2f7ed]">
+                        <span className="block truncate text-[#1a2417] dark:text-[#ffffff] dark:text-[#f2f7ed]">
                           {entry.path.split(/[\\/]/).pop() || entry.path}
                         </span>
                       </td>
@@ -424,7 +424,7 @@ export function FontsPage(): React.JSX.Element {
                           type="button"
                           size="sm"
                           variant="ghost"
-                          className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                          className="h-7 w-7 p-0 text-[#4e5e44] dark:text-[#a4bba0] hover:text-destructive"
                           onClick={() => removeFileEntry(i)}
                           aria-label={t('fonts.removeFile')}
                         >
@@ -460,16 +460,16 @@ export function FontsPage(): React.JSX.Element {
           <CardHeader className="p-5 pb-3">
             <CardTitle className="text-base">{t('fonts.uploadedFonts')}</CardTitle>
             {userFonts.length > 0 && (
-              <p className="mt-1 text-xs text-muted-foreground">
+              <p className="mt-1 text-xs text-[#4e5e44] dark:text-[#a4bba0]">
                 {t('fonts.fontCount', { count: userFonts.length })}
               </p>
             )}
           </CardHeader>
           <CardContent className="p-5 pt-0">
             {loading ? (
-              <p className="py-4 text-center text-sm text-muted-foreground">{t('fonts.loading')}</p>
+              <p className="py-4 text-center text-sm text-[#4e5e44] dark:text-[#a4bba0]">{t('fonts.loading')}</p>
             ) : userFonts.length === 0 ? (
-              <div className="rounded-lg border border-dashed border-[#d8ccb5]/85 bg-[#fff9ef]/70 py-6 text-center text-sm text-muted-foreground">
+              <div className="rounded-lg border border-dashed border-[#d8ccb5]/85 bg-[#fff9ef]/70 py-6 text-center text-sm text-[#4e5e44] dark:text-[#a4bba0]">
                 {t('fonts.emptyUpload')}
               </div>
             ) : (
@@ -480,10 +480,10 @@ export function FontsPage(): React.JSX.Element {
                     className="group flex items-center justify-between gap-3 rounded-lg border border-[#d8ccb5]/80 bg-[#fffdf8]/78 dark:border-[#364930] dark:bg-[#20291f] p-3 transition-all hover:border-[#c4b89e]/90 hover:shadow-[0_8px_20px_rgba(90,72,52,0.1)]"
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-[#33402a] dark:text-[#f2f7ed]">{font.family}</p>
+                      <p className="truncate text-sm font-medium text-[#1a2417] dark:text-[#ffffff] dark:text-[#f2f7ed]">{font.family}</p>
                       {previewReady && (
                         <p
-                          className="mt-1 truncate text-lg text-[#5a6650]/80 dark:text-[#f2f7ed]"
+                          className="mt-1 truncate text-lg text-[#1a2417] dark:text-[#ffffff] dark:text-[#f2f7ed]"
                           style={{ fontFamily: `"${font.family}", sans-serif` }}
                         >
                           {previewText(font.scripts)}
@@ -499,7 +499,7 @@ export function FontsPage(): React.JSX.Element {
                         <span className="rounded-md border border-[#d5cfc5]/60 bg-[#f9f6f1] px-1.5 py-0.5 text-[#6b6560]">
                           {categoryLabels[font.category] || font.category}
                         </span>
-                        <span className="text-muted-foreground">
+                        <span className="text-[#4e5e44] dark:text-[#a4bba0]">
                           {t('fonts.fileCount', { count: font.files?.length || 0 })}
                         </span>
                       </div>
@@ -527,7 +527,7 @@ export function FontsPage(): React.JSX.Element {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-base">{t('fonts.googleFontsTitle')}</CardTitle>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="mt-1 text-xs text-[#4e5e44] dark:text-[#a4bba0]">
                   {t('fonts.googleFontsDesc')}
                 </p>
               </div>
@@ -546,13 +546,13 @@ export function FontsPage(): React.JSX.Element {
                   >
                     {previewReady && (
                       <p
-                        className="truncate text-lg text-[#5a6650]/80 dark:text-[#f2f7ed]"
+                        className="truncate text-lg text-[#1a2417] dark:text-[#ffffff] dark:text-[#f2f7ed]"
                         style={{ fontFamily: `"${font.family}", sans-serif` }}
                       >
                         {previewText(font.scripts)}
                       </p>
                     )}
-                    <p className="text-sm font-medium text-[#33402a] dark:text-[#f2f7ed]">{font.family}</p>
+                    <p className="text-sm font-medium text-[#1a2417] dark:text-[#ffffff] dark:text-[#f2f7ed]">{font.family}</p>
                     <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs">
                       <span className={`rounded-md border px-1.5 py-0.5 font-medium ${roleClassName(font.role)}`}>
                         {roleToLabel(font.role)}
@@ -560,7 +560,7 @@ export function FontsPage(): React.JSX.Element {
                       <span className={`rounded-md border px-1.5 py-0.5 font-medium ${scriptsClassName(font.scripts)}`}>
                         {scriptsToLabel(font.scripts)}
                       </span>
-                      <span className="text-muted-foreground">{font.category}</span>
+                      <span className="text-[#4e5e44] dark:text-[#a4bba0]">{font.category}</span>
                     </div>
                   </div>
                 ))}

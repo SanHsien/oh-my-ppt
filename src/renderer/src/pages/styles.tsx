@@ -267,10 +267,10 @@ export function StylesPage(): React.JSX.Element {
     <TooltipProvider delayDuration={180}>
       <div className="mx-auto w-full max-w-6xl p-6">
       <div className="mb-6">
-        <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">{t('styles.eyebrow')}</p>
+        <p className="text-xs uppercase tracking-[0.22em] text-[#4e5e44] dark:text-[#a4bba0]">{t('styles.eyebrow')}</p>
         <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
-            <h1 className="organic-serif text-[32px] font-semibold leading-none text-[#3e4a32]">{t('styles.title')}</h1>
+            <h1 className="organic-serif text-[32px] font-semibold leading-none text-[#1a2417] dark:text-[#ffffff]">{t('styles.title')}</h1>
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
             <DropdownMenu>
@@ -295,7 +295,7 @@ export function StylesPage(): React.JSX.Element {
                   <Upload className="h-4 w-4" />
                   <div className="flex flex-col">
                     <span className="text-sm font-medium">{t('styles.importPackage')}</span>
-                    <span className="text-[11px] text-muted-foreground">
+                    <span className="text-[11px] text-[#4e5e44] dark:text-[#a4bba0]">
                       {t('styles.importPackageTooltip')}
                     </span>
                   </div>
@@ -309,13 +309,13 @@ export function StylesPage(): React.JSX.Element {
                     <span className="text-sm font-medium">
                       {t('styles.importPackageDirectory')}
                     </span>
-                    <span className="text-[11px] text-muted-foreground">
+                    <span className="text-[11px] text-[#4e5e44] dark:text-[#a4bba0]">
                       {t('styles.importPackageDirectoryTooltip')}
                     </span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <div className="px-2 py-1.5 text-[11px] leading-4 text-muted-foreground">
+                <div className="px-2 py-1.5 text-[11px] leading-4 text-[#4e5e44] dark:text-[#a4bba0]">
                   {t('styles.importMenuTooltip')}{' '}
                   <a
                     href={OFFICIAL_STYLE_SKILL_URL}
@@ -341,7 +341,7 @@ export function StylesPage(): React.JSX.Element {
             </Tooltip>
           </div>
         </div>
-        <p className="mt-2 text-[12px] text-muted-foreground">{t('styles.description')}</p>
+        <p className="mt-2 text-[12px] text-[#4e5e44] dark:text-[#a4bba0]">{t('styles.description')}</p>
       </div>
 
       <div className="mb-5 rounded-lg border border-[#d8ccb5]/75 bg-[#fff9ef]/76 dark:border-[#33442e] dark:bg-[#161c15] p-3">
@@ -353,7 +353,7 @@ export function StylesPage(): React.JSX.Element {
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder={t('styles.searchPlaceholder')}
-              className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground dark:placeholder:text-[#8ea383]"
+              className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-[#4e5e44] dark:text-[#a4bba0] dark:placeholder:text-[#8ea383]"
             />
             {query ? (
               <button
@@ -492,7 +492,7 @@ export function StylesPage(): React.JSX.Element {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="h-8 w-8 rounded-md bg-white/95 p-0 text-[#3e4a32] shadow-[0_3px_10px_rgba(40,48,34,0.16)]"
+                          className="h-8 w-8 rounded-md bg-white/95 p-0 text-[#1a2417] dark:text-[#ffffff] shadow-[0_3px_10px_rgba(40,48,34,0.16)]"
                           disabled={Boolean(generatingPreviewStyleId)}
                           onClick={() => void handleGeneratePreview(style)}
                           aria-label={
@@ -525,7 +525,7 @@ export function StylesPage(): React.JSX.Element {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="h-8 w-8 rounded-md bg-white/95 p-0 text-[#3e4a32] shadow-[0_3px_10px_rgba(40,48,34,0.16)]"
+                        className="h-8 w-8 rounded-md bg-white/95 p-0 text-[#1a2417] dark:text-[#ffffff] shadow-[0_3px_10px_rgba(40,48,34,0.16)]"
                         onClick={() => navigate(`/styles/${style.id}`)}
                         aria-label={t('common.edit')}
                         title={t('styles.editTooltip')}
@@ -542,7 +542,7 @@ export function StylesPage(): React.JSX.Element {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="h-8 w-8 rounded-md bg-white/95 p-0 text-[#3e4a32] shadow-[0_3px_10px_rgba(40,48,34,0.16)]"
+                        className="h-8 w-8 rounded-md bg-white/95 p-0 text-[#1a2417] dark:text-[#ffffff] shadow-[0_3px_10px_rgba(40,48,34,0.16)]"
                         disabled={exportingStyleId === style.id}
                         onClick={() => void handleExportPackage(style)}
                         aria-label={t('styles.exportPackage')}
@@ -615,7 +615,7 @@ export function StylesPage(): React.JSX.Element {
         ))}
       </div>
       {filteredStyles.length === 0 && (
-        <div className="rounded-lg border border-dashed border-[#d8ccb5] py-12 text-center text-sm text-muted-foreground">
+        <div className="rounded-lg border border-dashed border-[#d8ccb5] py-12 text-center text-sm text-[#4e5e44] dark:text-[#a4bba0]">
           {emptyStylesText}
         </div>
       )}

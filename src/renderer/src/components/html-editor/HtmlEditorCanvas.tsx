@@ -526,27 +526,16 @@ export const HtmlEditorCanvas = forwardRef<
        const wv = webviewRef.current
        if (!wv || !canExecuteJavaScript(wv)) return false
        try {
-         const payload = {
-           enabled: Boolean(settings?.enabled),
-           guides: {
-             vertical: Array.isArray(settings?.guides?.vertical) ? settings.guides.vertical.filter(Number.isFinite) : [],
-             horizontal: Array.isArray(settings?.guides?.horizontal) ? settings.guides.horizontal.filter(Number.isFinite) : []
-           },
-           grid: {
-             enabled: Boolean(settings?.grid?.enabled),
-             size: typeof settings?.grid?.size === 'number' && Number.isFinite(settings.grid.size) ? settings.grid.size : 10
-           }
-         }
-         const encoded = encodeURIComponent(JSON.stringify(payload))
-         return Boolean(
-           await wv.executeJavaScript(
-             `(function(){` +
-               `if (!window.__pptEditModeSetSnapSettings) return false;` +
-               `window.__pptEditModeSetSnapSettings(JSON.parse(decodeURIComponent("${encoded}")));` +
-               `return true;` +
-               `})()`
-           )
-         )
+         const enabled = Boolean(settings?.enabled)
+         const gridEnabled = Boolean(settings?.grid?.enabled)
+         const gridSize = typeof settings?.grid?.size === 'number' && Number.isFinite(settings.grid.size) ? settings.grid.size : 10
+         const vGuides = (Array.isArray(settings?.guides?.vertical) ? settings.guides.vertical.filter(Number.isFinite) : []).map(Number)
+         const hGuides = (Array.isArray(settings?.guides?.horizontal) ? settings.guides.horizontal.filter(Number.isFinite) : []).map(Number)
+         const script =
+           `(function(){if(!window.__pptEditModeSetSnapSettings)return false;` +
+           `window.__pptEditModeSetSnapSettings({enabled:${enabled},guides:{vertical:[${vGuides.join(',')}],horizontal:[${hGuides.join(',')}]},grid:{enabled:${gridEnabled},size:${gridSize}}});` +
+           `return true;})()`
+         return Boolean(await wv.executeJavaScript(script))
        } catch {
           return false
         }
@@ -1415,23 +1404,16 @@ export const HtmlEditorCanvas = forwardRef<
        const wv = webviewRef.current
        if (!wv || !canExecuteJavaScript(wv)) return false
        try {
-         const payload = {
-           enabled: Boolean(settings?.enabled),
-           guides: {
-             vertical: Array.isArray(settings?.guides?.vertical) ? settings.guides.vertical.filter(Number.isFinite) : [],
-             horizontal: Array.isArray(settings?.guides?.horizontal) ? settings.guides.horizontal.filter(Number.isFinite) : []
-           },
-           grid: {
-             enabled: Boolean(settings?.grid?.enabled),
-             size: typeof settings?.grid?.size === 'number' && Number.isFinite(settings.grid.size) ? settings.grid.size : 10
-           }
-         }
-         const encoded = encodeURIComponent(JSON.stringify(payload))
-         return Boolean(
-           await wv.executeJavaScript(
-             `(function(){if(!window.__pptEditModeSetSnapSettings)return false;window.__pptEditModeSetSnapSettings(JSON.parse(decodeURIComponent("${encoded}")));return true;})()`
-           )
-         )
+         const enabled = Boolean(settings?.enabled)
+         const gridEnabled = Boolean(settings?.grid?.enabled)
+         const gridSize = typeof settings?.grid?.size === 'number' && Number.isFinite(settings.grid.size) ? settings.grid.size : 10
+         const vGuides = (Array.isArray(settings?.guides?.vertical) ? settings.guides.vertical.filter(Number.isFinite) : []).map(Number)
+         const hGuides = (Array.isArray(settings?.guides?.horizontal) ? settings.guides.horizontal.filter(Number.isFinite) : []).map(Number)
+         const script =
+           `(function(){if(!window.__pptEditModeSetSnapSettings)return false;` +
+           `window.__pptEditModeSetSnapSettings({enabled:${enabled},guides:{vertical:[${vGuides.join(',')}],horizontal:[${hGuides.join(',')}]},grid:{enabled:${gridEnabled},size:${gridSize}}});` +
+           `return true;})()`
+         return Boolean(await wv.executeJavaScript(script))
        } catch {
          return false
        }

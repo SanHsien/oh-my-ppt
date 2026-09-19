@@ -388,15 +388,15 @@ export function countHtmlTag(content: string, tagName: string): { open: number; 
   while (/<!--[\s\S]*?-->/.test(withoutNonStructuralBlocks)) {
     withoutNonStructuralBlocks = withoutNonStructuralBlocks.replace(/<!--[\s\S]*?-->/g, '')
   }
-  while (/<script[\s\S]*?<\/script\s*>/gi.test(withoutNonStructuralBlocks)) {
-    withoutNonStructuralBlocks = withoutNonStructuralBlocks.replace(/<script[\s\S]*?<\/script\s*>/gi, '')
+  while (/<script\b[^>]*>[\s\S]*?<\/script[^>]*>/gi.test(withoutNonStructuralBlocks)) {
+    withoutNonStructuralBlocks = withoutNonStructuralBlocks.replace(/<script\b[^>]*>[\s\S]*?<\/script[^>]*>/gi, '')
   }
-  while (/<style[\s\S]*?<\/style\s*>/gi.test(withoutNonStructuralBlocks)) {
-    withoutNonStructuralBlocks = withoutNonStructuralBlocks.replace(/<style[\s\S]*?<\/style\s*>/gi, '')
+  while (/<style\b[^>]*>[\s\S]*?<\/style[^>]*>/gi.test(withoutNonStructuralBlocks)) {
+    withoutNonStructuralBlocks = withoutNonStructuralBlocks.replace(/<style\b[^>]*>[\s\S]*?<\/style[^>]*>/gi, '')
   }
   return {
     open: (withoutNonStructuralBlocks.match(new RegExp(`<${tagName}[\\s>]`, 'gi')) || []).length,
-    close: (withoutNonStructuralBlocks.match(new RegExp(`</${tagName}\\s*>`, 'gi')) || []).length
+    close: (withoutNonStructuralBlocks.match(new RegExp(`</${tagName}[^>]*>`, 'gi')) || []).length
   }
 }
 

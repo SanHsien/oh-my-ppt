@@ -30,8 +30,8 @@ export type ImagePromptDirectorInput = {
 
 export const compactPageHtmlForImagePrompt = (html: string): string => {
   let cleaned = html
-  while (/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi.test(cleaned)) {
-    cleaned = cleaned.replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, '')
+  while (/<script\b[^>]*>[\s\S]*?<\/script[^>]*>/gi.test(cleaned)) {
+    cleaned = cleaned.replace(/<script\b[^>]*>[\s\S]*?<\/script[^>]*>/gi, '')
   }
   while (/<!--[\s\S]*?-->/.test(cleaned)) {
     cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, '')

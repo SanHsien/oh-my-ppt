@@ -270,7 +270,7 @@ const prepareSourceFile = async (
       characterCount
     })
   } else if (ext === '.csv') {
-    const csvText = fileBuffer ? fileBuffer.toString('utf-8') : await fs.promises.readFile(filePath, 'utf-8')
+    const csvText = (fileBuffer ?? Buffer.alloc(0)).toString('utf-8')
     const markdown = convertCsvTextToMarkdown(csvText, {
       title: path.basename(name, ext)
     })

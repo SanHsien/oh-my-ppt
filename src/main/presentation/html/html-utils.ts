@@ -364,11 +364,11 @@ export const validateHtmlContent = (html: string): { valid: boolean; errors: str
   while (/<!--[\s\S]*?-->/.test(structuralHtml)) {
     structuralHtml = structuralHtml.replace(/<!--[\s\S]*?-->/g, '')
   }
-  while (/<script[\s\S]*?<\/script\s*>/gi.test(structuralHtml)) {
-    structuralHtml = structuralHtml.replace(/<script[\s\S]*?<\/script\s*>/gi, '')
+  while (/<script\b[^>]*>[\s\S]*?<\/script[^>]*>/gi.test(structuralHtml)) {
+    structuralHtml = structuralHtml.replace(/<script\b[^>]*>[\s\S]*?<\/script[^>]*>/gi, '')
   }
-  while (/<style[\s\S]*?<\/style\s*>/gi.test(structuralHtml)) {
-    structuralHtml = structuralHtml.replace(/<style[\s\S]*?<\/style\s*>/gi, '')
+  while (/<style\b[^>]*>[\s\S]*?<\/style[^>]*>/gi.test(structuralHtml)) {
+    structuralHtml = structuralHtml.replace(/<style\b[^>]*>[\s\S]*?<\/style[^>]*>/gi, '')
   }
 
   // Check for orphan closing tags (closing tag without a matching open)

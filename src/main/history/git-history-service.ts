@@ -677,10 +677,8 @@ export class GitHistoryService {
       })
     }
     const gitignorePath = path.join(projectDir, '.gitignore')
-    if (!fs.existsSync(gitignorePath)) {
-      await fs.promises.writeFile(gitignorePath, GITIGNORE_CONTENT, 'utf-8')
-    } else {
-      const existing = await fs.promises.readFile(gitignorePath, 'utf-8').catch(() => '')
+    try {
+      const existing = await fs.promises.readFile(gitignorePath, 'utf-8')
       const lines = new Set(existing.split(/\r?\n/).map((line) => line.trim()))
       const missing = GITIGNORE_ENTRIES.filter((entry) => !lines.has(entry))
       if (missing.length > 0) {
@@ -691,6 +689,8 @@ export class GitHistoryService {
           'utf-8'
         )
       }
+    } catch {
+      await fs.promises.writeFile(gitignorePath, GITIGNORE_CONTENT, 'utf-8')
     }
   }
 

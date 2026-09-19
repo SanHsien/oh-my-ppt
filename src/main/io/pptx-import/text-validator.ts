@@ -42,7 +42,7 @@ const escapeFontFamily = (value: string): string => {
     .map((item) => item.trim().replace(/^["']|["']$/g, ''))
     .find(Boolean)
   const font = firstFont || 'Arial'
-  return /^[a-z0-9 -]+$/i.test(font) ? font : `"${font.replace(/"/g, '\\"')}"`
+  return /^[a-z0-9 -]+$/i.test(font) ? font : `"${font.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`
 }
 
 export class PptxTextValidator {

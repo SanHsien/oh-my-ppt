@@ -50,7 +50,7 @@ describe('generated page font floors', () => {
       return 1
     })
 
-    const script = buildFitScript(slideSize).replace(/^<script[^>]*>/, '').replace(/<\/script>$/, '')
+    const script = buildFitScript(slideSize).replace(/^<script[^>]*>/i, '').replace(/<\/script\s*>$/i, '')
     Function(script)()
     window.dispatchEvent(new Event('load'))
 

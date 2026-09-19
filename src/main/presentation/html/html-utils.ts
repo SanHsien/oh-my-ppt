@@ -188,7 +188,10 @@ const getChartHeightMarkerMismatchErrors = (html: string): string[] => {
 }
 
 const getVisibleChartHeightMarkerErrors = (html: string): string[] => {
-  const withoutComments = html.replace(/<!--[\s\S]*?-->/g, '')
+  let withoutComments = html
+  while (/<!--[\s\S]*?-->/.test(withoutComments)) {
+    withoutComments = withoutComments.replace(/<!--[\s\S]*?-->/g, '')
+  }
   if (!new RegExp(`${CHART_FRAME_HEIGHT_COMMENT_MARKER}\\s*=`, 'i').test(withoutComments)) {
     return []
   }
@@ -357,10 +360,16 @@ export const validateHtmlContent = (html: string): { valid: boolean; errors: str
   }
 
   // Remove comments/script/style to avoid counting pseudo tags in JS/CSS/comment text.
-  const structuralHtml = html
-    .replace(/<!--[\s\S]*?-->/g, '')
-    .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[\s\S]*?<\/style>/gi, '')
+  let structuralHtml = html
+  while (/<!--[\s\S]*?-->/.test(structuralHtml)) {
+    structuralHtml = structuralHtml.replace(/<!--[\s\S]*?-->/g, '')
+  }
+  while (/<script[\s\S]*?<\/script\s*>/gi.test(structuralHtml)) {
+    structuralHtml = structuralHtml.replace(/<script[\s\S]*?<\/script\s*>/gi, '')
+  }
+  while (/<style[\s\S]*?<\/style\s*>/gi.test(structuralHtml)) {
+    structuralHtml = structuralHtml.replace(/<style[\s\S]*?<\/style\s*>/gi, '')
+  }
 
   // Check for orphan closing tags (closing tag without a matching open)
   for (const tag of STRICT_TAGS) {

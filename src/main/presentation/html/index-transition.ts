@@ -157,9 +157,13 @@ export function patchIndexTransitionConfig(
   input: { type?: unknown; durationMs?: unknown }
 ): string {
   const config = normalizeIndexTransitionConfig(input)
-  const withoutOldArtifacts = html
-    .replace(INDEX_TRANSITION_STYLE_RE, '')
-    .replace(INDEX_TRANSITION_CONFIG_RE, '')
+  let withoutOldArtifacts = html
+  while (INDEX_TRANSITION_STYLE_RE.test(withoutOldArtifacts)) {
+    withoutOldArtifacts = withoutOldArtifacts.replace(INDEX_TRANSITION_STYLE_RE, '')
+  }
+  while (INDEX_TRANSITION_CONFIG_RE.test(withoutOldArtifacts)) {
+    withoutOldArtifacts = withoutOldArtifacts.replace(INDEX_TRANSITION_CONFIG_RE, '')
+  }
   const withAnime = ensureIndexAnimeScript(withoutOldArtifacts)
   const configScript = buildIndexTransitionConfigScript(config)
   if (INDEX_RUNTIME_SCRIPT_RE.test(withAnime)) {

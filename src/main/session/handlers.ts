@@ -303,7 +303,6 @@ export function registerSessionHandlers(ctx: IpcContext): void {
     if (!session) throw new Error('會話不存在或已被刪除')
     const projectDir = await resolveSessionProjectDir(sessionId)
     const indexPath = path.join(projectDir, 'index.html')
-    if (!fs.existsSync(indexPath)) throw new Error(`index.html 缺失：${indexPath}`)
 
     await new GitHistoryService(db).ensureBaseline(sessionId, projectDir).catch((error) => {
       log.warn('[session:setIndexTransition] ensure history baseline failed', {
@@ -316,7 +315,12 @@ export function registerSessionHandlers(ctx: IpcContext): void {
       type: record.type,
       durationMs: record.durationMs
     })
-    const current = await fs.promises.readFile(indexPath, 'utf-8')
+    let current: string
+    try {
+      current = await fs.promises.readFile(indexPath, 'utf-8')
+    } catch {
+      throw new Error(`index.html 缺失：${indexPath}`)
+    }
     const next = patchIndexTransitionConfig(current, config)
     const indexErrors = validateIndexShellHtml(next)
     if (indexErrors.length > 0) {

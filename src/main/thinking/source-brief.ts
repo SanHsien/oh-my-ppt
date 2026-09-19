@@ -131,8 +131,10 @@ export const buildThinkingSourceBrief = async (args: {
     const sourcePath = path.join(sourcesDir, source.fileName)
     const virtualPath = `/sources/${source.fileName}`
 
+    const handle = await fs.promises.open(sourcePath, 'r').catch(() => null)
+    if (!handle) continue
     try {
-      const stat = await fs.promises.stat(sourcePath)
+      const stat = await handle.stat()
       if (!stat.isFile()) {
         log.warn('[thinking:source-brief] source path is not a file', {
           sourceId: source.id,
@@ -158,7 +160,7 @@ export const buildThinkingSourceBrief = async (args: {
         )
         continue
       }
-      const rawContent = await fs.promises.readFile(sourcePath, 'utf-8')
+      const rawContent = await handle.readFile({ encoding: 'utf-8' })
       const content =
         source.kind === 'csv'
           ? convertCsvTextToMarkdown(rawContent, { title: source.name })
@@ -191,6 +193,8 @@ export const buildThinkingSourceBrief = async (args: {
           '- Source brief scan failed. Use grep/read_file on the source file when details are needed.'
         ].join('\n')
       )
+    } finally {
+      await handle.close()
     }
   }
 

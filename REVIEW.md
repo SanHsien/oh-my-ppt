@@ -49,6 +49,7 @@ gh repo set-default --view
 | R-12 | P2 | 全面更新上游 v2.5.0 重構後遺留的過期 prompt 單元測試字串斷言（涵蓋 `layout-budget`、`layout-catalog`、`size-layout-skills`、`content-expansion` 等） |
 | R-13 | P2 | 修復 Windows 11 原生路徑反斜線、CRLF 換行符與非管理員權限 symlink `EPERM` 之測試相容性問題 |
 | R-14 | P2 | 強化單元測試中 SQLite 暫存資料庫之釋放與暫存目錄清理，並將 Vitest 逾時門檻擴充至 20 秒，全量 220 個測試檔、1,170 個測試 100% 綠燈 |
+| R-15 | P1 | 全面修復 GitHub Code scanning（CodeQL 42 項安全性警告：TOCTOU 檔案系統競態、不完整字串／標籤轉義與清理、遠端屬性注入、執行代碼清理）與 Dependabot 依賴套件漏洞覆蓋（@babel/core、@xmldom/xmldom、app-builder-lib、brace-expansion、builder-util-runtime、drizzle-orm、esbuild、js-yaml、protobufjs、ws） |
 
 ## 接受、不改契約
 

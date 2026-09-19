@@ -118,7 +118,6 @@ export function registerPresentationHandlers(ctx: IpcContext): void {
     await ensureSessionRuntimeCompatible(ctx, projectDir)
 
     const indexPath = path.join(projectDir, 'index.html')
-    await fs.promises.access(indexPath, fs.constants.R_OK)
     const indexHtml = await fs.promises.readFile(indexPath, 'utf-8')
     const patchedIndexHtml = ensureIndexPresentBackgroundStyle(indexHtml)
     if (patchedIndexHtml !== indexHtml) {

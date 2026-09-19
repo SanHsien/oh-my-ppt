@@ -114,7 +114,7 @@ describe('git history style snapshot', () => {
 
     await service.rollbackToVersion({
       sessionId: 'session-1',
-      projectDir: '/tmp/session-1',
+      projectDir: '/workspace/session-1',
       versionId: 'operation-old'
     })
 
@@ -176,7 +176,7 @@ describe('git history style snapshot', () => {
 
     await service.rollbackCommittedOperation({
       sessionId: 'session-1',
-      projectDir: '/tmp/session-1',
+      projectDir: '/workspace/session-1',
       operation: {
         id: 'operation-style-page',
         session_id: 'session-1',
@@ -189,7 +189,7 @@ describe('git history style snapshot', () => {
       reason: 'generation page update failed'
     })
 
-    const expectedProjectDir = path.resolve('/tmp/session-1')
+    const expectedProjectDir = path.resolve('/workspace/session-1')
     expect(internals.moveHeadToCommit).toHaveBeenCalledWith(expectedProjectDir, 'commit-before')
     expect(internals.restoreCommitPaths).toHaveBeenCalledWith(expectedProjectDir, 'commit-before', [
       'page-1.html'

@@ -674,7 +674,7 @@
     var lastWheelNavigateAt = 0;
     var wheelGestureUnlockTimer = 0;
     var wheelNavigationRequestSeq = 0;
-    var pendingWheelNavigationRequests = {};
+    var pendingWheelNavigationRequests = new Map();
     var WHEEL_NAV_THRESHOLD = 80;
     var WHEEL_NAV_COOLDOWN = 520;
     var WHEEL_GESTURE_IDLE = 260;
@@ -696,7 +696,7 @@
 
     function nextWheelNavigationRequestId() {
       var requestId = "wheel-" + (++wheelNavigationRequestSeq);
-      pendingWheelNavigationRequests[requestId] = true;
+      pendingWheelNavigationRequests.set(requestId, true);
       return requestId;
     }
 
@@ -783,8 +783,8 @@
       var data = event && event.data;
       if (!data) return;
       if (data.type === "ohmyppt:playback:navigation-result") {
-        if (!data.requestId || !pendingWheelNavigationRequests[data.requestId]) return;
-        delete pendingWheelNavigationRequests[data.requestId];
+        if (!data.requestId || typeof data.requestId !== 'string' || !pendingWheelNavigationRequests.has(data.requestId)) return;
+        pendingWheelNavigationRequests.delete(data.requestId);
         if (!data.navigated) resetWheelGestureState();
         return;
       }

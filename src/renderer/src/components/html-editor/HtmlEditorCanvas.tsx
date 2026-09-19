@@ -522,20 +522,32 @@ export const HtmlEditorCanvas = forwardRef<
           `if (window.__pptEditModeSetLayout) window.__pptEditModeSetLayout(${JSON.stringify(selector)}, ${JSON.stringify(layout)});`
         )
       },
-      async setEditSnapSettings(settings: EditSnapSettings): Promise<boolean> {
-        const wv = webviewRef.current
-        if (!wv || !canExecuteJavaScript(wv)) return false
-        try {
-          return Boolean(
-            await wv.executeJavaScript(
-              `(function(){` +
-                `if (!window.__pptEditModeSetSnapSettings) return false;` +
-                `window.__pptEditModeSetSnapSettings(${JSON.stringify(settings)});` +
-                `return true;` +
-                `})()`
-            )
-          )
-        } catch {
+     async setEditSnapSettings(settings: EditSnapSettings): Promise<boolean> {
+       const wv = webviewRef.current
+       if (!wv || !canExecuteJavaScript(wv)) return false
+       try {
+         const payload = {
+           enabled: Boolean(settings?.enabled),
+           guides: {
+             vertical: Array.isArray(settings?.guides?.vertical) ? settings.guides.vertical.filter(Number.isFinite) : [],
+             horizontal: Array.isArray(settings?.guides?.horizontal) ? settings.guides.horizontal.filter(Number.isFinite) : []
+           },
+           grid: {
+             enabled: Boolean(settings?.grid?.enabled),
+             size: typeof settings?.grid?.size === 'number' && Number.isFinite(settings.grid.size) ? settings.grid.size : 10
+           }
+         }
+         const encoded = encodeURIComponent(JSON.stringify(payload))
+         return Boolean(
+           await wv.executeJavaScript(
+             `(function(){` +
+               `if (!window.__pptEditModeSetSnapSettings) return false;` +
+               `window.__pptEditModeSetSnapSettings(JSON.parse(decodeURIComponent("${encoded}")));` +
+               `return true;` +
+               `})()`
+           )
+         )
+       } catch {
           return false
         }
       },
@@ -1398,19 +1410,31 @@ export const HtmlEditorCanvas = forwardRef<
   }, [])
 
   if (snapBridgeRef.current === null) {
-    snapBridgeRef.current = {
-      setEditSnapSettings: async (settings: EditSnapSettings): Promise<boolean> => {
-        const wv = webviewRef.current
-        if (!wv || !canExecuteJavaScript(wv)) return false
-        try {
-          return Boolean(
-            await wv.executeJavaScript(
-              `(function(){if(!window.__pptEditModeSetSnapSettings)return false;window.__pptEditModeSetSnapSettings(${JSON.stringify(settings)});return true;})()`
-            )
-          )
-        } catch {
-          return false
-        }
+   snapBridgeRef.current = {
+     setEditSnapSettings: async (settings: EditSnapSettings): Promise<boolean> => {
+       const wv = webviewRef.current
+       if (!wv || !canExecuteJavaScript(wv)) return false
+       try {
+         const payload = {
+           enabled: Boolean(settings?.enabled),
+           guides: {
+             vertical: Array.isArray(settings?.guides?.vertical) ? settings.guides.vertical.filter(Number.isFinite) : [],
+             horizontal: Array.isArray(settings?.guides?.horizontal) ? settings.guides.horizontal.filter(Number.isFinite) : []
+           },
+           grid: {
+             enabled: Boolean(settings?.grid?.enabled),
+             size: typeof settings?.grid?.size === 'number' && Number.isFinite(settings.grid.size) ? settings.grid.size : 10
+           }
+         }
+         const encoded = encodeURIComponent(JSON.stringify(payload))
+         return Boolean(
+           await wv.executeJavaScript(
+             `(function(){if(!window.__pptEditModeSetSnapSettings)return false;window.__pptEditModeSetSnapSettings(JSON.parse(decodeURIComponent("${encoded}")));return true;})()`
+           )
+         )
+       } catch {
+         return false
+       }
       },
       readEditSnapPoints: async (): Promise<EditSnapPoints> => {
         const wv = webviewRef.current

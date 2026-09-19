@@ -190,9 +190,20 @@ const prepareSourceFile = async (
   const rawPath = typeof file.path === 'string' ? file.path.trim() : ''
   if (!rawPath) throw new Error('無法讀取文檔路徑')
   const filePath = path.resolve(rawPath)
-  const stat = await fs.promises.stat(filePath)
-  if (!stat.isFile()) throw new Error(`文檔不是文件: ${filePath}`)
-  if (stat.size > MAX_DOCUMENT_SIZE) throw new Error('單個文檔不能超過 10MB')
+  const handle = await fs.promises.open(filePath, 'r')
+  let stat: fs.Stats
+  let fileBuffer: Buffer | null = null
+  try {
+    stat = await handle.stat()
+    if (!stat.isFile()) throw new Error(`文檔不是文件: ${filePath}`)
+    if (stat.size > MAX_DOCUMENT_SIZE) throw new Error('單個文檔不能超過 10MB')
+    const extCheck = path.extname(filePath).toLowerCase()
+    if (extCheck === '.csv' || extCheck === '.md' || extCheck === '.txt') {
+      fileBuffer = await handle.readFile()
+    }
+  } finally {
+    await handle.close()
+  }
 
   const ext = path.extname(filePath).toLowerCase()
   const isImage = SUPPORTED_IMAGE_EXTENSIONS.has(ext)
@@ -259,7 +270,7 @@ const prepareSourceFile = async (
       characterCount
     })
   } else if (ext === '.csv') {
-    const csvText = await fs.promises.readFile(filePath, 'utf-8')
+    const csvText = fileBuffer ? fileBuffer.toString('utf-8') : await fs.promises.readFile(filePath, 'utf-8')
     const markdown = convertCsvTextToMarkdown(csvText, {
       title: path.basename(name, ext)
     })
@@ -273,7 +284,9 @@ const prepareSourceFile = async (
       characterCount
     })
   } else {
-    if (path.resolve(filePath) !== path.resolve(workspacePath)) {
+    if (fileBuffer) {
+      await fs.promises.writeFile(workspacePath, fileBuffer)
+    } else if (path.resolve(filePath) !== path.resolve(workspacePath)) {
       await fs.promises.copyFile(filePath, workspacePath)
     }
     log.info('[documents:parsePlan] text source prepared for reading', {

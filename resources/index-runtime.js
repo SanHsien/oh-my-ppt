@@ -30,7 +30,7 @@
   var indexTransitionType = 'fade';   // default, overridden by container build
   var indexTransitionDuration = 600;  // ms
   var playbackRequestSeq = 0;
-  var pendingPlaybackRequests = {};
+  var pendingPlaybackRequests = new Map();
   var pageSwitchSeq = 0;
   var isPageSwitching = false;
   var prefetchedPageUrls = new Set();
@@ -123,10 +123,10 @@
   }
 
   function clearPendingPlaybackRequests() {
-    Object.keys(pendingPlaybackRequests).forEach(function (requestId) {
-      window.clearTimeout(pendingPlaybackRequests[requestId]);
-      delete pendingPlaybackRequests[requestId];
+    pendingPlaybackRequests.forEach(function (timerId) {
+      window.clearTimeout(timerId);
     });
+    pendingPlaybackRequests.clear();
     if (wheelGestureUnlockTimer) {
       window.clearTimeout(wheelGestureUnlockTimer);
       wheelGestureUnlockTimer = 0;
@@ -189,8 +189,8 @@
       var frameWindow = frame.contentWindow;
       if (!frameWindow || typeof frameWindow.postMessage !== 'function') return false;
       var requestId = 'playback-' + (++playbackRequestSeq);
-      pendingPlaybackRequests[requestId] = window.setTimeout(function () {
-        delete pendingPlaybackRequests[requestId];
+      pendingPlaybackRequests.set(requestId, window.setTimeout(function () {
+        pendingPlaybackRequests.delete(requestId);
         gotoOffset(offset || 1);
       }, 160);
       frameWindow.postMessage({
@@ -366,9 +366,9 @@
     if (event.source && event.source !== frame.contentWindow) return;
     var data = event.data;
     if (!data) return;
-    if (data.requestId && pendingPlaybackRequests[data.requestId]) {
-      window.clearTimeout(pendingPlaybackRequests[data.requestId]);
-      delete pendingPlaybackRequests[data.requestId];
+    if (data.requestId && typeof data.requestId === 'string' && pendingPlaybackRequests.has(data.requestId)) {
+      window.clearTimeout(pendingPlaybackRequests.get(data.requestId));
+      pendingPlaybackRequests.delete(data.requestId);
     }
     if (data.type === 'ohmyppt:playback:handled') return;
     if (data.type !== 'ohmyppt:playback:goto') return;

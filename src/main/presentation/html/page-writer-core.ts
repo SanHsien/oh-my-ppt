@@ -384,13 +384,19 @@ function repairMalformedCreativeFragment(content: string): string | null {
 }
 
 export function countHtmlTag(content: string, tagName: string): { open: number; close: number } {
-  const withoutNonStructuralBlocks = content
-    .replace(/<!--[\s\S]*?-->/g, '')
-    .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[\s\S]*?<\/style>/gi, '')
+  let withoutNonStructuralBlocks = content
+  while (/<!--[\s\S]*?-->/.test(withoutNonStructuralBlocks)) {
+    withoutNonStructuralBlocks = withoutNonStructuralBlocks.replace(/<!--[\s\S]*?-->/g, '')
+  }
+  while (/<script[\s\S]*?<\/script\s*>/gi.test(withoutNonStructuralBlocks)) {
+    withoutNonStructuralBlocks = withoutNonStructuralBlocks.replace(/<script[\s\S]*?<\/script\s*>/gi, '')
+  }
+  while (/<style[\s\S]*?<\/style\s*>/gi.test(withoutNonStructuralBlocks)) {
+    withoutNonStructuralBlocks = withoutNonStructuralBlocks.replace(/<style[\s\S]*?<\/style\s*>/gi, '')
+  }
   return {
     open: (withoutNonStructuralBlocks.match(new RegExp(`<${tagName}[\\s>]`, 'gi')) || []).length,
-    close: (withoutNonStructuralBlocks.match(new RegExp(`</${tagName}>`, 'gi')) || []).length
+    close: (withoutNonStructuralBlocks.match(new RegExp(`</${tagName}\\s*>`, 'gi')) || []).length
   }
 }
 

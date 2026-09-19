@@ -41,7 +41,7 @@ describe('registerHistoryHandlers', () => {
     const { registerHistoryHandlers } = await import('../../../src/main/history/handlers')
     const ctx = {
       db: {},
-      resolveSessionProjectDir: vi.fn().mockResolvedValue('/tmp/session-1'),
+      resolveSessionProjectDir: vi.fn().mockResolvedValue('/workspace/session-1'),
       sessionRunStates: new Map()
     }
     registerHistoryHandlers(ctx as never)
@@ -51,7 +51,7 @@ describe('registerHistoryHandlers', () => {
 
     expect(state.serviceInstances[0]?.ensureBaseline).toHaveBeenCalledWith(
       'session-1',
-      '/tmp/session-1'
+      '/workspace/session-1'
     )
     expect(state.serviceInstances[0]?.listVersions).toHaveBeenCalledWith('session-1', 20)
   })

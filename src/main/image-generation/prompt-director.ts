@@ -28,13 +28,19 @@ export type ImagePromptDirectorInput = {
   signal?: AbortSignal
 }
 
-export const compactPageHtmlForImagePrompt = (html: string): string =>
-  html
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
-    .replace(/<!--[\s\S]*?-->/g, '')
+export const compactPageHtmlForImagePrompt = (html: string): string => {
+  let cleaned = html
+  while (/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi.test(cleaned)) {
+    cleaned = cleaned.replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, '')
+  }
+  while (/<!--[\s\S]*?-->/.test(cleaned)) {
+    cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, '')
+  }
+  return cleaned
     .replace(/\s+/g, ' ')
     .trim()
     .slice(0, 24000)
+}
 
 /** The Director needs the slide's meaning, not its full generated CSS and SVG payload. */
 export const compactPageContentForImageDirector = (html: string): string => {

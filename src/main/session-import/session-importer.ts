@@ -329,7 +329,11 @@ const readTitleFromIndex = async (indexPath: string, fallback: string): Promise<
     const html = await fs.promises.readFile(indexPath, 'utf-8')
     const match = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)
     if (!match?.[1]) return fallback
-    return sanitizeTitle(match[1].replace(/<[^>]+>/g, '').trim(), fallback)
+    let titleText = match[1]
+    while (/<[^>]+>/.test(titleText)) {
+      titleText = titleText.replace(/<[^>]+>/g, '')
+    }
+    return sanitizeTitle(titleText.trim(), fallback)
   } catch {
     return fallback
   }
@@ -513,10 +517,19 @@ export async function importSessionFile(
   ctx: IpcContext,
   sourcePath: string
 ): Promise<SessionFileImportResult> {
-  const sourceStat = await fs.promises.stat(sourcePath)
-  if (!sourceStat.isFile()) throw new Error('請選擇一個會話導入文件。')
-  if (sourceStat.size > MAX_IMPORT_FILE_BYTES) {
-    throw new Error('導入文件不能超過 300MB。')
+  const handle = await fs.promises.open(sourcePath, 'r')
+  let sourceBuffer: Buffer
+  let sourceBytes: number
+  try {
+    const sourceStat = await handle.stat()
+    if (!sourceStat.isFile()) throw new Error('請選擇一個會話導入文件。')
+    if (sourceStat.size > MAX_IMPORT_FILE_BYTES) {
+      throw new Error('導入文件不能超過 300MB。')
+    }
+    sourceBytes = sourceStat.size
+    sourceBuffer = await handle.readFile()
+  } finally {
+    await handle.close()
   }
 
   const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'ohmyppt-session-import-'))
@@ -530,13 +543,12 @@ export async function importSessionFile(
     sessionId,
     sourcePath,
     originalFileName,
-    sourceBytes: sourceStat.size,
+    sourceBytes,
     tempDir,
     projectDir
   })
 
   try {
-    const sourceBuffer = await fs.promises.readFile(sourcePath)
     const prepared = await prepareImportSource(sourceBuffer, tempDir)
     log.info('[session-import] source prepared', {
       sessionId,

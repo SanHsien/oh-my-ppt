@@ -216,8 +216,6 @@ const copyPageResources = async (args: {
     if (!sourcePath) {
       throw new PageMergeError('PAGE_MERGE_PAGE_COPY_FAILED', `頁面資源不存在: ${resourceKey}`)
     }
-    const stat = await fs.promises.stat(sourcePath)
-    if (!stat.isFile()) continue
     const targetRelative = path.posix.join(
       'assets',
       'merged-pages',
@@ -227,18 +225,23 @@ const copyPageResources = async (args: {
     )
     const tempTargetPath = path.join(args.tempProjectDir, ...targetRelative.split('/'))
     await fs.promises.mkdir(path.dirname(tempTargetPath), { recursive: true })
-    if (path.extname(resourceKey).toLowerCase() === '.css') {
-      const css = await fs.promises.readFile(sourcePath, 'utf-8')
-      await fs.promises.writeFile(
-        tempTargetPath,
-        args.preserveFonts ? css : sanitizeMergedStylesheet(css, args.targetBodyFont),
-        'utf-8'
-      )
-      pendingResourceKeys.push(...collectCssDependencyKeys(css, resourceKey))
-    } else {
-      await fs.promises.copyFile(sourcePath, tempTargetPath)
+    try {
+      if (path.extname(resourceKey).toLowerCase() === '.css') {
+        const css = await fs.promises.readFile(sourcePath, 'utf-8')
+        await fs.promises.writeFile(
+          tempTargetPath,
+          args.preserveFonts ? css : sanitizeMergedStylesheet(css, args.targetBodyFont),
+          'utf-8'
+        )
+        pendingResourceKeys.push(...collectCssDependencyKeys(css, resourceKey))
+      } else {
+        await fs.promises.copyFile(sourcePath, tempTargetPath)
+      }
+      resourcePathMap.set(resourceKey, `./${targetRelative}`)
+    } catch (err: any) {
+      if (err && (err.code === 'EISDIR' || err.code === 'ENOENT')) continue
+      throw err
     }
-    resourcePathMap.set(resourceKey, `./${targetRelative}`)
   }
   return resourcePathMap
 }

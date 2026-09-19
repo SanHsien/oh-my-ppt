@@ -750,22 +750,29 @@ export function registerHtmlEditorHandlers(ctx: IpcContext): void {
     const document = await resolveDocument(docId)
     const { doc } = document
     let file: { mtimeMs: number; size: number }
+    let handle: fs.promises.FileHandle
     try {
-      file = await fs.promises.stat(document.htmlPath)
+      handle = await fs.promises.open(document.htmlPath, 'r')
     } catch (error) {
       throw new Error('HTML 文檔文件不存在或無法讀取', { cause: error })
     }
-    const cached = htmlDocumentOpenCache.get(doc.id)
-    let html =
-      cached && cached.modifiedAtMs === file.mtimeMs && cached.size === file.size ? cached.html : ''
-    if (!html) {
+    let html = ''
+    let isFromCache = false
+    try {
+      file = await handle.stat()
+      const cached = htmlDocumentOpenCache.get(doc.id)
+      if (cached && cached.modifiedAtMs === file.mtimeMs && cached.size === file.size) {
+        html = cached.html
+        isFromCache = true
+      } else {
+        html = await handle.readFile({ encoding: 'utf-8' })
+      }
+    } finally {
+      await handle.close()
+    }
+    if (!isFromCache) {
       let htmlMatchesDisk = true
       let needsFileMetadataRefresh = false
-      try {
-        html = await fs.promises.readFile(document.htmlPath, 'utf-8')
-      } catch (error) {
-        throw new Error('HTML 文檔文件不存在或無法讀取', { cause: error })
-      }
       const normalized = normalizeImportedHtml({
         html,
         sourceDir: path.dirname(doc.sourcePath || document.htmlPath),

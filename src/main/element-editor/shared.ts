@@ -318,7 +318,7 @@ export function normalizeBoolean(value: unknown): boolean | null {
   return null
 }
 
-export const attrEscape = (value: string): string => value.replace(/"/g, '\\"')
+export const attrEscape = (value: string): string => value.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
 
 export const stableSelectorFor = (pageId: string, blockId: string): string =>
   `body[data-page-id="${attrEscape(pageId)}"] [data-block-id="${attrEscape(blockId)}"]`

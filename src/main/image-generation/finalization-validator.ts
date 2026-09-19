@@ -122,9 +122,10 @@ const hasBackgroundGeometry = ($node: cheerio.Cheerio<any>): boolean => {
 }
 
 const usesAsset = ($: cheerio.CheerioAPI, path: string): cheerio.Cheerio<any> => {
-  const image = $(`img[src="${path.replace(/"/g, '\\"')}"]`).first()
+  const safePath = path.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
+  const image = $(`img[src="${safePath}"]`).first()
   if (image.length > 0) return image
-  return $(`[style*="${path.replace(/"/g, '\\"')}"]`)
+  return $(`[style*="${safePath}"]`)
     .filter((_index, node) => ($(node).attr('style') || '').includes(path))
     .first()
 }

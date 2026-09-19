@@ -371,11 +371,13 @@ export async function renameSessionPageTitle(
       : item
   )
 
-  if (fs.existsSync(page.htmlPath)) {
+  try {
     const html = await fs.promises.readFile(page.htmlPath, 'utf-8')
     const $ = cheerio.load(html, { scriptingEnabled: false })
     $('title').text(title)
     await fs.promises.writeFile(page.htmlPath, $.html(), 'utf-8')
+  } catch {
+    // Page file may not exist yet or cannot be read
   }
   await ctx.db.upsertSessionPage({
     id: page.id,

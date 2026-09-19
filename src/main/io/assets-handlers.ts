@@ -58,9 +58,15 @@ export function registerLocalAssetProtocol(): void {
     )
     const filePath = resolveAllowedLocalAssetPath(requestedPath)
     if (!filePath) return new Response('Forbidden', { status: 403 })
+    let fd: number | null = null
     try {
-      const stat = fs.statSync(filePath)
-      if (!stat.isFile()) return new Response('Not found', { status: 404 })
+      fd = fs.openSync(filePath, 'r')
+      const stat = fs.fstatSync(fd)
+      if (!stat.isFile()) {
+        fs.closeSync(fd)
+        fd = null
+        return new Response('Not found', { status: 404 })
+      }
       const ext = filePath.split('.').pop()?.toLowerCase() || ''
       const mime = ASSET_MIME_MAP[ext] || 'application/octet-stream'
       const fileSize = stat.size
@@ -68,17 +74,23 @@ export function registerLocalAssetProtocol(): void {
       const range = request.headers.get('range')
       if (range) {
         const m = /bytes=(\d*)-(\d*)/.exec(range)
-        if (!m) return new Response('Invalid range', { status: 416 })
+        if (!m) {
+          fs.closeSync(fd)
+          fd = null
+          return new Response('Invalid range', { status: 416 })
+        }
         const start = m[1] ? parseInt(m[1], 10) : 0
         const end = m[2] ? Math.min(parseInt(m[2], 10), fileSize - 1) : fileSize - 1
         if (start > end || start >= fileSize) {
+          fs.closeSync(fd)
+          fd = null
           return new Response('Range not satisfiable', { status: 416 })
         }
         const len = end - start + 1
-        const fd = fs.openSync(filePath, 'r')
         const buf = Buffer.alloc(len)
         fs.readSync(fd, buf, 0, len, start)
         fs.closeSync(fd)
+        fd = null
         return new Response(buf, {
           status: 206,
           headers: {
@@ -90,7 +102,10 @@ export function registerLocalAssetProtocol(): void {
         })
       }
 
-      const data = fs.readFileSync(filePath)
+      const data = Buffer.alloc(fileSize)
+      fs.readSync(fd, data, 0, fileSize, 0)
+      fs.closeSync(fd)
+      fd = null
       return new Response(data, {
         headers: {
           'content-type': mime,
@@ -99,6 +114,13 @@ export function registerLocalAssetProtocol(): void {
         }
       })
     } catch {
+      if (fd !== null) {
+        try {
+          fs.closeSync(fd)
+        } catch {
+          // ignore
+        }
+      }
       return new Response('Not found', { status: 404 })
     }
   })

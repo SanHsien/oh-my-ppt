@@ -30,10 +30,14 @@ const TABLE_X_HEADER_KEYS = [
 ]
 
 type RawRow = Record<string, unknown> | unknown[]
-type XlsxApi = {
-  readFile: (filename: string) => { SheetNames: string[]; Sheets: Record<string, unknown> }
-  utils: {
-    sheet_to_json: (sheet: unknown, options: { header: 1; defval: string }) => unknown[][]
+type ExcelJsApi = {
+  Workbook: new () => {
+    xlsx: {
+      readFile: (filename: string) => Promise<void>
+    }
+    worksheets: Array<{
+      eachRow: (callback: (row: { values: unknown }, rowNumber: number) => void) => void
+    }>
   }
 }
 type PapaApi = {
@@ -46,11 +50,11 @@ type PapaApi = {
   }
 }
 
-function loadXlsx(): XlsxApi {
+function loadExcelJs(): ExcelJsApi {
   try {
-    return require('xlsx') as XlsxApi
+    return require('exceljs') as ExcelJsApi
   } catch {
-    throw new Error('Excel 解析依賴 xlsx 尚未安裝，請先安裝項目依賴')
+    throw new Error('Excel 解析依賴 exceljs 尚未安裝，請先安裝項目依賴')
   }
 }
 
@@ -192,13 +196,29 @@ async function parseChartDataFile(filePath: string): Promise<ParsedChartDataResu
     }
     rawRows = rowsFromTable(parsed.data)
   } else if (ext === '.xlsx' || ext === '.xls') {
-    const xlsx = loadXlsx()
-    const workbook = xlsx.readFile(filePath)
-    const firstSheetName = workbook.SheetNames[0]
-    if (!firstSheetName) throw new Error('Excel 文件沒有可讀取的工作表')
-    rawRows = rowsFromTable(
-      xlsx.utils.sheet_to_json(workbook.Sheets[firstSheetName], { header: 1, defval: '' })
-    )
+    const ExcelJS = loadExcelJs()
+    const workbook = new ExcelJS.Workbook()
+    try {
+      await workbook.xlsx.readFile(filePath)
+    } catch {
+      throw new Error('Excel 文件讀取失敗，請確認檔案格式')
+    }
+    const worksheet = workbook.worksheets[0]
+    if (!worksheet) throw new Error('Excel 文件沒有可讀取的工作表')
+    const tableData: unknown[][] = []
+    worksheet.eachRow((row) => {
+      const values = Array.isArray(row.values) ? row.values.slice(1) : []
+      tableData.push(
+        values.map((v) =>
+          v === null || v === undefined
+            ? ''
+            : typeof v === 'object' && 'result' in (v as Record<string, unknown>)
+              ? (v as Record<string, unknown>).result
+              : v
+        )
+      )
+    })
+    rawRows = rowsFromTable(tableData)
   } else {
     throw new Error('不支持的圖表數據文件格式')
   }

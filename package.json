@@ -79,7 +79,7 @@
     "fflate": "^0.8.2",
     "fonteditor-core": "^2.6.3",
     "isomorphic-git": "^1.37.6",
-    "katex": "^0.16.45",
+    "katex": "^0.18.7",
     "langchain": "^1.4.1",
     "lru-cache": "^11.5.0",
     "lucide-react": "^1.45.0",

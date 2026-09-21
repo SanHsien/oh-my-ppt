@@ -1,10 +1,13 @@
 # AGENTS.md
 
 > [!IMPORTANT]
-> 請先完整閱讀並遵守 [`FORK.md`](FORK.md) 與 [`CLAUDE.md`](CLAUDE.md)。本 fork 採 **Windows 11 原生** 維護：
+> 請先完整閱讀並遵守 [`FORK.md`](FORK.md)。本 fork 採 **Windows 11 原生** 維護：
 > - **PR、push、release 一律指向 `SanHsien/oh-my-ppt`**，嚴禁未經當次許可打向 `arcsin1/oh-my-ppt`。
 > - 每個 clone 先確認 `gh repo set-default SanHsien/oh-my-ppt`。
+> - 開 PR 明寫 `--repo SanHsien/oh-my-ppt` 並核對輸出的 URL。
 > - 提交前跑 `pwsh -NoProfile -File tools\dev_check.ps1`。
+> - 產品程式在 `src/`，以上游為準；不要移除 `upstream`、原作者或 Apache-2.0 授權標示。
+> - 測試簡報、模型 API key、個人 Prompt、`.env` 一律不可提交。
 > - 下文為上游產品架構與 React 元件開發指引；衝突時以 `FORK.md` 為準。
 
 ---

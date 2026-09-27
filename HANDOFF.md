@@ -25,3 +25,4 @@
    - 納管遺漏的 `docs/design/node-agent-runtime-prompt-inventory.md` 並更新 `.gitignore` 白名單。
    - `pnpm test`：221 個測試檔案、1,171 個測試 100% 通過（10 skipped）。
    - `pwsh -NoProfile -File tools/dev_check.ps1`：Python 編譯、Ruff、32 個維護測試、14 份 Markdown 連結驗證 100% 通過（WINDOWS DEV CHECK GREEN）。
+   - 本輪提交：commit `89adcbe`。

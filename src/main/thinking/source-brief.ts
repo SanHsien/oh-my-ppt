@@ -131,9 +131,9 @@ export const buildThinkingSourceBrief = async (args: {
     const sourcePath = path.join(sourcesDir, source.fileName)
     const virtualPath = `/sources/${source.fileName}`
 
-    const handle = await fs.promises.open(sourcePath, 'r').catch(() => null)
-    if (!handle) continue
+    let handle: fs.promises.FileHandle | null = null
     try {
+      handle = await fs.promises.open(sourcePath, 'r')
       const stat = await handle.stat()
       if (!stat.isFile()) {
         log.warn('[thinking:source-brief] source path is not a file', {
@@ -194,7 +194,7 @@ export const buildThinkingSourceBrief = async (args: {
         ].join('\n')
       )
     } finally {
-      await handle.close()
+      await handle?.close()
     }
   }
 

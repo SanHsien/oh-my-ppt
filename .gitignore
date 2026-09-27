@@ -23,6 +23,7 @@ docs/*.md
 !docs/THEME_MIDNIGHT_FOREST.md
 docs/.DS_Store
 docs/design/*
+!docs/design/node-agent-runtime-prompt-inventory.md
 
 doc/*
 

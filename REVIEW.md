@@ -50,6 +50,7 @@ gh repo set-default --view
 | R-13 | P2 | 修復 Windows 11 原生路徑反斜線、CRLF 換行符與非管理員權限 symlink `EPERM` 之測試相容性問題 |
 | R-14 | P2 | 強化單元測試中 SQLite 暫存資料庫之釋放與暫存目錄清理，並將 Vitest 逾時門檻擴充至 20 秒，全量 220 個測試檔、1,170 個測試 100% 綠燈 |
 | R-15 | P1 | 全面修復 GitHub Code scanning（CodeQL 50 項安全性警告全數修復歸零）與 Dependabot 依賴套件漏洞覆蓋：@babel/core、@xmldom/xmldom、app-builder-lib、brace-expansion、builder-util-runtime、drizzle-orm、esbuild、js-yaml、protobufjs、ws，並將 extract-zip 透過 overrides 替換為官方 @electron-internal/extract-zip，xlsx 遷移至無漏洞的 exceljs，pnpm audit 達到 0 known vulnerabilities。 |
+| R-16 | P1 | 補齊 `@electron-internal/extract-zip` CommonJS 支援補丁（解決 CJS `require('extract-zip')` 載入錯誤導致 electron 安裝失敗問題）、納管 `docs/design/node-agent-runtime-prompt-inventory.md`、修復 `html-editor-handlers.ts` 語法錯誤與單元測試契約，確認 Dependabot 42 項漏洞（含 xlsx 與 extract-zip）0 open / pnpm audit 0 漏洞，全量 221 個測試檔、1,171 個測試及 dev_check 100% 綠燈 |
 
 ## 接受、不改契約
 

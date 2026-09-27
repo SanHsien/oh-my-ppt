@@ -750,26 +750,22 @@ export function registerHtmlEditorHandlers(ctx: IpcContext): void {
     const document = await resolveDocument(docId)
     const { doc } = document
     let file: { mtimeMs: number; size: number }
-    let handle: fs.promises.FileHandle
     try {
-      handle = await fs.promises.open(document.htmlPath, 'r+')
+      file = await fs.promises.stat(document.htmlPath)
     } catch (error) {
       throw new Error('HTML 文檔文件不存在或無法讀取', { cause: error })
     }
-    let html = ''
-    let isFromCache = false
-    let htmlMatchesDisk = true
-    let needsFileMetadataRefresh = false
-    try {
-      file = await handle.stat()
-      const cached = htmlDocumentOpenCache.get(doc.id)
-      if (cached && cached.modifiedAtMs === file.mtimeMs && cached.size === file.size) {
-        html = cached.html
-        isFromCache = true
-      } else {
-        html = await handle.readFile({ encoding: 'utf-8' })
+    const cached = htmlDocumentOpenCache.get(doc.id)
+    let html =
+      cached && cached.modifiedAtMs === file.mtimeMs && cached.size === file.size ? cached.html : ''
+    if (!html) {
+      let htmlMatchesDisk = true
+      let needsFileMetadataRefresh = false
+      try {
+        html = await fs.promises.readFile(document.htmlPath, 'utf-8')
+      } catch (error) {
+        throw new Error('HTML 文檔文件不存在或無法讀取', { cause: error })
       }
-      if (!isFromCache) {
       const normalized = normalizeImportedHtml({
         html,
         sourceDir: path.dirname(doc.sourcePath || document.htmlPath),
@@ -779,8 +775,7 @@ export function registerHtmlEditorHandlers(ctx: IpcContext): void {
       })
       if (normalized.html !== html) {
         try {
-          await handle.truncate(0)
-          await handle.writeFile(normalized.html, { encoding: 'utf-8' })
+          await fs.promises.writeFile(document.htmlPath, normalized.html, 'utf-8')
           needsFileMetadataRefresh = true
           await ensureHtmlRepo(document.dir)
           const commitSha = await commitHtmlFile(document.dir, 'current.html', '補全編輯運行時')
@@ -800,11 +795,7 @@ export function registerHtmlEditorHandlers(ctx: IpcContext): void {
         }
         html = normalized.html
       }
-      }
-    } finally {
-      await handle.close()
-    }
-    if (htmlMatchesDisk) {
+      if (htmlMatchesDisk) {
         if (needsFileMetadataRefresh) file = await fs.promises.stat(document.htmlPath)
         rememberHtmlEditorOpenHtml(doc.id, html, file)
       }

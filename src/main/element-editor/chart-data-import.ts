@@ -177,7 +177,10 @@ function normalizeChartRows(rows: RawRow[]): {
   }
 }
 
-async function parseChartDataFile(filePath: string): Promise<ParsedChartDataResult> {
+// exceljs reads Office Open XML (.xlsx) only; legacy binary .xls is not offered.
+export const CHART_DATA_EXTENSIONS = ['csv', 'tsv', 'txt', 'json', 'xlsx']
+
+export async function parseChartDataFile(filePath: string): Promise<ParsedChartDataResult> {
   const ext = path.extname(filePath).toLowerCase()
   let rawRows: RawRow[] = []
 
@@ -195,7 +198,9 @@ async function parseChartDataFile(filePath: string): Promise<ParsedChartDataResu
       throw new Error(parsed.errors[0].message || 'CSV 文件解析失敗')
     }
     rawRows = rowsFromTable(parsed.data)
-  } else if (ext === '.xlsx' || ext === '.xls') {
+  } else if (ext === '.xls') {
+    throw new Error('不支援舊版 .xls 格式，請在 Excel 另存為 .xlsx 後再匯入')
+  } else if (ext === '.xlsx') {
     const ExcelJS = loadExcelJs()
     const workbook = new ExcelJS.Workbook()
     try {
@@ -245,7 +250,7 @@ export function registerChartDataImportHandlers(ctx: IpcContext): void {
       title: '選擇圖表數據',
       properties: ['openFile'],
       filters: [
-        { name: 'Chart Data', extensions: ['csv', 'tsv', 'txt', 'json', 'xlsx', 'xls'] },
+        { name: 'Chart Data', extensions: CHART_DATA_EXTENSIONS },
         { name: 'All Files', extensions: ['*'] }
       ]
     })

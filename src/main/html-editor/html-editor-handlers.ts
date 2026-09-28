@@ -759,7 +759,6 @@ export function registerHtmlEditorHandlers(ctx: IpcContext): void {
     let html = ''
     let isFromCache = false
     let htmlMatchesDisk = true
-    let needsFileMetadataRefresh = false
     try {
       file = await handle.stat()
       const cached = htmlDocumentOpenCache.get(doc.id)
@@ -781,7 +780,7 @@ export function registerHtmlEditorHandlers(ctx: IpcContext): void {
           try {
             await handle.truncate(0)
             await handle.writeFile(normalized.html, { encoding: 'utf-8' })
-            needsFileMetadataRefresh = true
+            file = await handle.stat()
             await ensureHtmlRepo(document.dir)
             const commitSha = await commitHtmlFile(document.dir, 'current.html', '補全編輯運行時')
             await db.createHtmlEditVersionAndTouch({
@@ -805,18 +804,6 @@ export function registerHtmlEditorHandlers(ctx: IpcContext): void {
       await handle.close()
     }
     if (htmlMatchesDisk) {
-      if (needsFileMetadataRefresh) {
-        try {
-          const refreshedHandle = await fs.promises.open(document.htmlPath, 'r')
-          try {
-            file = await refreshedHandle.stat()
-          } finally {
-            await refreshedHandle.close()
-          }
-        } catch {
-          // ignore
-        }
-      }
       rememberHtmlEditorOpenHtml(doc.id, html, file)
     }
     const result: HtmlEditorImportResult = {

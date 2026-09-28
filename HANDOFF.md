@@ -26,3 +26,13 @@
    - `pnpm test`：221 個測試檔案、1,171 個測試 100% 通過（10 skipped）。
    - `pwsh -NoProfile -File tools/dev_check.ps1`：Python 編譯、Ruff、32 個維護測試、14 份 Markdown 連結驗證 100% 通過（WINDOWS DEV CHECK GREEN）。
    - 本輪提交：commit `89adcbe`。
+
+## 後續進度（2026-09-28）
+
+1. **CodeQL 安全警告清零**：
+   - 排查修復 Alert 25, 26, 51（`src/main/html-editor/html-editor-handlers.ts` TOCTOU 競態條件），重構為單一 FileHandle 原子操作。
+   - GitHub CodeQL 掃描通過，open alerts 歸零（0 open alerts）。
+2. **Pull Request 與分支整頓**：
+   - PR #13（github-actions group update）完成合併。
+   - 遠端 Dependabot 殘存分支已全數清理，目前遠端僅保留 `main` 分支。
+   - 本地主工作目錄同步 Fast-forward 至最新 `main`。

@@ -750,55 +750,74 @@ export function registerHtmlEditorHandlers(ctx: IpcContext): void {
     const document = await resolveDocument(docId)
     const { doc } = document
     let file: { mtimeMs: number; size: number }
+    let handle: fs.promises.FileHandle
     try {
-      file = await fs.promises.stat(document.htmlPath)
+      handle = await fs.promises.open(document.htmlPath, 'r+')
     } catch (error) {
       throw new Error('HTML 文檔文件不存在或無法讀取', { cause: error })
     }
-    const cached = htmlDocumentOpenCache.get(doc.id)
-    let html =
-      cached && cached.modifiedAtMs === file.mtimeMs && cached.size === file.size ? cached.html : ''
-    if (!html) {
-      let htmlMatchesDisk = true
-      let needsFileMetadataRefresh = false
-      try {
-        html = await fs.promises.readFile(document.htmlPath, 'utf-8')
-      } catch (error) {
-        throw new Error('HTML 文檔文件不存在或無法讀取', { cause: error })
+    let html = ''
+    let isFromCache = false
+    let htmlMatchesDisk = true
+    let needsFileMetadataRefresh = false
+    try {
+      file = await handle.stat()
+      const cached = htmlDocumentOpenCache.get(doc.id)
+      if (cached && cached.modifiedAtMs === file.mtimeMs && cached.size === file.size) {
+        html = cached.html
+        isFromCache = true
+      } else {
+        html = await handle.readFile({ encoding: 'utf-8' })
       }
-      const normalized = normalizeImportedHtml({
-        html,
-        sourceDir: path.dirname(doc.sourcePath || document.htmlPath),
-        docId: doc.id,
-        defaultDesignWidth: doc.designWidth,
-        runtimeScriptHrefs: resolveRuntimeScriptHrefs()
-      })
-      if (normalized.html !== html) {
-        try {
-          await fs.promises.writeFile(document.htmlPath, normalized.html, 'utf-8')
-          needsFileMetadataRefresh = true
-          await ensureHtmlRepo(document.dir)
-          const commitSha = await commitHtmlFile(document.dir, 'current.html', '補全編輯運行時')
-          await db.createHtmlEditVersionAndTouch({
-            id: nanoid(12),
-            docId: doc.id,
-            commitSha,
-            message: '補全編輯運行時',
-            createdAt: Date.now()
-          })
-        } catch (error) {
-          log.warn('[html-editor:openDocument] runtime migration failed', {
-            docId: doc.id,
-            message: error instanceof Error ? error.message : String(error)
-          })
-          htmlMatchesDisk = false
+      if (!isFromCache) {
+        const normalized = normalizeImportedHtml({
+          html,
+          sourceDir: path.dirname(doc.sourcePath || document.htmlPath),
+          docId: doc.id,
+          defaultDesignWidth: doc.designWidth,
+          runtimeScriptHrefs: resolveRuntimeScriptHrefs()
+        })
+        if (normalized.html !== html) {
+          try {
+            await handle.truncate(0)
+            await handle.writeFile(normalized.html, { encoding: 'utf-8' })
+            needsFileMetadataRefresh = true
+            await ensureHtmlRepo(document.dir)
+            const commitSha = await commitHtmlFile(document.dir, 'current.html', '補全編輯運行時')
+            await db.createHtmlEditVersionAndTouch({
+              id: nanoid(12),
+              docId: doc.id,
+              commitSha,
+              message: '補全編輯運行時',
+              createdAt: Date.now()
+            })
+          } catch (error) {
+            log.warn('[html-editor:openDocument] runtime migration failed', {
+              docId: doc.id,
+              message: error instanceof Error ? error.message : String(error)
+            })
+            htmlMatchesDisk = false
+          }
+          html = normalized.html
         }
-        html = normalized.html
       }
-      if (htmlMatchesDisk) {
-        if (needsFileMetadataRefresh) file = await fs.promises.stat(document.htmlPath)
-        rememberHtmlEditorOpenHtml(doc.id, html, file)
+    } finally {
+      await handle.close()
+    }
+    if (htmlMatchesDisk) {
+      if (needsFileMetadataRefresh) {
+        try {
+          const refreshedHandle = await fs.promises.open(document.htmlPath, 'r')
+          try {
+            file = await refreshedHandle.stat()
+          } finally {
+            await refreshedHandle.close()
+          }
+        } catch {
+          // ignore
+        }
       }
+      rememberHtmlEditorOpenHtml(doc.id, html, file)
     }
     const result: HtmlEditorImportResult = {
       docId: doc.id,

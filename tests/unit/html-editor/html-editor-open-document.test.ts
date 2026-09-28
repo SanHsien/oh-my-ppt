@@ -98,18 +98,28 @@ describe('html-editor:openDocument', () => {
 
     const handler = state.handlers.get('html-editor:openDocument')
     expect(handler).toBeDefined()
-    const readFileSpy = vi.spyOn(fs.promises, 'readFile')
+    let readCount = 0
+    const originalOpen = fs.promises.open
+    vi.spyOn(fs.promises, 'open').mockImplementation(async (...args) => {
+      const handle = await originalOpen(...args)
+      const originalReadFile = handle.readFile.bind(handle)
+      handle.readFile = (async (...readArgs: Parameters<typeof originalReadFile>) => {
+        readCount++
+        return originalReadFile(...readArgs)
+      }) as typeof handle.readFile
+      return handle
+    })
 
     await handler!({}, { docId })
     await handler!({}, { docId })
 
     expect(state.normalizeImportedHtml).toHaveBeenCalledTimes(1)
-    expect(readFileSpy.mock.calls.filter(([filePath]) => filePath === htmlPath)).toHaveLength(1)
+    expect(readCount).toBe(1)
 
     await fs.promises.writeFile(htmlPath, '<html><body>second version</body></html>', 'utf-8')
     await handler!({}, { docId })
 
     expect(state.normalizeImportedHtml).toHaveBeenCalledTimes(2)
-    expect(readFileSpy.mock.calls.filter(([filePath]) => filePath === htmlPath)).toHaveLength(2)
+    expect(readCount).toBe(2)
   })
 })

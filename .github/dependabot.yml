@@ -14,6 +14,11 @@ updates:
     ignore:
       - dependency-name: "@types/node"
         versions: [">=23"]
+      # Held, see docs/DECISIONS.md (2026-09-30).
+      - dependency-name: "nanoid"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "electron"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "pip"
     directory: "/"
@@ -24,6 +29,11 @@ updates:
       timezone: "Asia/Taipei"
     open-pull-requests-limit: 5
     labels: ["dependencies", "python"]
+    ignore:
+      - dependency-name: "pytest"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
+      - dependency-name: "ruff"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
     groups:
       development-dependencies:
         dependency-type: "development"

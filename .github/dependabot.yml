@@ -9,6 +9,11 @@ updates:
       timezone: "Asia/Taipei"
     open-pull-requests-limit: 5
     labels: ["dependencies", "javascript"]
+    # Node 22 is the current type baseline. Review the runtime floor and
+    # product checks before adopting declarations for a newer Node major.
+    ignore:
+      - dependency-name: "@types/node"
+        versions: [">=23"]
 
   - package-ecosystem: "pip"
     directory: "/"

@@ -1,2 +1,2 @@
-pytest>=9
-ruff>=0.16
+pytest>=9 # freshness-hold: 9.x 已覆蓋維護測試，未使用 9.1.1 新功能；要用新 API 時重審下限。
+ruff>=0.16 # freshness-hold: 維護 gate 只跑 E9/F，0.16 已足夠；規則或設定變更時重審下限。

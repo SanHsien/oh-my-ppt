@@ -1,5 +1,19 @@
 # 維護決策
 
+## 2026-09-30：依賴 PR #7–#12 收尾
+
+`pytest`／`ruff` 的相容下限保留並標記理由，未採用 #7 單純提高下限的提案；
+`prettier` 3.9.9、`@google/genai` 2.24.0、
+`katex` 0.18.9 與 TypeScript 6.0.3 已從 #8、#10–#12 的差異採用。
+TypeScript 6 不再接受原有的 `baseUrl` 設定，因此改為相對的 `paths` 值。
+KaTeX 同步更新內嵌的 JS／CSS；既有工作階段在開啟時比對這兩個資源，不一致就重新複製。
+auto-render 腳本與 20 個 `.woff2` 字型的內容沒有變動。
+產品型別檢查、Vitest 與 Windows 維護 gate 是本次驗收條件。
+
+#9 的 `@types/node` 26 延後：目前型別基線是 22，專案仍允許 Node.js 20 起執行，
+直接改用 26 的型別可能讓產品使用較新 Node 才有的 API。Dependabot 暫時忽略 23 以上；
+當執行期最低版本與產品 CI 都升到相應 Node 主版後重新審查。
+
 ## 2026-09-12：建立 Windows-first 維護型 fork
 
 **決定**：fork `arcsin1/oh-my-ppt`，保留 Apache License 2.0 與完整 Git 歷史。本線預設分支用 `main`。本線聚焦繁中文件、Windows 開發 gate、Windows CI，以及逐筆審查的上游追蹤。

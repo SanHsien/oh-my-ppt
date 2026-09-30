@@ -10,6 +10,8 @@ const RUNTIME_ASSET_MARKERS = [
   { fileName: 'ppt-runtime.js', marker: PPT_RUNTIME_MARKER }
 ] as const
 
+const KATEX_ASSET_FILES = ['katex/katex.min.js', 'katex/katex.min.css'] as const
+
 async function hasExpectedRuntimeMarker(projectDir: string, fileName: string, marker: string): Promise<boolean> {
   try {
     const content = await fs.promises.readFile(path.join(projectDir, 'assets', fileName), 'utf-8')
@@ -28,5 +30,18 @@ export async function ensureSessionRuntimeCompatible(
       await ctx.ensureSessionAssets(projectDir)
       return
     }
+  }
+  for (const fileName of KATEX_ASSET_FILES) {
+    try {
+      const [source, installed] = await Promise.all([
+        fs.promises.readFile(ctx.resolveSessionAssetSourcePath(fileName)),
+        fs.promises.readFile(path.join(projectDir, 'assets', fileName))
+      ])
+      if (source.equals(installed)) continue
+    } catch {
+      // Missing assets use the same refresh path as an older runtime marker.
+    }
+    await ctx.ensureSessionAssets(projectDir)
+    return
   }
 }

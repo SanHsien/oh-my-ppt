@@ -219,7 +219,7 @@ importers:
         specifier: ^10.1.0
         version: 10.1.0(@types/react@19.3.0)(react@19.3.0)
       react-router-dom:
-        specifier: ^7.1.1
+        specifier: ^7.18.4
         version: 7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       slate:
         specifier: ^0.124.1

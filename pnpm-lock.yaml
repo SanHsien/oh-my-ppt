@@ -39,11 +39,11 @@ importers:
         specifier: 0.1.12
         version: 0.1.12
       '@arcsin1/presentation-editor-runtime':
-        specifier: 0.0.8
-        version: 0.0.8
+        specifier: 0.0.14
+        version: 0.0.14
       '@chenglou/pretext':
-        specifier: ^0.0.6
-        version: 0.0.6
+        specifier: ^0.0.9
+        version: 0.0.9
       '@dnd-kit/core':
         specifier: ^6.3.1
         version: 6.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -222,14 +222,14 @@ importers:
         specifier: ^7.18.4
         version: 7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       slate:
-        specifier: ^0.124.1
-        version: 0.124.1
+        specifier: ^0.126.2
+        version: 0.126.2
       slate-history:
         specifier: ^0.113.1
-        version: 0.113.1(slate@0.124.1)
+        version: 0.113.1(slate@0.126.2)
       slate-react:
-        specifier: ^0.124.2
-        version: 0.124.2(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(slate-dom@0.124.1(slate@0.124.1))(slate@0.124.1)
+        specifier: ^0.127.1
+        version: 0.127.1(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(slate-dom@0.124.1(slate@0.126.2))(slate@0.126.2)
       sonner:
         specifier: ^2.0.7
         version: 2.0.8(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -332,7 +332,7 @@ importers:
         version: 7.3.6(@types/node@22.20.4)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3)
       vitest:
         specifier: ^5.0.2
-        version: 5.0.2(@types/node@22.20.4)(happy-dom@20.14.5)(vite@7.3.6(@types/node@22.20.4)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3))
+        version: 5.0.3(@types/node@22.20.4)(happy-dom@20.14.5)(vite@7.3.6(@types/node@22.20.4)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3))
 
 packages:
 
@@ -361,8 +361,8 @@ packages:
   '@arcsin1/pptx2json@0.1.12':
     resolution: {integrity: sha512-tpBFXEWBd7xp3lLGHmun2MLStVJzoKikqSOdndnmrlv7KI6OI8pUuqVjwDLU4Fa+iBKtOcazJfzhsA/VtyFcKQ==}
 
-  '@arcsin1/presentation-editor-runtime@0.0.8':
-    resolution: {integrity: sha512-GMPpzFGIQ3fGWUmMEDQktXiJMaDlh4K3a7l0yQXTkmK/lunTEBOXvLPut1Y6P5RILo1EoWi1Wvn7Yr46gHcyiA==}
+  '@arcsin1/presentation-editor-runtime@0.0.14':
+    resolution: {integrity: sha512-595uOuYrf/Gc71a8iiwq3651z3Yx6GuwDp/iY+pMyrs7Y1Kmj1Mx+BIiOPZU9tb2GmaeCg+PlGhds3Y8akgCmQ==}
 
   '@babel/code-frame@7.29.7':
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
@@ -479,6 +479,9 @@ packages:
 
   '@chenglou/pretext@0.0.6':
     resolution: {integrity: sha512-U10s4tFeyu3oVHfXuNWwZSKqHXefhaigpcBkGj60qQFRJ+yUoQ+ez3cGJelP7BWDAB58HCgjcTSmOcg+77afBQ==}
+
+  '@chenglou/pretext@0.0.9':
+    resolution: {integrity: sha512-vInlpC//3vjRfWTs78k2BBIq/0bUdpjIp8TIn9fXe0NvnChhTQZfjioVzERQQbkQvCVpPpw7PDOrTWMHpq27VA==}
 
   '@dnd-kit/accessibility@3.1.1':
     resolution: {integrity: sha512-2P+YgaXF+gRsIihwwY1gCsQSYnu9Zyj2py8kY5fFvUM1qm2WA2u639R6YNVfU4GWr+ZM5mqEsfHZZLoRONbemw==}
@@ -2134,8 +2137,8 @@ packages:
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
 
-  '@vitest/mocker@5.0.2':
-    resolution: {integrity: sha512-Z5FS00Q1SJHkB35xATsmWGdQ5WA1/0MV3CDjqyv7GavHv1OfOj145MNfHOlHk7QLes21dKFDHr8EO2zvL+9WGA==}
+  '@vitest/mocker@5.0.3':
+    resolution: {integrity: sha512-T8sWAIbkSyAjkwTcaEc3Iu0o9A27X1/kdXrizhZkGuSKScRQtRzclfAMpOTcGdXCsqxeWlpGy3XjqaW8CpLORg==}
     peerDependencies:
       msw: ^2.4.9
       vite: ^6.0.0 || ^7.0.0 || ^8.0.0
@@ -2145,8 +2148,8 @@ packages:
       vite:
         optional: true
 
-  '@vitest/spy@5.0.2':
-    resolution: {integrity: sha512-Ijc7T1nT9efNb5LxvjaBrEqw3f/QwUv5EE0nKqZxgqsaV/FxAAZ8baGylA8X/Z2oS4Lp+K74Jr6dTJsDKxJDeg==}
+  '@vitest/spy@5.0.3':
+    resolution: {integrity: sha512-XhFysQTB8AZ+P4gMi+Lpo99vg2AZi0qKpaB9yXQl37+CaMEAPO3iH/wGVnSyL5MPERiLezpqTVtrR6UZH5GCXg==}
 
   '@xmldom/xmldom@0.8.15':
     resolution: {integrity: sha512-/5NV/vDALVFDXgLmfsy9TRCBlKwO2LNBFzpzvb9iIj+jR+eSc6DLYYvVOdivT/jm7MtU6TebYuRmzEOI7w40UA==}
@@ -4724,16 +4727,23 @@ packages:
     peerDependencies:
       slate: '>=0.65.3'
 
-  slate-react@0.124.2:
-    resolution: {integrity: sha512-2B6ZZX5qKYeISNaQ9cDuvvp0tWydnHUPuGxyVJZfjD+W00X34dGaAF/5ZyVMZt/O//sf0Glbgd7+NBHRWjiA7Q==}
+  slate-react@0.127.1:
+    resolution: {integrity: sha512-ZiLJEEfKeAuRCOK7M7NAEA/lwhoCecikDWMQj6zbOJCKmZtIv4+7wdwmB2w3gZfrjVNmZWKbaP4zHORILVvc5g==}
     peerDependencies:
+      '@types/lodash': ^4.14.0
+      '@types/react': '>=18.0.0'
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
       slate: '>=0.121.0'
       slate-dom: '>=0.119.1'
+    peerDependenciesMeta:
+      '@types/lodash':
+        optional: true
+      '@types/react':
+        optional: true
 
-  slate@0.124.1:
-    resolution: {integrity: sha512-ii7DwezgvbLAyKtHBIunjTR1kzbNfYLCUKLMzJELlbTZkvHzX4DzN7HKIwcakf6dPxO6AoeT/P7kHOcyTym/hA==}
+  slate@0.126.2:
+    resolution: {integrity: sha512-38C8GU9awiEbroZm+DzXEFUWKptb1QV9xcgcUjseas4PtqQdBnEPITocosYzFHXEVrlkafjZEv8KH8pjhe0esQ==}
 
   sonner@2.0.8:
     resolution: {integrity: sha512-UM/ByIoFra8yzV75n1o0Puu0bw5U/9UNnDacrJNspekBewIfsQ3D6ez1nvlWpt7aTsO6rujQtifBpycwIivqlg==}
@@ -5120,20 +5130,20 @@ packages:
       yaml:
         optional: true
 
-  vitest@5.0.2:
-    resolution: {integrity: sha512-7MQrx9pDv5aHiUcovIb/70Ys3tgtkUVgCtledvKdCmEO+/1Dicq5ZqoSxOW034m03oqC+oHOKui2dM6qtMLoJg==}
+  vitest@5.0.3:
+    resolution: {integrity: sha512-xMw97S3rjdtj5dkVat7jCsqWBpvchs3RlpQctUqwJD0KkERk40vz2fJ77lDwW/Vzh/pk18eItYAzkodhSes3jQ==}
     engines: {node: ^22.12.0 || ^24.0.0 || >=26.0.0}
     hasBin: true
     peerDependencies:
       '@edge-runtime/vm': '*'
       '@opentelemetry/api': ^1.9.0
       '@types/node': ^22.0.0 || >=24.0.0
-      '@vitest/browser-playwright': 5.0.2
-      '@vitest/browser-preview': 5.0.2
+      '@vitest/browser-playwright': 5.0.3
+      '@vitest/browser-preview': 5.0.3
       '@vitest/browser-webdriverio': ^5.0.0-beta.5 || >=5.0.0
-      '@vitest/coverage-istanbul': 5.0.2
-      '@vitest/coverage-v8': 5.0.2
-      '@vitest/ui': 5.0.2
+      '@vitest/coverage-istanbul': 5.0.3
+      '@vitest/coverage-v8': 5.0.3
+      '@vitest/ui': 5.0.3
       happy-dom: '*'
       jsdom: '*'
       vite: ^6.4.0 || ^7.0.0 || ^8.0.0
@@ -5212,8 +5222,8 @@ packages:
     engines: {node: ^20.17.0 || >=22.9.0}
     hasBin: true
 
-  why-is-node-running@3.2.2:
-    resolution: {integrity: sha512-NKUzAelcoCXhXL4dJzKIwXeR8iEVqsA0Lq6Vnd0UXvgaKbzVo4ZTHROF2Jidrv+SgxOQ03fMinnNhzZATxOD3A==}
+  why-is-node-running@3.2.1:
+    resolution: {integrity: sha512-Tb2FUhB4vUsGQlfSquQLYkApkuPAFQXGFzxWKHHumVz2dK+X1RUm/HnID4+TfIGYJ1kTcwOaCk/buYCEJr6YjQ==}
     engines: {node: '>=20.11'}
     hasBin: true
 
@@ -5361,7 +5371,7 @@ snapshots:
       fast-xml-parser: 5.11.2
       jszip: 3.10.2
 
-  '@arcsin1/presentation-editor-runtime@0.0.8': {}
+  '@arcsin1/presentation-editor-runtime@0.0.14': {}
 
   '@babel/code-frame@7.29.7':
     dependencies:
@@ -5498,6 +5508,8 @@ snapshots:
   '@cfworker/json-schema@4.1.1': {}
 
   '@chenglou/pretext@0.0.6': {}
+
+  '@chenglou/pretext@0.0.9': {}
 
   '@dnd-kit/accessibility@3.1.1(react@19.3.0)':
     dependencies:
@@ -6829,7 +6841,7 @@ snapshots:
 
   '@types/estree-jsx@1.0.5':
     dependencies:
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.8
 
   '@types/estree@1.0.8': {}
 
@@ -7192,16 +7204,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/mocker@5.0.2(vite@7.3.6(@types/node@22.20.4)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3))':
+  '@vitest/mocker@5.0.3(vite@7.3.6(@types/node@22.20.4)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
-      '@vitest/spy': 5.0.2
+      '@vitest/spy': 5.0.3
       estree-walker: 3.0.3
       magic-string: 1.4.2
     optionalDependencies:
       vite: 7.3.6(@types/node@22.20.4)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3)
 
-  '@vitest/spy@5.0.2': {}
+  '@vitest/spy@5.0.3': {}
 
   '@xmldom/xmldom@0.8.15': {}
 
@@ -10280,7 +10292,7 @@ snapshots:
     dependencies:
       semver: 7.7.4
 
-  slate-dom@0.124.1(slate@0.124.1):
+  slate-dom@0.124.1(slate@0.126.2):
     dependencies:
       '@juggle/resize-observer': 3.4.0
       direction: 1.0.4
@@ -10288,15 +10300,15 @@ snapshots:
       is-plain-object: 5.1.0
       lodash: 4.18.1
       scroll-into-view-if-needed: 3.1.0
-      slate: 0.124.1
+      slate: 0.126.2
       tiny-invariant: 1.3.1
 
-  slate-history@0.113.1(slate@0.124.1):
+  slate-history@0.113.1(slate@0.126.2):
     dependencies:
       is-plain-object: 5.0.0
-      slate: 0.124.1
+      slate: 0.126.2
 
-  slate-react@0.124.2(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(slate-dom@0.124.1(slate@0.124.1))(slate@0.124.1):
+  slate-react@0.127.1(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(slate-dom@0.124.1(slate@0.126.2))(slate@0.126.2):
     dependencies:
       '@juggle/resize-observer': 3.4.0
       direction: 1.0.4
@@ -10305,11 +10317,13 @@ snapshots:
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
       scroll-into-view-if-needed: 3.1.0
-      slate: 0.124.1
-      slate-dom: 0.124.1(slate@0.124.1)
+      slate: 0.126.2
+      slate-dom: 0.124.1(slate@0.126.2)
       tiny-invariant: 1.3.1
+    optionalDependencies:
+      '@types/react': 19.3.0
 
-  slate@0.124.1: {}
+  slate@0.126.2: {}
 
   sonner@2.0.8(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
@@ -10731,10 +10745,10 @@ snapshots:
       tsx: 4.21.0
       yaml: 2.8.3
 
-  vitest@5.0.2(@types/node@22.20.4)(happy-dom@20.14.5)(vite@7.3.6(@types/node@22.20.4)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3)):
+  vitest@5.0.3(@types/node@22.20.4)(happy-dom@20.14.5)(vite@7.3.6(@types/node@22.20.4)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.2(vite@7.3.6(@types/node@22.20.4)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3))
+      '@vitest/mocker': 5.0.3(vite@7.3.6(@types/node@22.20.4)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3))
       chai: 6.2.2
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -10746,7 +10760,7 @@ snapshots:
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
       vite: 7.3.6(@types/node@22.20.4)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3)
-      why-is-node-running: 3.2.2
+      why-is-node-running: 3.2.1
     optionalDependencies:
       '@types/node': 22.20.4
       happy-dom: 20.14.5
@@ -10824,7 +10838,7 @@ snapshots:
     dependencies:
       isexe: 4.0.0
 
-  why-is-node-running@3.2.2: {}
+  why-is-node-running@3.2.1: {}
 
   woff2-encoder@2.0.0: {}
 

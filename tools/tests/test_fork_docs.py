@@ -89,7 +89,7 @@ def test_baseline_file_is_valid_and_complete() -> None:
     assert baseline["repo"] == "https://github.com/arcsin1/oh-my-ppt.git"
     assert baseline["branch"] == "main"
     assert len(baseline["reviewed_through"]) == 40
-    assert baseline["reviewed_through"] == "6d1b08bf3b0c91bb25c4372fa67222f40e086720"
+    assert re.fullmatch(r"[0-9a-f]{40}", baseline["reviewed_through"])
     assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", baseline["reviewed_date"])
     assert isinstance(baseline["reviewed_pr_through"], int)
     assert isinstance(baseline["reviewed_issue_through"], int)

@@ -15,6 +15,8 @@ updates:
       - dependency-name: "@types/node"
         versions: [">=23"]
       # Held, see docs/DECISIONS.md (2026-09-30).
+      - dependency-name: "@libsql/client"
+        update-types: ["version-update:semver-minor"]
       - dependency-name: "nanoid"
         update-types: ["version-update:semver-major"]
       - dependency-name: "electron"

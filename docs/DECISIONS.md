@@ -12,6 +12,9 @@
 | `nanoid` | 5 → 6（#15） | 主版，模組／執行期契約變動，ID 產生處無測試覆蓋 | 5.x 停止修補，或補上覆蓋測試 |
 | `electron` | 39 → 41／44（#19、#20） | 主版，需在 Windows 實跑打包 App 並冒煙測試，PR CI 不涵蓋 | 39 不再支援或安全修補需要；一次只升一個目標主版並附冒煙紀錄 |
 | `pytest`／`ruff` 下限 | 提高下限（#14） | 維持 `freshness-hold` 標記的相容下限，升下限無新功能 | 維護測試需要新 API 時 |
+| `@libsql/client` | 0.14 → 0.18（#22） | 0.x 跨四個小版且帶原生 `libsql` 0.4 → 0.5；Vitest 全過，但打包後 App 的資料庫載入未驗證，牽涉使用者資料 | 實跑打包 App 並確認既有資料庫可開啟、遷移可跑 |
+
+`vitest` 5.0.2（#23）已合併：`pnpm typecheck` 與 `pnpm test`（223 檔）全過。
 
 Dependabot 已對 `nanoid`、`electron` 主版與 `pytest`／`ruff` 加 `ignore`。
 

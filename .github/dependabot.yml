@@ -21,6 +21,14 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "electron"
         update-types: ["version-update:semver-major"]
+    # Minor and patch updates arrive as one PR per group; majors stay separate.
+    groups:
+      production-minor-and-patch:
+        dependency-type: "production"
+        update-types: ["minor", "patch"]
+      development-minor-and-patch:
+        dependency-type: "development"
+        update-types: ["minor", "patch"]
 
   - package-ecosystem: "pip"
     directory: "/"

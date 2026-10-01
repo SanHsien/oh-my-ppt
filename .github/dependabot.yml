@@ -21,6 +21,12 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "electron"
         update-types: ["version-update:semver-major"]
+      # Held, see docs/DECISIONS.md (2026-10-01).
+      - dependency-name: "@arcsin1/presentation-editor-runtime"
+      - dependency-name: "p-limit"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@electron-toolkit/eslint-config-ts"
+        update-types: ["version-update:semver-major"]
     # Minor and patch updates arrive as one PR per group; majors stay separate.
     groups:
       production-minor-and-patch:

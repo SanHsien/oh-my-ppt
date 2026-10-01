@@ -221,3 +221,16 @@ auto-render 腳本與 20 個 `.woff2` 字型的內容沒有變動。
 上游網站內容對應 v2.6.0／v2.7.0 的 CHANGELOG（批註、演講者視圖、生成品質檢測、逐頁版式選擇、模型上下文視窗設定等）。fork 內建離線說明中心（`/help`）刻意完全不連外，這些功能未同步到 fork 產品，因此說明中心不新增對應內容。**待辦**：日後同步 v2.7.0 程式時一併更新 `/help`。
 
 水位：commit `35648cb`、PR 147、issue 146、網站版本 2.7.0。
+
+## 2026-10-01：Dependabot 分組 PR（#24、#27、#28、#30、#31）
+
+| 項目 | 判斷 | 理由／觸發條件 |
+| --- | --- | --- |
+| `slate` 0.126.2、`slate-react` 0.127.1、`@chenglou/pretext` 0.0.9（#30 的三項） | 採用 | 本機 `pnpm typecheck`、`pnpm test`（223 檔、1177 項）通過。 |
+| `eslint-plugin-react-refresh` 0.5.7、`vitest` 5.0.3（#31） | 採用 | 開發依賴；同上驗證通過。 |
+| `@arcsin1/presentation-editor-runtime` 0.0.8 → 0.0.14（#30 的第四項） | 不採用，加 ignore | 0.0.14 讓 `tests/unit/preview/edit-mode-ref-lines.test.ts` 的吸附參考線測試失敗。它是上游產品搭配的執行元件、釘死版本，隨上游產品程式同步時一起升。 |
+| `p-limit` 3 → 7（#28） | 延後，加 ignore | 主版升級（v4 起只有 ESM）；Electron 主行程的載入要實際打包執行才能驗證。 |
+| `@electron-toolkit/eslint-config-ts` 3 → 4（#24） | 延後，加 ignore | 主版升級；本 repo 的閘門不跑 lint，無從驗證。 |
+| `pytest`／`ruff` 下限（#27） | 維持 2026-09-30 的延後 | 只升下限，沒有新行為需要。 |
+
+PR 的 CI 只跑維護工具測試，不跑產品測試；產品依賴的更新一律在本機跑 `pnpm typecheck` 與 `pnpm test` 後直接進 `main`。

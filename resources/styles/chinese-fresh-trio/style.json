@@ -1,0 +1,23 @@
+{
+  "style": "chinese-fresh-trio",
+  "name": {
+    "zh": "中國傳統色·青綠湖藍",
+    "en": "Chinese Fresh Trio"
+  },
+  "description": "翠綠湖藍米白三色，清朗國風現代",
+  "category": "淺色 · 柔和",
+  "aliases": [
+    "三色",
+    "青綠",
+    "湖藍",
+    "trio",
+    "fresh",
+    "國風現代"
+  ],
+  "styleCase": "品牌營銷、商業彙報、教學科普",
+  "imageGeneration": {
+    "prompt": "Modern Chinese landscape illustration with emerald bamboo, a turquoise lake or stream, distant green hills and light cloud vapor. Blend clean geometric color blocking with restrained ink-wash texture on an ivory background, leaving clear space for slide content. Do not render text, logos, UI, watermarks, photorealism, or dense scenery."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

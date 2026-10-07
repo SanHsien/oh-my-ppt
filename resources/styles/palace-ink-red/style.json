@@ -1,0 +1,23 @@
+{
+  "style": "palace-ink-red",
+  "name": {
+    "zh": "故宮墨紅",
+    "en": "Palace Ink Red"
+  },
+  "description": "厚重墨紅配宣紙米灰，新中式高級感的東方力量",
+  "category": "東方 · 國風",
+  "aliases": [
+    "宮牆紅",
+    "故宮配色",
+    "墨紅高級感",
+    "新中式深色",
+    "palace",
+    "ink-red"
+  ],
+  "styleCase": "傳統文化、品牌營銷、商業彙報",
+  "imageGeneration": {
+    "prompt": "Minimal Chinese palace-inspired still life with a matte ink-red wall, rice-paper texture, dark stone steps, simplified lattice architecture and one understated vermilion seal-like accent. Keep subdued museum lighting and generous negative space. Do not render text, seal lettering, logos, UI, watermarks, ornate borders, or glossy 3D."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

@@ -1,0 +1,23 @@
+{
+  "style": "splash-abstract",
+  "name": {
+    "zh": "潑彩抽象·多巴胺",
+    "en": "Splash Abstract"
+  },
+  "description": "五色潑墨多巴胺，張揚活力創意",
+  "category": "活力 · 創意",
+  "aliases": [
+    "多巴胺",
+    "潑墨",
+    "彩虹",
+    "splash",
+    "dopamine",
+    "活力"
+  ],
+  "styleCase": "影視音樂、藝術視覺、品牌營銷",
+  "imageGeneration": {
+    "prompt": "Energetic abstract dopamine splash painting with orange-red, hot magenta, violet, teal and electric-blue ink splashes, a restrained rainbow burst, starbursts, liquid swirls and irregular overlapping brush marks on warm white. Keep one clear focal area for slide content. Do not render text, logos, UI, watermarks, photorealistic objects, or dark muddy colors."
+  },
+  "version": "2.0.2",
+  "source": "builtin"
+}

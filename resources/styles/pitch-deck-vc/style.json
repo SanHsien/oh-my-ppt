@@ -1,0 +1,18 @@
+{
+  "style": "pitch-deck-vc",
+  "name": {
+    "zh": "融資路演",
+    "en": "Pitch Deck Vc"
+  },
+  "description": "藍紫漸變在白底綻放，每一個數字都在說服投資人",
+  "category": "淺色 · 專業",
+  "aliases": [
+    "pitch",
+    "vc",
+    "融資",
+    "路演"
+  ],
+  "styleCase": "融資路演、產品發佈、商業彙報",
+  "version": "2.0.1",
+  "source": "builtin"
+}

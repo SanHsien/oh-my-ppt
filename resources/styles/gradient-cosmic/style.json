@@ -1,0 +1,23 @@
+{
+  "style": "gradient-cosmic",
+  "name": {
+    "zh": "夢幻分界·星河煙火",
+    "en": "Gradient Cosmic"
+  },
+  "description": "深靛暗夜金橙，史詩夢幻強對比",
+  "category": "深色 · 沉穩",
+  "aliases": [
+    "星河",
+    "煙火",
+    "夢幻",
+    "cosmic",
+    "epic",
+    "夜空"
+  ],
+  "styleCase": "影視音樂、藝術視覺、年度慶典",
+  "imageGeneration": {
+    "prompt": "Cinematic cosmic night sky in deep indigo and black, with a luminous golden-orange nebula, stars, meteor trails and a subtle distant silhouette when relevant. Use dramatic dark-to-gold contrast and clean negative space for slide content. Do not render text, logos, UI, watermarks, borders, generic sci-fi interfaces, or busy scenes."
+  },
+  "version": "2.0.2",
+  "source": "builtin"
+}

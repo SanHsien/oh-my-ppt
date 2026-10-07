@@ -1,0 +1,18 @@
+{
+  "style": "terminal-green",
+  "name": {
+    "zh": "終端綠",
+    "en": "Terminal Green"
+  },
+  "description": "綠屏熒光在黑暗中閃爍，終端美學最原始的浪漫",
+  "category": "深色 · 科技",
+  "aliases": [
+    "terminal",
+    "green",
+    "終端",
+    "綠屏"
+  ],
+  "styleCase": "技術分享、教學科普、產品發佈",
+  "version": "2.0.1",
+  "source": "builtin"
+}

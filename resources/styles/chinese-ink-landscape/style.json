@@ -1,0 +1,23 @@
+{
+  "style": "chinese-ink-landscape",
+  "name": {
+    "zh": "中式水墨意境·山水",
+    "en": "Chinese Ink Landscape"
+  },
+  "description": "青灰山色暖沙米，深遠遼闊山水意境",
+  "category": "東方 · 國風",
+  "aliases": [
+    "山水",
+    "水墨",
+    "青灰",
+    "landscape",
+    "ink",
+    "遠山"
+  ],
+  "styleCase": "旅遊出行、傳統文化、藝術視覺",
+  "imageGeneration": {
+    "prompt": "Expressive Chinese ink landscape painting with layered blue-gray mountains fading through mist, a lone boat, pine trees, and a distant pavilion when relevant. Use warm sand and rice-paper tones with expansive poetic negative space. Do not render text, seals with lettering, logos, UI, watermarks, vivid neon colors, or photorealism."
+  },
+  "version": "2.0.2",
+  "source": "builtin"
+}

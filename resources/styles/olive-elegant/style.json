@@ -1,0 +1,22 @@
+{
+  "style": "olive-elegant",
+  "name": {
+    "zh": "橄欖奶白 · 高級穩重",
+    "en": "Olive Elegant"
+  },
+  "description": "深橄欖綠與奶白綠的古典奢華風",
+  "category": "深色 · 奢華",
+  "aliases": [
+    "橄欖綠",
+    "奶白綠",
+    "高級",
+    "穩重",
+    "古典"
+  ],
+  "styleCase": "藝術視覺、傳統文化、雜誌編輯",
+  "imageGeneration": {
+    "prompt": "Elegant botanical still life with olive and laurel branches against deep olive-green and ivory, restrained antique-gold line accents and classical editorial lighting. Keep the image refined, tactile and spacious for slide text. Do not render text, logos, UI, watermarks, ornate frames, or dense foliage."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

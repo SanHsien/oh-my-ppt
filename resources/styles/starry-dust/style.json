@@ -1,0 +1,22 @@
+{
+  "style": "starry-dust",
+  "name": {
+    "zh": "星屑柔光 · 童話感",
+    "en": "Starry Dust"
+  },
+  "description": "霧紫香檳粉星空藍的柔光童話風",
+  "category": "活力 · 創意",
+  "aliases": [
+    "星屑",
+    "柔光",
+    "童話",
+    "夢幻",
+    "少女"
+  ],
+  "styleCase": "親子兒童、婚慶浪漫、品牌營銷",
+  "imageGeneration": {
+    "prompt": "Soft fairytale illustration in misty lavender, champagne pink and starry blue, with glowing stars, crescent moon, fluffy clouds, a unicorn and rainbow when relevant. Use frosted dreamy light, rounded candy-like shapes and an airy composition. Do not render text, logos, UI, watermarks, photorealism, hard edges, or dense scenes."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

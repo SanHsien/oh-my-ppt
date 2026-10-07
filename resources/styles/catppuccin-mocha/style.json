@@ -1,0 +1,18 @@
+{
+  "style": "catppuccin-mocha",
+  "name": {
+    "zh": "Catppuccin 摩卡",
+    "en": "Catppuccin Mocha"
+  },
+  "description": "摩卡柔霧中的粉彩光點，長時間凝視也不會疲倦",
+  "category": "深色 · 科技",
+  "aliases": [
+    "catppuccin",
+    "mocha",
+    "摩卡",
+    "深色開發者"
+  ],
+  "styleCase": "技術分享、教學科普、產品發佈",
+  "version": "2.0.1",
+  "source": "builtin"
+}

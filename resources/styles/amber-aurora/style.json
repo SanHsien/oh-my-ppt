@@ -1,0 +1,22 @@
+{
+  "style": "amber-aurora",
+  "name": {
+    "zh": "扁豆紫蜜陀僧 · 國風治癒",
+    "en": "Amber Aurora"
+  },
+  "description": "暖紫橙漸變的黃昏國風治癒",
+  "category": "效果 · 戲劇",
+  "aliases": [
+    "扁豆紫",
+    "蜜陀僧",
+    "國風",
+    "暖紫橙",
+    "黃昏"
+  ],
+  "styleCase": "傳統文化、療愈冥想、年度慶典",
+  "imageGeneration": {
+    "prompt": "A poetic Chinese-inspired dusk landscape, muted lentil-purple sky fading into honey-orange sunset water, soft ink-like clouds, glowing firefly specks and reflective ripples. Keep an elegant, calming atmosphere with generous negative space for slide content. Do not render text, logos, UI, watermarks, borders, neon, or photorealistic stock imagery."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

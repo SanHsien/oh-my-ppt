@@ -1,0 +1,19 @@
+{
+  "style": "dopamine-clash",
+  "name": {
+    "zh": "多巴胺活力撞色",
+    "en": "Dopamine Clash"
+  },
+  "description": "淡紫亮綠玫粉的高飽和年輕撞色",
+  "category": "活力 · 創意",
+  "aliases": [
+    "dopamine",
+    "多巴胺",
+    "撞色",
+    "活力",
+    "年輕"
+  ],
+  "styleCase": "品牌營銷、產品發佈、年度慶典",
+  "version": "2.0.1",
+  "source": "builtin"
+}

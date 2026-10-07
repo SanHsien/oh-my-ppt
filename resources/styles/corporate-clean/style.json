@@ -1,0 +1,18 @@
+{
+  "style": "corporate-clean",
+  "name": {
+    "zh": "企業潔淨",
+    "en": "Corporate Clean"
+  },
+  "description": "純白上海軍藍落筆，商務場合最穩妥的選擇",
+  "category": "淺色 · 專業",
+  "aliases": [
+    "corporate",
+    "企業",
+    "正式",
+    "商務"
+  ],
+  "styleCase": "商業彙報、融資路演、年度慶典",
+  "version": "2.0.1",
+  "source": "builtin"
+}

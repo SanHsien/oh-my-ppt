@@ -1,0 +1,22 @@
+{
+  "style": "industrial-kaizen",
+  "name": {
+    "zh": "表格 · 現代週報",
+    "en": "Tabular Business"
+  },
+  "description": "剋制的中性色表格驅動商務風",
+  "category": "淺色 · 專業",
+  "aliases": [
+    "表格",
+    "table",
+    "tabular",
+    "週報",
+    "報表",
+    "商務表格",
+    "kaizen",
+    "grid"
+  ],
+  "styleCase": "商業彙報、年度慶典、技術分享",
+  "version": "2.0.1",
+  "source": "builtin"
+}

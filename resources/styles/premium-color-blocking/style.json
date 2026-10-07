@@ -1,0 +1,22 @@
+{
+  "style": "premium-color-blocking",
+  "name": {
+    "zh": "高級撞色",
+    "en": "Premium Color Blocking"
+  },
+  "description": "暖橙撞墨藍的時尚編輯大片氣質",
+  "category": "雜誌 · 編輯",
+  "aliases": [
+    "撞色",
+    "高級配色",
+    "色彩對峙",
+    "雜誌風",
+    "editorial"
+  ],
+  "styleCase": "時尚潮流、品牌營銷、產品發佈",
+  "imageGeneration": {
+    "prompt": "High-fashion editorial abstract composition with sharp coral-orange and deep ink-blue color blocks, cream negative space and subtle screen-print texture. Add a single restrained botanical line motif only when relevant, preserving strong hierarchy for slide content. Do not render text, logos, UI, watermarks, photorealistic people, or decorative frames."
+  },
+  "version": "2.0.2",
+  "source": "builtin"
+}

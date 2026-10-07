@@ -1,0 +1,22 @@
+{
+  "style": "macaron-mist",
+  "name": {
+    "zh": "柔霧甜夢",
+    "en": "Macaron Mist"
+  },
+  "description": "薄荷粉珊瑚薰衣草紫的柔霧甜點風",
+  "category": "活力 · 創意",
+  "aliases": [
+    "柔霧甜點",
+    "柔霧",
+    "夢幻",
+    "少女",
+    "甜品"
+  ],
+  "styleCase": "餐飲美食、婚慶浪漫、生活方式",
+  "imageGeneration": {
+    "prompt": "Soft pastel macaron dessert still life with mint green, coral pink and lavender tones, dreamy matte haze, delicate pastry details and gentle diffused light. Keep rounded playful forms on a cream background with ample negative space. Do not render text, logos, packaging labels, UI, watermarks, dark lighting, or clutter."
+  },
+  "version": "2.0.2",
+  "source": "builtin"
+}

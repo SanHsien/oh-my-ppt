@@ -1,0 +1,23 @@
+{
+  "style": "chinese-pastel-spring",
+  "name": {
+    "zh": "中國傳統色·春日嫩柳",
+    "en": "Chinese Pastel Spring"
+  },
+  "description": "嫩柳綠配桃花粉，初春國風溫柔配色",
+  "category": "自然 · 有機",
+  "aliases": [
+    "國風",
+    "春日",
+    "嫩綠",
+    "桃花",
+    "pastel",
+    "spring"
+  ],
+  "styleCase": "傳統文化、品牌營銷、產品發佈",
+  "imageGeneration": {
+    "prompt": "Gentle early-spring Jiangnan illustration with willow branches, peach blossoms, swallows, butterflies and a paper kite when relevant. Use pastel willow green and peach-pink ink washes on warm rice paper with a light, airy composition. Do not render text, logos, UI, watermarks, harsh outlines, photorealism, or crowded scenes."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

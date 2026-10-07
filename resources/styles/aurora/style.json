@@ -1,0 +1,20 @@
+{
+  "style": "aurora",
+  "name": {
+    "zh": "極光",
+    "en": "Aurora"
+  },
+  "description": "極光漸變融化在blur裏，封面頁天生就該這樣夢幻",
+  "category": "效果 · 戲劇",
+  "aliases": [
+    "aurora",
+    "極光",
+    "封面"
+  ],
+  "styleCase": "影視音樂、產品發佈、年度慶典",
+  "imageGeneration": {
+    "prompt": "Abstract aurora borealis sweeping across a deep indigo polar night sky, with emerald green, cyan and violet ribbons dissolving into soft luminous mist. Create cinematic, dreamy cover art with clear negative space for slide text. Do not render typography, logos, UI, watermarks, borders, people, or sharp geometric elements."
+  },
+  "version": "2.0.2",
+  "source": "builtin"
+}

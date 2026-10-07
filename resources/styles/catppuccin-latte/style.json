@@ -1,0 +1,18 @@
+{
+  "style": "catppuccin-latte",
+  "name": {
+    "zh": "Catppuccin 拿鐵",
+    "en": "Catppuccin Latte"
+  },
+  "description": "拿鐵淺底映粉彩，開發者的午後該有這樣的溫柔",
+  "category": "淺色 · 柔和",
+  "aliases": [
+    "catppuccin",
+    "latte",
+    "拿鐵",
+    "開發者"
+  ],
+  "styleCase": "技術分享、教學科普、生活方式",
+  "version": "2.0.1",
+  "source": "builtin"
+}

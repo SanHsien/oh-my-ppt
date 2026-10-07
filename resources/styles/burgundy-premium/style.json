@@ -1,0 +1,22 @@
+{
+  "style": "burgundy-premium",
+  "name": {
+    "zh": "勃艮第紅高級感",
+    "en": "Burgundy Premium"
+  },
+  "description": "沉穩奢華的紅金黑配色",
+  "category": "深色 · 奢華",
+  "aliases": [
+    "勃艮第紅",
+    "burgundy",
+    "酒紅",
+    "高級感",
+    "紅金"
+  ],
+  "styleCase": "時尚潮流、品牌營銷、藝術視覺",
+  "imageGeneration": {
+    "prompt": "Luxury editorial still life in deep burgundy red, matte black and restrained rose-gold metallic accents. Favor velvet, polished surfaces and dramatic directional studio lighting with sophisticated negative space for slide text. Do not render text, logos, labels, UI, watermarks, crowded product arrangements, or generic corporate stock imagery."
+  },
+  "version": "2.0.2",
+  "source": "builtin"
+}

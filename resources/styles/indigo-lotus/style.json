@@ -1,0 +1,22 @@
+{
+  "style": "indigo-lotus",
+  "name": {
+    "zh": "青蓮碧藍 · 夢幻國風",
+    "en": "Indigo Lotus"
+  },
+  "description": "紫藍漸變的黃昏海天國風",
+  "category": "東方 · 國風",
+  "aliases": [
+    "青蓮",
+    "碧藍",
+    "夢幻",
+    "國風",
+    "紫藍"
+  ],
+  "styleCase": "傳統文化、療愈冥想、教學科普",
+  "imageGeneration": {
+    "prompt": "Dreamlike Chinese-inspired twilight seascape, indigo-violet sky fading into turquoise water, flowing ink-wash clouds, delicate stars, distant mountains and lotus leaves in silhouette. Preserve a serene atmosphere and elegant negative space for slide content. Do not render text, logos, UI, watermarks, strong neon, or dense scenery."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

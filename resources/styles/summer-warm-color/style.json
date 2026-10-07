@@ -1,0 +1,22 @@
+{
+  "style": "summer-warm-color",
+  "name": {
+    "zh": "夏日暖色",
+    "en": "Summer Warm Color"
+  },
+  "description": "清新治癒的夏日繪本風",
+  "category": "暖色 · 治癒",
+  "aliases": [
+    "夏日",
+    "summer",
+    "暖色",
+    "童趣",
+    "水彩繪本"
+  ],
+  "styleCase": "親子兒童、教學科普、療愈冥想",
+  "imageGeneration": {
+    "prompt": "Sunny children's picture-book watercolor and colored-pencil scene with a bright blue sky, fluffy clouds, radiant yellow sun, green meadow, a child lying on the grass looking up, paper airplanes, balloons and a pinwheel when relevant. Use soft hand-painted edges and a warm playful palette. Do not render text, logos, UI, watermarks, photorealism, or crowded detail."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

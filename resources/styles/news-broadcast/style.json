@@ -1,0 +1,18 @@
+{
+  "style": "news-broadcast",
+  "name": {
+    "zh": "新聞播報",
+    "en": "News Broadcast"
+  },
+  "description": "紅色豎條亮起，所有目光聚焦——突發新聞，不容錯過",
+  "category": "雜誌 · 編輯",
+  "aliases": [
+    "news",
+    "廣播",
+    "播報",
+    "突發新聞"
+  ],
+  "styleCase": "商業彙報、品牌營銷、雜誌編輯",
+  "version": "2.0.1",
+  "source": "builtin"
+}

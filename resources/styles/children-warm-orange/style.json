@@ -1,0 +1,23 @@
+{
+  "style": "children-warm-orange",
+  "name": {
+    "zh": "童趣橙暖",
+    "en": "Children Warm Orange"
+  },
+  "description": "活潑可愛的兒童節橙暖風",
+  "category": "暖色 · 治癒",
+  "aliases": [
+    "童趣",
+    "兒童節",
+    "橙暖",
+    "可愛",
+    "木馬",
+    "children"
+  ],
+  "styleCase": "親子兒童、教學科普、品牌營銷",
+  "imageGeneration": {
+    "prompt": "Warm children's picture-book scene with an orange sky, vivid green meadow, playful children, balloons, paper airplanes and a small carousel when relevant to the topic. Use cheerful hand-painted forms and a wholesome, airy composition with text-safe space. Do not render words, logos, UI, watermarks, photorealism, dark moods, or dense visual clutter."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

@@ -1,0 +1,18 @@
+{
+  "style": "glassmorphism",
+  "name": {
+    "zh": "磨砂玻璃",
+    "en": "Glassmorphism"
+  },
+  "description": "磨砂玻璃後光斑流轉，Apple 發佈會的光影魔術",
+  "category": "效果 · 戲劇",
+  "aliases": [
+    "glass",
+    "玻璃",
+    "磨砂",
+    "frosted"
+  ],
+  "styleCase": "產品發佈、品牌營銷、藝術視覺",
+  "version": "2.0.1",
+  "source": "builtin"
+}

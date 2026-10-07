@@ -1,0 +1,22 @@
+{
+  "style": "mint-fresh",
+  "name": {
+    "zh": "薄荷清新 · 高級綠",
+    "en": "Mint Fresh"
+  },
+  "description": "低飽和高明度的高級感綠色系",
+  "category": "自然 · 有機",
+  "aliases": [
+    "薄荷",
+    "綠色系",
+    "清新",
+    "高級綠",
+    "植物"
+  ],
+  "styleCase": "餐飲美食、療愈冥想、教學科普",
+  "imageGeneration": {
+    "prompt": "Fresh botanical editorial photograph in a bright greenhouse or plant study, with pale mint, sage and soft gray-green tones, delicate leaves and fern textures under diffused morning light. Keep a calm premium wellness mood with airy negative space. Do not render text, logos, UI, watermarks, hard shadows, or tropical-saturated colors."
+  },
+  "version": "2.0.2",
+  "source": "builtin"
+}

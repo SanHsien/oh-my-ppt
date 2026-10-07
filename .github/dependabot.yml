@@ -1,0 +1,67 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Taipei"
+    open-pull-requests-limit: 5
+    labels: ["dependencies", "javascript"]
+    # Node 22 is the current type baseline. Review the runtime floor and
+    # product checks before adopting declarations for a newer Node major.
+    ignore:
+      - dependency-name: "@types/node"
+        versions: [">=23"]
+      # Held, see docs/DECISIONS.md (2026-09-30).
+      - dependency-name: "@libsql/client"
+        update-types: ["version-update:semver-minor"]
+      - dependency-name: "nanoid"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "electron"
+        update-types: ["version-update:semver-major"]
+      # Held, see docs/DECISIONS.md (2026-10-01).
+      - dependency-name: "@arcsin1/presentation-editor-runtime"
+      - dependency-name: "p-limit"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@electron-toolkit/eslint-config-ts"
+        update-types: ["version-update:semver-major"]
+    # Minor and patch updates arrive as one PR per group; majors stay separate.
+    groups:
+      production-minor-and-patch:
+        dependency-type: "production"
+        update-types: ["minor", "patch"]
+      development-minor-and-patch:
+        dependency-type: "development"
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Taipei"
+    open-pull-requests-limit: 5
+    labels: ["dependencies", "python"]
+    # requirements-dev.txt declares lower bounds with a freshness-hold reason.
+    # Only open a PR when a new release falls outside the declared range;
+    # the default strategy kept raising the floors (#14, #21, #27, #32).
+    versioning-strategy: increase-if-necessary
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Taipei"
+    open-pull-requests-limit: 5
+    labels: ["dependencies", "github-actions"]
+    groups:
+      github-actions:
+        patterns: ["*"]

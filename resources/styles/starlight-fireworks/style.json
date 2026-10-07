@@ -1,0 +1,23 @@
+{
+  "style": "starlight-fireworks",
+  "name": {
+    "zh": "一半星河一半煙火",
+    "en": "Starlight Fireworks"
+  },
+  "description": "海軍藍暖焰橙對角，夢幻詩意二元",
+  "category": "深色 · 沉穩",
+  "aliases": [
+    "星河",
+    "煙火",
+    "對角",
+    "dreamy",
+    "duality",
+    "詩意"
+  ],
+  "styleCase": "療愈冥想、藝術視覺、婚慶浪漫",
+  "imageGeneration": {
+    "prompt": "Dreamlike realistic digital painting split diagonally at 45 degrees: deep navy starfield and Milky Way on the upper-left, warm orange fireworks on the lower-right, with two small human silhouettes on the divide, meteors and glowing particles. Preserve strong cinematic contrast and text-safe space. Do not render readable text, logos, UI, watermarks, close-up faces, or a crowded scene."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

@@ -1,0 +1,22 @@
+{
+  "style": "dreamy-romance",
+  "name": {
+    "zh": "夢幻浪漫 · 治癒系",
+    "en": "Dreamy Romance"
+  },
+  "description": "霧紫櫻花粉星空藍的夢幻浪漫治癒風",
+  "category": "活力 · 創意",
+  "aliases": [
+    "夢幻",
+    "浪漫",
+    "治癒",
+    "霧紫",
+    "櫻花粉"
+  ],
+  "styleCase": "婚慶浪漫、療愈冥想、藝術視覺",
+  "imageGeneration": {
+    "prompt": "Soft romantic dreamscape in misty lavender, cherry pink and starlit blue, with luminous stars, floating petals, feathers and butterflies around a gentle moonlit haze. Keep a painterly, healing atmosphere and clear text-safe space. Do not render words, logos, UI, watermarks, harsh contrast, photorealistic stock imagery, or crowded scenes."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

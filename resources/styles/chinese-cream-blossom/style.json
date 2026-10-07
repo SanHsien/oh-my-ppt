@@ -1,0 +1,23 @@
+{
+  "style": "chinese-cream-blossom",
+  "name": {
+    "zh": "中國傳統色·米白櫻粉",
+    "en": "Chinese Cream Blossom"
+  },
+  "description": "宣紙米白配櫻粉，溫柔雅緻國風",
+  "category": "淺色 · 柔和",
+  "aliases": [
+    "米白",
+    "櫻粉",
+    "溫柔",
+    "cream",
+    "blossom",
+    "國風"
+  ],
+  "styleCase": "婚慶浪漫、生活方式、傳統文化",
+  "imageGeneration": {
+    "prompt": "Delicate Chinese guohua-inspired illustration on warm rice paper, with soft cherry blossoms, drifting petals, silk fans, lanterns and pale cloud motifs when relevant. Use an ivory and restrained blush-pink palette with elegant negative space. Do not render text, seals with lettering, logos, UI, watermarks, heavy saturation, or photorealism."
+  },
+  "version": "2.0.1",
+  "source": "builtin"
+}

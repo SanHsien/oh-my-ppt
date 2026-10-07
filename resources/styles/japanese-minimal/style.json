@@ -1,0 +1,18 @@
+{
+  "style": "japanese-minimal",
+  "name": {
+    "zh": "日式極簡",
+    "en": "Japanese Minimal"
+  },
+  "description": "象牙白上一筆硃紅，萬物留白處見匠心",
+  "category": "淺色 · 極簡",
+  "aliases": [
+    "japanese",
+    "日式",
+    "禪意",
+    "匠人"
+  ],
+  "styleCase": "產品發佈、品牌營銷、藝術視覺",
+  "version": "2.0.1",
+  "source": "builtin"
+}

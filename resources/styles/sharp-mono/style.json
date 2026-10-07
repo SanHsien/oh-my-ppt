@@ -1,0 +1,18 @@
+{
+  "style": "sharp-mono",
+  "name": {
+    "zh": "銳利黑白",
+    "en": "Sharp Mono"
+  },
+  "description": "黑白利刃切開視覺噪音，硬朗到骨子裏",
+  "category": "大膽 · 宣言",
+  "aliases": [
+    "sharp",
+    "mono",
+    "黑白",
+    "純黑白"
+  ],
+  "styleCase": "融資路演、品牌營銷、藝術視覺",
+  "version": "2.0.1",
+  "source": "builtin"
+}

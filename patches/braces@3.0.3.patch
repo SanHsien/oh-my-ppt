@@ -1,0 +1,24 @@
+diff --git a/lib/parse.js b/lib/parse.js
+index 3a6988e629f52aee6609dc5ec290a5e9ff47cecb..f55b9e7610f5d9bb93d26da62e769b3cd6566c38 100644
+--- a/lib/parse.js
++++ b/lib/parse.js
+@@ -144,6 +144,9 @@ const parse = (input, options = {}) => {
+ 
+     if (value === CHAR_LEFT_PARENTHESES) {
+       block = push({ type: 'paren', nodes: [] });
++      if (stack.length >= 64) {
++        throw new SyntaxError("Pattern nesting exceeds the safe limit of 64");
++      }
+       stack.push(block);
+       push({ type: 'text', value });
+       continue;
+@@ -210,6 +213,9 @@ const parse = (input, options = {}) => {
+       };
+ 
+       block = push(brace);
++      if (stack.length >= 64) {
++        throw new SyntaxError("Pattern nesting exceeds the safe limit of 64");
++      }
+       stack.push(block);
+       push({ type: 'open', value });
+       continue;

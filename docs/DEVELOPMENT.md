@@ -38,6 +38,8 @@ pwsh -NoProfile -File tools\bootstrap_dev.ps1
 
 ### 產品開發與測試
 
+Windows 產品工具鏈需要 Node.js `>=22.12.0` 與 pnpm `10.10.0`，對應 Electron 41／`@electron/get` 5 的最低 Node 版本。維護骨架 CI 只執行 Python gate，未安裝 Node 或執行產品驗收。
+
 若需進行 Electron 桌面應用程式的開發與偵錯：
 
 ```powershell

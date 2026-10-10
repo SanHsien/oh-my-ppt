@@ -249,7 +249,7 @@ PPTX 解析與結構化轉換為 Oh My PPT 完全自研。複雜形狀、圖表�
 
 ### 環境需求
 - Windows 11 原生環境（PowerShell 7+）
-- Node.js `>=20`
+- Node.js `>=22.12.0`
 - pnpm `10.10.0`
 - Python `>=3.10`（供維護門禁工具使用）
 

@@ -258,3 +258,25 @@ PR 的 CI 只跑維護工具測試，不跑產品測試；產品依賴的更新�
 **理由**：Electron 主版升級與其底層安全性修復，必須在 Windows 環境進行完整的 App 封裝打包與實際冒煙測試。目前 PR CI 並不涵蓋實際 Windows 打包驗證，且本階段主要聚焦次要套件修補。
 
 **觸發條件**：待專門進行 Electron 主版維護與封裝測試時，再行一次性升版並附帶冒煙測試結果。重審日期設為 2026-11-01。
+
+## 2026-10-10：依賴安全修補與 Windows 封裝驗收
+
+本次取代 2026-10-09 的 Electron 延後决定。Electron 下限升至 41.10.6（lock 為 41.10.7），`@libsql/client` 升至 0.18.0；`fast-uri` 下限為 3.1.8，保留 `source-map-js` 1.2.2 修補下限。
+
+無官方修補版的三項依賴以 `pnpm.patchedDependencies` 保存本地修補：
+
+| Advisory / 套件 | 本地措施 | 限制 |
+| --- | --- | --- |
+| GHSA-vfj7-8cjw-p6xm / braces | brace／parenthesis parser AST 固定深度上限，阻止後續遞迴耗盡堆疊 | 過深 pattern 拋 SyntaxError；一般 alternatives／fast-glob 保留 |
+| GHSA-ch52-4w7c-c8xp / http-cache-semantics | freshness 為零時禁止 max-stale、stale-while-revalidate／stale-if-error 命中 | 保守要求零 freshness 項目重新驗證，含 private／no-store／Set-Cookie |
+| GHSA-hp3w-g68c-fv3c / sprintf-js | 數值精度限制為 f/e 0–100、g 1–100 | 超大精度截至 100；正常格式與 argparse 保留 |
+
+全域 `brace-expansion:^1` override 會破壞 electron-builder 使用的 minimatch 10 `expand` API；改為只覆蓋 `brace-expansion@1`，新版消費者使用自身相容範圍。
+
+本地 patch 不會改變 registry 的 vulnerable version 判斷；不得 ignore／dismiss 或宣稱 Dependabot 歸零。上述三筆仍在 audit，待官方修補或安全 replacement。攻擊回歸測試在 `tests/unit/security/dependency-boundaries.test.ts`。
+
+Windows 驗收使用未發布 x64 目錄包。`tools/windows-security-smoke.ts` 為 test-only main，使用唯一暫存 profile／合成 session，檢查 native file DB 初始化／遷移、寫入、關閉重開與真實 renderer／preload／IPC 讀回。HTTP／fetch 封鎖，90 秒上限。以 esbuild 將 helper 打包至 `out/main/security-smoke.mjs`，再以 electron-builder `--dir --publish never --config.extraMetadata.main=./out/main/security-smoke.mjs` 建立驗收包；此入口不可 release。optional ffmpeg 缺失時不宣稱 MP4 匯出通過。
+
+命令、時間、exit、HEAD、完整 modified／untracked SHA256 與環境保存於本次工作目錄的 `outputs/ohmyppt-*.json`／`.log`。交付前仍需獨立審查完整 diff；本次未提交／發布／寫入上游。
+
+封裝 smoke 另揭露 `@langchain/langgraph-sdk@1.12.1` 的 ESM `dist/utils/async_caller.js` 引用內嵌 `.pnpm` 路徑，electron-builder 不會收錄該內嵌目錄。增加精準套件 patch，把兩個 import 改為已宣告的 `p-retry`／`p-queue` 正常 dependency specifier；僅修本產品使用的 ESM 路徑，未改 CJS 發行檔，未擴張產品 source。合成 profile 失敗後重試會沿用同一 root／session。

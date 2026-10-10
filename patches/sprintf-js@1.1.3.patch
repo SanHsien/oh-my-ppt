@@ -1,0 +1,16 @@
+diff --git a/src/sprintf.js b/src/sprintf.js
+index 65d6324645ef1d0133614a71497751009dc5c912..04f028ccfcb0e7317ef6aa6aace341cc4c548070 100644
+--- a/src/sprintf.js
++++ b/src/sprintf.js
+@@ -66,6 +66,11 @@
+                     is_positive = arg >= 0
+                 }
+ 
++                // Bound precision before invoking ECMAScript number formatting.
++                if (re.number.test(ph.type) && ph.precision !== undefined) {
++                    ph.precision = String(Math.min(100, Math.max(ph.type === 'g' ? 1 : 0, Number(ph.precision))))
++                }
++
+                 switch (ph.type) {
+                     case 'b':
+                         arg = parseInt(arg, 10).toString(2)

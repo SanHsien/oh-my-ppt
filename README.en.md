@@ -249,7 +249,7 @@ Note: Local Ollama configurations handle text outline generation, deck drafting,
 
 ### Prerequisites
 - Windows 11 native environment (PowerShell 7+)
-- Node.js `>=20`
+- Node.js `>=22.12.0`
 - pnpm `10.10.0`
 - Python `>=3.10` (for maintenance gate scripts)
 

@@ -144,6 +144,11 @@ Oh My PPT 提供全新解法：
 4. 🇹🇼 **全庫繁體中文化與去廣告**：
    - 刪除簡中 README，統一繁體中文與英文說明，全量清理上游廣告、贊助 QR Code 與外部通訊群組。
 
+5. 📐 **DOM Bounding Box & Hit-Test 幾何跑版檢測（Token 消耗從千降至 <100）**：
+   - **告別昂貴且模糊的 Vision 截圖**：傳統 AI 修版面需「渲染 → 截圖 → 多模態模型讀圖 → 猜測修改」，單頁耗損近千 Token 且難以精確辨識像素差距。
+   - **本機 Chromium 幾何量測引擎**：直接計算元素 `getBoundingClientRect` 幾何分佈、AABB 元件碰撞交疊（Overlap）、畫布/父容器邊界溢出（Overflow）與文字高度截斷（`scrollHeight > clientHeight`），輸出小於 100 Tokens 的結構化自癒報告。
+   - **即時視覺量測標尺**：在渲染預覽端支援一鍵標註圖層，以紅框與像素標籤（如「超出 24px」、「重疊 12px」、「被蓋住 196px」）直觀可視化呈現。
+
 ---
 
 <a id="workflow"></a>

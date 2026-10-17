@@ -144,6 +144,11 @@ In addition to the core capabilities of Oh My PPT, this maintenance fork introdu
 4. 🇹🇼 **Full Traditional Chinese Localization & Ad Removal**:
    - Removed simplified Chinese README, aligned bilingual documentation, and purged all upstream advertisements and sponsor links.
 
+5. 📐 **DOM Bounding Box & Hit-Test Geometry QA (Token Usage Down from 1k to <100)**:
+   - **No Expensive Multimodal Vision Screenshots**: Avoid traditional "render → screenshot → vision model read → guess adjustment" loops that consume ~1,000 tokens per slide with inaccurate pixel alignment.
+   - **Local Chromium Geometry Engine**: Programmatically computes element bounding boxes (`getBoundingClientRect`), AABB element overlap collisions, canvas/parent boundary overflows, and vertical text clippings (`scrollHeight > clientHeight`) into a structured diagnostic report under 100 tokens.
+   - **Live Visual Measurement Overlay**: Supports in-app visual measurement overlays (e.g. "+24px overflow", "12px overlap", "196px clipping") for instant inspection.
+
 ---
 
 <a id="workflow"></a>

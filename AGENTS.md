@@ -5,6 +5,8 @@
 > - **PR、push、release 一律指向 `SanHsien/oh-my-ppt`**，嚴禁未經當次許可打向 `arcsin1/oh-my-ppt`。
 > - 每個 clone 先確認 `gh repo set-default SanHsien/oh-my-ppt`。
 > - 開 PR 明寫 `--repo SanHsien/oh-my-ppt` 並核對輸出的 URL。
+> - **上游更新檢查與同步**：不可僅以「採用待辦（adoption pending）」防守了事，審查後應積極將有價值的修復與相容性改進實作進 repo，並完成全量驗收。
+> - **PRs 與 Issues 處理**：必須逐一進行實質評估、處理與記錄，不可只報告流水號。
 > - 提交前跑 `pwsh -NoProfile -File tools\dev_check.ps1`。
 > - 產品程式在 `src/`，以上游為準；不要移除 `upstream`、原作者或 Apache-2.0 授權標示。
 > - 測試簡報、模型 API key、個人 Prompt、`.env` 一律不可提交。

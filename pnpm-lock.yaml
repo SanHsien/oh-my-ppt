@@ -47,8 +47,8 @@ importers:
   .:
     dependencies:
       '@arcsin1/html2pptx':
-        specifier: 0.0.15
-        version: 0.0.15
+        specifier: 0.2.1
+        version: 0.2.1
       '@arcsin1/pptx-ooxml-geometry':
         specifier: 0.0.2
         version: 0.0.2
@@ -369,8 +369,8 @@ packages:
       zod:
         optional: true
 
-  '@arcsin1/html2pptx@0.0.15':
-    resolution: {integrity: sha512-WsDxV73latwHJqW2qA0FKWfE+wDClUi8Zw6rm8MhSpckQQjWjoViDj1f0S+bFI4Z9hnAkijKivIqhybghNM2Qg==}
+  '@arcsin1/html2pptx@0.2.1':
+    resolution: {integrity: sha512-tvdLnFjw1WpxwMvP5ojf71tnSqW9+wZKFExpUJfwl7tTnbhByMBMuW1jQNTWgjZoRO7QYqI3DC3RiBONwQWTCQ==}
 
   '@arcsin1/pptx-ooxml-geometry@0.0.2':
     resolution: {integrity: sha512-KOqbDTY6hFgxHyhW2Euist7t0HmrUZlw0HaHfWMNobXQu5hD6iDu4yfwqy9kuYVR4E7SVbH64pdwyt+AuiDT/w==}
@@ -5399,7 +5399,7 @@ snapshots:
     optionalDependencies:
       zod: 4.6.5
 
-  '@arcsin1/html2pptx@0.0.15':
+  '@arcsin1/html2pptx@0.2.1':
     dependencies:
       '@chenglou/pretext': 0.0.6
       fflate: 0.8.3

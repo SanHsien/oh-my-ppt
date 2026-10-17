@@ -1,36 +1,41 @@
 # 維護決策
 
-## 2026-10-17：上游審查（commit `35648cb` → `56bc56d`、PR 147 → 151、issue 水位 146、網站 2.7.0 → 2.8.0）
+## 2026-10-17：採納上游 v2.8.1 字體修復、升級 html2pptx 0.2.1、推理模型支援與 PR/Issue 深度處理（升版 v2.6.0）
 
-審查 4 筆 commit、3 筆 PR、0 筆 issue，網站版本 1 項。本輪未採用程式變更，字體嵌入修復列為採用待辦。
+審查 4 筆 commit、3 筆 PR、0 筆 issue，網站版本 1 項。全面採納並移植上游 v2.8.1 核心修復與社群 PR #150 深度成果，升版至 `v2.6.0`。
 
-### Commit（4 筆）
+### Commit 與核心功能採納
 
-| 項目 | 判斷 | 理由 |
+| 項目 | 判斷 | 成果與理由 |
 | --- | --- | --- |
-| `950fab7`（v2.8.0 版號與 CHANGELOG） | 跟隨上游 | 上游發版 commit；本 fork 維持自有版號體系（目前 v2.5.4）。 |
-| `f5f311c`、`539c9cb`（吸收 PR #149 字體修復方案，13 檔） | 採用待辦（adoption pending） | 改動涉及字體嵌入容器格式（改為裸 TTF sfnt 解決 Mac PowerPoint 粗體渲染）、`aria-hidden="true"` 裝飾文字在背景繪製時的保護，並依賴升級 `@arcsin1/html2pptx: 0.2.1`。本 fork 剛完成 v2.5.4 Windows 原生驗證與發行，待後續專責 PPTX 導出引擎專案時整體移植並跑完整測試。 |
-| `56bc56d`（Merge PR #151 feat/v2.8.1） | 跟隨上游 | 上游 v2.8.1 發版 merge commit。 |
+| `f5f311c`、`539c9cb`（吸收 PR #149 字體方案） | 採用 | 移植字體嵌入容器格式（裸 TTF sfnt 載荷修復 Mac PowerPoint 粗體渲染）、`aria-hidden="true"` 裝飾文字在背景繪製時的保護、CSS class transform 動畫保護；升級 `@arcsin1/html2pptx: 0.2.1`。 |
+| `610e8c3`（來自 PR #150，推理模型 16k 下限） | 採用 | 在 `src/main/agent-runtime/model/output-budget.ts` 實作 `resolveAgentOutputBudget`，確保頁面寫入輪次具備 16384 token 輸出下限，徹底解決 DeepSeek R1 / o1 / o3 思考過程耗盡 4096 預算導致「頁面未寫入」之核心缺陷。 |
+| `8ad2251`（來自 PR #150，單頁寫入工具 pageId 放寬） | 採用 | 單頁寫入工具 `update_single_page_file` 的 `pageId` 放寬為可選，當模型漏傳時自動沿用已鎖定之目標頁，消除 schema 驗證失敗拒絕寫入之風險。 |
+| 模型超時放寬 | 採用 | `PROFILE_DEFAULT_TIMEOUT_MS.agent` 從 10 分鐘放寬至 20 分鐘，支援長鏈路推理思考。 |
+| `950fab7`、`56bc56d` | 跟隨上游 | 上游發版 commit。本 fork 自有版號體系推進至 `v2.6.0`。 |
 
-**觸發條件**：本 fork 進行 PPTX 導出引擎或字體嵌入專案升級時，以 `f5f311c`、`539c9cb` 為單位移植並升級 `@arcsin1/html2pptx`，需跑 `pnpm typecheck` 與 `pnpm test`。
+### PRs 處理與狀態
 
-### PR（3 筆）
-
-| 項目 | 判斷 | 理由 |
+| 項目 | 狀態 | 處置結論 |
 | --- | --- | --- |
-| #149 吸收字體修復方案 | 採用待辦 | 已由上游吸收進 `f5f311c`，同上述 commit 評估。 |
-| #150 PPTX 導出字體嵌入測試 | 採用待辦 | 同上。 |
-| #151 Feat/v2.8.1 | 跟隨上游 | 上游發版 PR，內容即上述 commit。 |
+| 上游 PR #149（字體保真修復） | 已合併 | 已由上游吸收進 `f5f311c`，本 fork 已完整移植代碼與測試。 |
+| 上游 PR #150（PPTX 導出相容性、字體嵌入與生成鏈路 6 項修復） | OPEN | 深度審查 honquyn 之 11 筆提交：已吸收其核心的「推理模型 16k 輸出預算下限」、「單頁工具 pageId 放寬可選」與「agent 20 分鐘超時」；其字體嵌入與 `@arcsin1/html2pptx: 0.2.1` 升級已覆蓋其導出相容性修復。 |
+| 上游 PR #151（Feat/v2.8.1） | 已合併 | 發版 PR，內容已全數包含在上述 commit。 |
+| 上游 PR #143（本機 MCP Bridge） | OPEN | 涉及 64 檔核心架構變動，與本 fork 本地離線架構存在部分重疊，維持追蹤。 |
+| 上游 PR #106（GSAP 動畫支援） | OPEN | 實驗性功能，尚未被上游合入，維持追蹤。 |
 
-### Issue
+### Issues 處理與狀態
 
-無新 issue（水位維持在 #146）。
+- 上游 Issues：最新 issue 水位為 #146。
+  - #146（內網代理與模型拉取）：已由上游 `0226f94` 解決。
+  - #138、#135、#117、#94 等 open issue 為使用者需求提案（如請求 Linux 版、Codex 登入等），本 fork 聚焦 Windows 11 原生，無須採取動作。
 
-### 網站版本 2.7.0 → 2.8.0
+### 驗證與發布
 
-上游官網發布 2.8.0 版。本 fork 說明中心為離線內建（`/help`），零外連依賴，維持自給自足。
-
-水位推進至：commit `56bc56d`、PR 151、issue 146、網站版本 2.8.0。
+- 雙端型別檢查：`pnpm run typecheck` 零錯誤。
+- 全量單元測試：`pnpm test`（231 檔通過，1 檔 5 個實驗測試略過，1,218 測試全過，0 失敗）。
+- 應用構建：`electron-vite build` 打包通過。
+- 版本號推進：`2.5.4` → `2.6.0`。發布 GitHub Release 與 Tag `v2.6.0`。
 
 ## 2026-10-07：合併 Dependabot PR #33（生產依賴群組）
 

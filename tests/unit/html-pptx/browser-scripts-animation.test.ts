@@ -66,12 +66,29 @@ describe('PPTX animation browser scripts', () => {
     expect(hasAnimation()).toBe(false)
   })
 
+  it('freezes animation visibility without killing static class transforms', () => {
+    // data-anim / opacity-0 元素的 class transform 可能是静态定位（如
+    // -translate-y-1/2 垂直居中的装饰水印），FREEZE 不得整体清零，
+    // 否则背景截图里元素坠到错误位置；动画脚手架由 JS 遍历按行内样式清除。
+    expect(FREEZE_PAGE_FOR_PPTX_SCRIPT).toContain(
+      "'.opacity-0, [data-anim] { opacity: 1 !important; }'"
+    )
+    expect(FREEZE_PAGE_FOR_PPTX_SCRIPT).toContain(
+      "'[data-anime], [data-animate] { opacity: 1 !important; transform: none !important; }'"
+    )
+    expect(FREEZE_PAGE_FOR_PPTX_SCRIPT).not.toContain(
+      '[data-anim] { opacity: 1 !important; transform: none !important; }'
+    )
+  })
+
   it('removes extracted text even when its source container is animated', () => {
     expect(HIDE_FOR_PPTX_BACKGROUND_SCRIPT).toContain(
       '[data-pptx-extracted-shape]:not([data-pptx-static-background])'
     )
+    // 已提取文本连同后代都要在背景截图里隐藏；唯一豁免是 aria-hidden 装饰子树
+    //（提取端有意跳过它们、留给栅格背景，见 run-color-fidelity.test.ts）
     expect(HIDE_FOR_PPTX_BACKGROUND_SCRIPT).toContain(
-      '[data-pptx-extracted-text], [data-pptx-extracted-text] *, [data-pptx-background-text-match]'
+      '[data-pptx-extracted-text], [data-pptx-extracted-text] *:not(:is([aria-hidden="true"], [aria-hidden="true"] *)), [data-pptx-background-text-match]'
     )
     expect(HIDE_FOR_PPTX_BACKGROUND_SCRIPT).not.toContain(
       'body *:not(canvas):not(svg):not(svg *):not([data-pptx-extracted-image])'
@@ -115,7 +132,7 @@ describe('PPTX animation browser scripts', () => {
   it('marks a mixed text container only when every fragment has an exported PPT text box', () => {
     document.body.innerHTML = `
       <div class="ppt-page-root" data-ppt-guard-root="1">
-        <p id="exported">$528<span>億</span></p>
+        <p id="exported">$528<span>亿</span></p>
         <p id="fallback">Background fallback</p>
       </div>
     `
@@ -131,7 +148,7 @@ describe('PPTX animation browser scripts', () => {
         getClientRects: () =>
           selectedNode?.textContent === '$528'
             ? [rect(120, 250, 100, 24)]
-            : selectedNode?.textContent === '億'
+            : selectedNode?.textContent === '亿'
               ? [rect(220, 260, 30, 18)]
               : [rect(760, 450, 180, 24)]
       } as unknown as Range

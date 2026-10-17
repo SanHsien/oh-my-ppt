@@ -7,6 +7,7 @@
 > - 開 PR 明寫 `--repo SanHsien/oh-my-ppt` 並核對輸出的 URL。
 > - **上游更新檢查與同步**：不可僅以「採用待辦（adoption pending）」防守了事，審查後應積極將有價值的修復與相容性改進實作進 repo，並完成全量驗收。
 > - **PRs 與 Issues 處理**：必須逐一進行實質評估、處理與記錄，不可只報告流水號。
+> - **Release 發布與編譯交付標準**：身為 Electron 桌面應用專案，交付 Release 時的「編譯」不僅指前端與主進程轉譯（`electron-vite build`），必須執行 `pnpm run build:win`（`electron-builder --win`）編譯打包出 Windows 原生安裝檔（`dist/oh-my-ppt-<version>-setup.exe`），並上傳至 GitHub Release Assets，嚴禁發布未含安裝檔的空殼 Release。
 > - 提交前跑 `pwsh -NoProfile -File tools\dev_check.ps1`。
 > - 產品程式在 `src/`，以上游為準；不要移除 `upstream`、原作者或 Apache-2.0 授權標示。
 > - 測試簡報、模型 API key、個人 Prompt、`.env` 一律不可提交。

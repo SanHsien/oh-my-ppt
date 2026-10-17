@@ -317,3 +317,13 @@ Windows 驗收使用未發布 x64 目錄包。`tools/windows-security-smoke.ts` 
 命令、時間、exit、HEAD、完整 modified／untracked SHA256 與環境保存於本次工作目錄的 `outputs/ohmyppt-*.json`／`.log`。交付前仍需獨立審查完整 diff；本次未提交／發布／寫入上游。
 
 封裝 smoke 另揭露 `@langchain/langgraph-sdk@1.12.1` 的 ESM `dist/utils/async_caller.js` 引用內嵌 `.pnpm` 路徑，electron-builder 不會收錄該內嵌目錄。增加精準套件 patch，把兩個 import 改為已宣告的 `p-retry`／`p-queue` 正常 dependency specifier；僅修本產品使用的 ESM 路徑，未改 CJS 發行檔，未擴張產品 source。合成 profile 失敗後重試會沿用同一 root／session。
+
+## 2026-10-17：v2.6.0 發布補齊 Windows 安裝檔（NSIS Setup.exe）與交付規範確立
+
+**決定**：
+1. 執行 `pnpm run build:win`（`electron-builder --win`），完成 NSIS x64 安裝檔編譯打包，產出 `dist/oh-my-ppt-2.6.0-setup.exe`（172 MB）與 `dist/oh-my-ppt-2.6.0-setup.exe.blockmap`。
+2. 使用 `gh release upload v2.6.0` 將安裝檔與 blockmap 上傳至 GitHub Release `v2.6.0` Assets，確保使用者可直接下載原生 Windows 安裝程式。
+3. 明確規範桌面端交付標準：修正過去將「編譯」侷限於前端代碼轉譯（`electron-vite build`）的錯誤慣性；在桌面客戶端應用中，Release 的「編譯」必包含平台安裝檔封裝（`build:win`）。
+4. 本條款與教訓寫入 `AGENTS.md` 作為硬性開發維護門禁。
+
+**理由**：桌面端開源專案發布 Release 的核心在於提供開箱即用的安裝二進位檔案，若無安裝包則 Release 失去交付意義。落實使用者糾正與全域規範。

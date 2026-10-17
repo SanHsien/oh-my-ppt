@@ -1,5 +1,37 @@
 # 維護決策
 
+## 2026-10-17：上游審查（commit `35648cb` → `56bc56d`、PR 147 → 151、issue 水位 146、網站 2.7.0 → 2.8.0）
+
+審查 4 筆 commit、3 筆 PR、0 筆 issue，網站版本 1 項。本輪未採用程式變更，字體嵌入修復列為採用待辦。
+
+### Commit（4 筆）
+
+| 項目 | 判斷 | 理由 |
+| --- | --- | --- |
+| `950fab7`（v2.8.0 版號與 CHANGELOG） | 跟隨上游 | 上游發版 commit；本 fork 維持自有版號體系（目前 v2.5.4）。 |
+| `f5f311c`、`539c9cb`（吸收 PR #149 字體修復方案，13 檔） | 採用待辦（adoption pending） | 改動涉及字體嵌入容器格式（改為裸 TTF sfnt 解決 Mac PowerPoint 粗體渲染）、`aria-hidden="true"` 裝飾文字在背景繪製時的保護，並依賴升級 `@arcsin1/html2pptx: 0.2.1`。本 fork 剛完成 v2.5.4 Windows 原生驗證與發行，待後續專責 PPTX 導出引擎專案時整體移植並跑完整測試。 |
+| `56bc56d`（Merge PR #151 feat/v2.8.1） | 跟隨上游 | 上游 v2.8.1 發版 merge commit。 |
+
+**觸發條件**：本 fork 進行 PPTX 導出引擎或字體嵌入專案升級時，以 `f5f311c`、`539c9cb` 為單位移植並升級 `@arcsin1/html2pptx`，需跑 `pnpm typecheck` 與 `pnpm test`。
+
+### PR（3 筆）
+
+| 項目 | 判斷 | 理由 |
+| --- | --- | --- |
+| #149 吸收字體修復方案 | 採用待辦 | 已由上游吸收進 `f5f311c`，同上述 commit 評估。 |
+| #150 PPTX 導出字體嵌入測試 | 採用待辦 | 同上。 |
+| #151 Feat/v2.8.1 | 跟隨上游 | 上游發版 PR，內容即上述 commit。 |
+
+### Issue
+
+無新 issue（水位維持在 #146）。
+
+### 網站版本 2.7.0 → 2.8.0
+
+上游官網發布 2.8.0 版。本 fork 說明中心為離線內建（`/help`），零外連依賴，維持自給自足。
+
+水位推進至：commit `56bc56d`、PR 151、issue 146、網站版本 2.8.0。
+
 ## 2026-10-07：合併 Dependabot PR #33（生產依賴群組）
 
 合併 PR #33（`production-minor-and-patch` 群組更新）：

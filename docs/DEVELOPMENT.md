@@ -38,7 +38,7 @@ pwsh -NoProfile -File tools\bootstrap_dev.ps1
 
 ### 產品開發與測試
 
-Windows 產品工具鏈需要 Node.js `>=22.12.0` 與 pnpm `10.10.0`，對應 Electron 41／`@electron/get` 5 的最低 Node 版本。維護骨架 CI 只執行 Python gate，未安裝 Node 或執行產品驗收。
+Windows 產品工具鏈需要 Node.js `>=22.12.0` 與 pnpm `10.10.0`，對應 Electron 42／`@electron/get` 5 的最低 Node 版本。維護骨架 CI 只執行 Python gate，未安裝 Node 或執行產品驗收。
 
 若需進行 Electron 桌面應用程式的開發與偵錯：
 
@@ -58,6 +58,22 @@ pnpm test
 
 > [!NOTE]
 > 上游明確指示：不要跑 `npm run lint` 或 `npm run build`，驗證時以最小相關單元測試為主。
+
+### Windows 封裝冒煙
+
+升級 Electron 或 electron-builder 後，用未發布的目錄包驗證封裝版能啟動、資料庫能初始化、preload 能運作：
+
+```powershell
+pnpm exec electron-vite build
+pnpm exec esbuild tools/windows-security-smoke.ts --bundle --platform=node --format=esm --packages=external `
+  --external:./index.js --alias:@shared=./src/shared --tsconfig=tsconfig.node.json --outfile=out/main/security-smoke.mjs
+pnpm exec electron-builder --dir --win --x64 --publish never --config.directories.output=release-smoke `
+  --config.extraMetadata.main=./out/main/security-smoke.mjs
+$env:OHMYPPT_SMOKE_REPORT = "$PWD\smoke-report.json"
+& .\release-smoke\win-unpacked\ohmyppt.exe   # 約 15 秒內結束；exit 0 且報告 success: true
+```
+
+注意：`--alias:@shared` 與 `--external:./index.js` 缺一不可。缺少時主程序會在載入階段丟出 `ERR_MODULE_NOT_FOUND` 並跳出模態錯誤對話框，程序不退出也不寫報告，看起來像「啟動卡住」。無輸出時先檢查有沒有殘留的 `ohmyppt.exe` 行程與對話框。測完請刪除 `release-smoke/`、`out/main/security-smoke.mjs` 與報告檔。
 
 ## Canonical Gate
 

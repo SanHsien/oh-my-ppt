@@ -160,7 +160,7 @@
       "@langchain/core": "^1.1.47",
       "@langchain/langgraph": "^1.3.0",
       "@xmldom/xmldom": "^0.8.15",
-      "app-builder-lib": "^26.15.0",
+      "app-builder-lib": "26.15.3",
       "builder-util-runtime": "^9.7.0",
       "drizzle-orm": "^0.45.2",
       "esbuild": "^0.28.1",
@@ -174,8 +174,8 @@
       "http-cache-semantics": "^4.1.1",
       "braces": "^3.0.3",
       "fast-uri": "^3.1.9",
-      "undici@6": "^6.29.1",
-      "undici@7": "^7.30.1",
+      "node-gyp>undici": "^6.29.1",
+      "@electron/get>undici": "^7.30.1",
       "brace-expansion@1": "^1.1.18"
     },
     "patchedDependencies": {

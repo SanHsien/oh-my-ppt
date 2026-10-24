@@ -1,5 +1,19 @@
 # 維護決策
 
+## 2026-10-24：依賴安全修補（Dependabot #52／#53／#55 與 pnpm audit 高風險項）
+
+**已修補（lock 與範圍內）**：`vite` ^7.3.7（原 7.3.6，high）、`zod` ^4.6.7（high）、`undici` ^8.12.3（high），`happy-dom` ^21.0.4（high，僅測試環境 devDependency，跨一個主版，單元測試全數通過）。傳遞依賴以 override 選擇器補下限：`undici@6` ^6.29.1、`undici@7` ^7.30.1、`fast-uri` ^3.1.9。這些是真實安裝的 registry 套件，沒有 parent 自帶 bundle 的情形，舊版已從 lock 消失。
+
+**Dependabot #52（braces）、#55（sprintf-js）**：兩筆 advisory 已被 GitHub 撤回（`withdrawn_at` 分別為 2026-10-23、2026-10-22），無需修補，警報應自行關閉，本輪不 dismiss。2026-10-10 加的 `braces`、`sprintf-js` 本地 patch 仍保留，是否移除另案決定。
+
+**Dependabot #53（http-cache-semantics，GHSA-ch52-4w7c-c8xp）— 延後，有證據**：advisory 的 `first_patched_version` 仍為空。npm 在 2026-10-04 出了 4.3.0，雖然超出 advisory 標示的 `<= 4.2.0`，實測仍有問題：對 4.3.0 與 4.2.0 各用「shared cache、`max-age=60` 加 `Set-Cookie` 的回應」配 `max-stale=99999999` 的請求，兩者的 `maxAge()` 都是 0，`evaluateRequest` 都回傳可直接使用的 hit（未要求重新驗證）；4.2.0 到 4.3.0 的 `index.js` 差異只有 `Vary` 比對、`status()` 與型別註解，沒有 max-stale 處理。所以升到 4.3.0 只會讓警報消失、漏洞還在，不採用。維持現行本地 patch（`patches/http-cache-semantics@4.2.0.patch`，已由 `tests/unit/security/dependency-boundaries.test.ts` 驗證），不 dismiss。**重審條件**：上游修掉 max-stale（`first_patched_version` 出現，或 4.3.0 之後的版本在上述情境要求重新驗證）。
+
+**`electron` 41.10.7 → 42.11.x（audit 列 1 high ＋ 多筆 moderate／low，修補版 42.11.16 以上）— 延後，有證據**：試升 `^42.11.18` 時，`pnpm update` 因 `@electron-internal/extract-zip` 重新解析為 1.0.6，使現有 1.0.5 patch 未被使用（`ERR_PNPM_UNUSED_PATCH`），需把 override 暫時釘為 1.0.5 才能安裝。之後 typecheck、1,218 項單元測試與 `electron-vite build` 都通過，但 Windows 封裝冒煙（`tools/windows-security-smoke.ts`，打包成 `electron-builder --dir` 後以 `OHMYPPT_SMOKE_REPORT` 執行）在 Electron 42.11.18 連續兩次執行超過 100 秒仍無輸出、無報告（程式內建 90 秒上限本應寫出報告）；同一份腳本、同一流程在 Electron 41.10.7 於期限內 exit 0 並寫出報告（資料庫初始化、重開、冪等 init 皆成功）。在無法解釋此差異前，不把主版升級併入安全 PR。**重審條件**：查明 42 封裝版啟動卡住的原因（產品程式或 Electron 回歸），並讓該冒煙在 42 上通過；到時一併處理 extract-zip 1.0.6 與 patch。
+
+**Dependabot PR #36（GitHub Actions 群組）**：workflow 檔不在本輪警報的 manifest 範圍，保留開啟。
+
+驗收：`pnpm install --frozen-lockfile`、`pnpm typecheck`、`pnpm test`（231 檔通過、1 檔略過；1,218 項測試通過）、`pnpm build`、`tools/dev_check.ps1`。`pnpm audit` 由 8 high／14 moderate／6 low 降為只剩 http-cache-semantics（high）與 electron（high 1／moderate／low，上述延後）。Windows 封裝冒煙只在 Electron 42 試驗，對此 PR 實際出貨的組合（Electron 41.10.7 ＋ 本次依賴）沒有重跑封裝冒煙；本 PR 未升級 Electron，也沒有在出貨組合上重跑封裝冒煙，這是已知缺口。
+
 ## 2026-10-17：採納上游 v2.8.1 字體修復、升級 html2pptx 0.2.1、推理模型支援與 PR/Issue 深度處理（升版 v2.6.0）
 
 審查 4 筆 commit、3 筆 PR、0 筆 issue，網站版本 1 項。全面採納並移植上游 v2.8.1 核心修復與社群 PR #150 深度成果，升版至 `v2.6.0`。

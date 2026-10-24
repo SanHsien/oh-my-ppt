@@ -1,5 +1,17 @@
 # 維護決策
 
+## 2026-10-24：上游審查（`56bc56d` → `b937ae5`，8 筆 commit、0 筆新 PR、2 筆新 issue、網站 2.8.0 → 2.9.0）
+
+| 項目 | 判斷 | 證據與觸發條件 |
+| --- | --- | --- |
+| `c76db48`、`bcad5e5`、`ea24020`、`d275af6`、`201bd24`、`8e8a7ae`、`b937ae5` | 跳過 | 只動 `README.md`／`README_EN.md` 與贊助商圖片（`docs/images/crazyToken-*.webp`、`mixtoken.png`）。本 fork 的 README 已刪簡中版並清除上游廣告與贊助 QR Code（`README.md` 145 行起），贊助商內容含推廣連結，不採用。 |
+| `e669aa9`（`feat: v2.9.0`） | 跳過 | `git diff --stat 56bc56d upstream/main` 全部 7 個檔案是 CHANGELOG、兩份 README、三張圖與 `package.json` 版本號，**沒有任何 `src/` 變動**：CHANGELOG 宣稱的思維畫布、版式庫、AI 風格、快捷鍵等功能沒有公開原始碼可審，無從移植。fork 自有版號（2.6.0）不跟。**觸發條件**：上游之後把這些功能的原始碼推上 `main` 時，逐項審查。 |
+| issue #152（快捷鍵） | 不處理 | 提問，上游已回覆「v2.9.0 已加入部分快捷鍵」，但該版沒有公開原始碼，本 fork 無對應修正可做。 |
+| issue #153（自訂模型設定、騰訊報錯） | 不處理 | 內文只有一張截圖，無錯誤訊息；`grep -rniE "tencent|腾讯|hunyuan" src --include=*.ts` 無命中，本 fork 沒有騰訊專屬路徑，無法判斷、也無可重現的步驟。**觸發條件**：有人在本 fork 回報同類錯誤並附文字訊息。 |
+| 網站 2.9.0 | 跳過 | 版本號變動對應上述未公開原始碼的功能；本 fork 沒有這些功能，文件不需跟進。 |
+
+Baseline 推進：`reviewed_through` → `b937ae5`、`reviewed_issue_through` → 153、`reviewed_website_version` → 2.9.0。
+
 ## 2026-10-24：依賴安全修補（Dependabot #52／#53／#55 與 pnpm audit 高風險項）
 
 **已修補（lock 與範圍內）**：`vite` ^7.3.7（原 7.3.6，high）、`zod` ^4.6.7（high）、`undici` ^8.12.3（high），`happy-dom` ^21.0.4（high，僅測試環境 devDependency，跨一個主版，單元測試全數通過）。傳遞依賴以 override 補下限，且選擇器限定父套件，避免波及 openai 對 undici 的 optional peer 範圍（`>=5 <9`）：`node-gyp>undici` ^6.29.1、`@electron/get>undici` ^7.30.1，另有 `fast-uri` ^3.1.9。lock 另有幾項隨之重新解析的小變動：`rollup` 4.60.1 → 4.65.0（vite 的依賴）、`@types/ws` 多一份 8.18.2、`@napi-rs/lzma-linux-x64-gnu` 1.5.1（optional 平台 binding）；`ws` 8.21.3、`picomatch` 4.0.4、`tinyglobby` 0.2.16 因去重而移除。這些是真實安裝的 registry 套件，沒有 parent 自帶 bundle 的情形，舊版已從 lock 消失。
@@ -8,7 +20,7 @@
 
 **Dependabot #53（http-cache-semantics，GHSA-ch52-4w7c-c8xp）— 延後，有證據**：advisory 的 `first_patched_version` 仍為空。npm 在 2026-10-04 出了 4.3.0，雖然超出 advisory 標示的 `<= 4.2.0`，實測仍有問題：對 4.3.0 與 4.2.0 各用「shared cache、`max-age=60` 加 `Set-Cookie` 的回應」配 `max-stale=99999999` 的請求，兩者的 `maxAge()` 都是 0，`evaluateRequest` 都回傳可直接使用的 hit（未要求重新驗證）；4.2.0 到 4.3.0 的 `index.js` 差異只有 `Vary` 比對、`status()` 與型別註解，沒有 max-stale 處理。所以升到 4.3.0 只會讓警報消失、漏洞還在，不採用。維持現行本地 patch（`patches/http-cache-semantics@4.2.0.patch`，已由 `tests/unit/security/dependency-boundaries.test.ts` 驗證），不 dismiss。**重審條件**：上游修掉 max-stale（`first_patched_version` 出現，或 4.3.0 之後的版本在上述情境要求重新驗證）。
 
-**`electron` 41.10.7 → 42.11.x（audit 列 1 high ＋ 多筆 moderate／low，修補版 42.11.16 以上）— 延後，有證據**：試升 `^42.11.18` 時，`pnpm update` 因 `@electron-internal/extract-zip` 重新解析為 1.0.6，使現有 1.0.5 patch 未被使用（`ERR_PNPM_UNUSED_PATCH`），需把 override 暫時釘為 1.0.5 才能安裝。之後 typecheck、1,218 項單元測試與 `electron-vite build` 都通過，但 Windows 封裝冒煙（`tools/windows-security-smoke.ts`，打包成 `electron-builder --dir` 後以 `OHMYPPT_SMOKE_REPORT` 執行）在 Electron 42.11.18 連續兩次執行超過 100 秒仍無輸出、無報告（程式內建 90 秒上限本應寫出報告）；同一份腳本、同一流程在 Electron 41.10.7（第一個依賴 commit 的組合）於期限內 exit 0 並寫出報告（資料庫初始化、重開、冪等 init 皆成功）。在無法解釋此差異前，不把主版升級併入安全 PR。**重審條件**：查明 42 封裝版啟動卡住的原因（產品程式或 Electron 回歸），並讓該冒煙在 42 上通過；到時一併處理 extract-zip 1.0.6 與 patch。
+**`electron` 41.10.7 → 42.11.18（修補 Dependabot #56–#71 共 16 筆 electron 警示，最高需 42.11.16）— 已升級；先前的「42 封裝版卡住」是冒煙腳本自己的問題**：前一輪在 42 上看到冒煙無輸出、無報告，歸因於 Electron 42。重做後證明不是：冒煙入口用 `esbuild --packages=external` 打包時，tsconfig 路徑別名 `@shared/*` 沒被解析，主程序在 ESM 連結階段丟出 `ERR_MODULE_NOT_FOUND: Cannot find package '@shared/model-timeout'`，Electron 跳出模態錯誤對話框等人按「確定」，程序因此不退出、也沒寫報告（90 秒計時器在匯入階段之後才設）。同一份壞掉的打包在 Electron 41.10.7 上也一樣卡住，可直接證明與主版本無關。補上 `--alias:@shared=./src/shared --tsconfig=tsconfig.node.json --external:./index.js` 後，41.10.7 與 42.11.18 都在約 13 秒內 exit 0、`success: true`、`packaged: true`、`blockedRequests: []`、資料庫 `migrated`／`persistedAfterReopen`／`idempotentInit` 皆 true、`contextIsolation` true、`nodeIntegration` false。extract-zip 1.0.6 的 `ERR_PNPM_UNUSED_PATCH` 這次未重現（lock 內仍是 1.0.5 加既有 patch，lock 只動 electron 與兩個 `@electron-toolkit` peer 標記）。驗收見本 PR。**教訓**：冒煙腳本若沒有輸出，先查有沒有殘留的模態對話框與行程，再懷疑被測版本；腳本的打包旗標要寫進文件（見 `docs/DEVELOPMENT.md`）。
 
 **Dependabot PR #36（GitHub Actions 群組）**：workflow 檔不在本輪警報的 manifest 範圍，保留開啟。
 

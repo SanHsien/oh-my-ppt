@@ -8,6 +8,7 @@ import {
   type PageReferenceContext,
   type SourceDocumentPlan
 } from '@shared/generation'
+import { hanTolerant } from '@shared/han-variants'
 
 const MAX_SOURCE_PLAN_PAGES = 500
 const LAYOUT_INTENTS = new Set([
@@ -153,10 +154,14 @@ export const sourcePlanFromSkeletonRows = (rows: unknown[]): SourceDocumentPlan 
   }
 }
 
+// Both patterns read text the user wrote (a message, a source document), which is as often
+// Simplified as Traditional; see src/shared/han-variants.ts.
+const OUTLINE_RESTRUCTURE_PATTERN = hanTolerant(
+  /重排|重組|重新規劃|壓縮|合併|拆分|刪減|精簡.*頁|改成\s*\d+\s*頁|做成\s*\d+\s*頁|只做\s*\d+\s*頁|rewrite.*outline|replan|restructure|compress|merge|split|make\s+it\s+\d+\s+(?:slides|pages)/i
+)
+
 export const userMessageRequestsOutlineRestructure = (value: string): boolean =>
-  /重排|重組|重新規劃|壓縮|合併|拆分|刪減|精簡.*頁|改成\s*\d+\s*頁|做成\s*\d+\s*頁|只做\s*\d+\s*頁|rewrite.*outline|replan|restructure|compress|merge|split|make\s+it\s+\d+\s+(?:slides|pages)/i.test(
-    value
-  )
+  OUTLINE_RESTRUCTURE_PATTERN.test(value)
 
 export const canUseSourcePlanDirectly = (args: {
   sourcePlan: SourceDocumentPlan | null | undefined
@@ -194,19 +199,25 @@ export const resolvePageReferenceContext = (args: {
   }
 }
 
+const DATA_FOCUS_PATTERN = hanTolerant(
+  /指標|數據|收入|增長|下降|比例|金額|率|metric|revenue|growth|decline|kpi|%|\d/
+)
+const COMPARISON_PATTERN = hanTolerant(/對比|比較|差異|競品|comparison|versus|vs\.?/i)
+const PROCESS_PATTERN = hanTolerant(/流程|步驟|路徑|機制|workflow|process|step|how to/i)
+const TIMELINE_PATTERN = hanTolerant(/計劃|階段|路線|節奏|timeline|roadmap|phase|schedule/i)
+const SUMMARY_PATTERN = hanTolerant(/總結|結論|覆盤|summary|conclusion|takeaway/i)
+
 const inferLayoutIntentFromSkeletonTitle = (
   item: SourceDocumentPlan['pageSkeleton'][number]
 ): OutlineItem['layoutIntent'] => {
   const text = `${item.title}\n${item.sourceHeading}`
   if (item.agendaItems?.length || isSectionAgendaReason(item.reason)) return 'summary'
   if (item.role === 'chapter-divider') return 'cover'
-  if (/指標|數據|收入|增長|下降|比例|金額|率|metric|revenue|growth|decline|kpi|%|\d/.test(text)) {
-    return 'data-focus'
-  }
-  if (/對比|比較|差異|競品|comparison|versus|vs\.?/i.test(text)) return 'comparison'
-  if (/流程|步驟|路徑|機制|workflow|process|step|how to/i.test(text)) return 'process'
-  if (/計劃|階段|路線|節奏|timeline|roadmap|phase|schedule/i.test(text)) return 'timeline'
-  if (/總結|結論|覆盤|summary|conclusion|takeaway/i.test(text)) return 'summary'
+  if (DATA_FOCUS_PATTERN.test(text)) return 'data-focus'
+  if (COMPARISON_PATTERN.test(text)) return 'comparison'
+  if (PROCESS_PATTERN.test(text)) return 'process'
+  if (TIMELINE_PATTERN.test(text)) return 'timeline'
+  if (SUMMARY_PATTERN.test(text)) return 'summary'
   return 'concept'
 }
 

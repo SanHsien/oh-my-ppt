@@ -118,4 +118,57 @@ describe('source page skeleton planning', () => {
     expect(item.contentOutline).toContain('Source heading: ## 二、技術參數與技術效率明細')
     expect(item.contentOutline).toContain('Source range: lines 18-19')
   })
+
+  // The user's documents and messages are frequently Simplified; the Traditional-only patterns
+  // made a Simplified restructure request look like "use the document as is".
+  it.each([
+    '压缩成 1 页',
+    '壓縮成 1 頁',
+    '重新规划一下',
+    '合并相近章节',
+    '拆分成两部分',
+    '精简到 5 页',
+    '改成 3 页',
+    '刪減一些'
+  ])('treats "%s" as a request to restructure the outline', (userMessage) => {
+    const sourcePlan = sourcePlanFromSkeletonRows([
+      {
+        page_number: 1,
+        title: 'Market',
+        role: 'content',
+        source_document_path: '/docs/source.md',
+        source_heading: '## Market',
+        heading_level: 2,
+        line_start: 3,
+        line_end: 20,
+        confidence: 'high'
+      }
+    ])
+    expect(canUseSourcePlanDirectly({ sourcePlan, totalPages: 1, userMessage })).toBe(false)
+  })
+
+  it.each([
+    ['收入增长', 'data-focus'],
+    ['方案对比', 'comparison'],
+    ['实施流程', 'process'],
+    ['发展路线', 'timeline'],
+    ['总结与结论', 'summary'],
+    ['背景介绍', 'concept']
+  ])('infers the layout intent of the Simplified heading %s as %s', (heading, intent) => {
+    const sourcePlan = sourcePlanFromSkeletonRows([
+      {
+        page_number: 1,
+        title: heading,
+        role: 'content',
+        source_document_path: '/docs/source.md',
+        source_heading: `## ${heading}`,
+        heading_level: 2,
+        line_start: 1,
+        line_end: 9,
+        confidence: 'high'
+      }
+    ])
+    const [item] = mapSourcePlanToOutlineItems(sourcePlan!)
+    expect(item.layoutIntent).toBe(intent)
+  })
 })

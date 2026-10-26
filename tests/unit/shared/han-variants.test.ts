@@ -30,4 +30,28 @@ describe('hanTolerant', () => {
     expect(re.test('保留')).toBe(false)
     expect(hanTolerant(/abc|一二三/).source).toBe('abc|一二三')
   })
+
+  it('covers the whole common character set, not only a hand-picked list', () => {
+    const pairs: Array<[string, string]> = [
+      ['壓縮', '压缩'],
+      ['合併', '合并'],
+      ['路線', '路线'],
+      ['幻燈片', '幻灯片'],
+      ['須', '须'],
+      ['來源標題', '来源标题'],
+      ['結構依據', '结构依据'],
+      ['裡面', '里面'],
+      ['著色', '着色'],
+      ['衆', '眾']
+    ]
+    for (const [traditional, other] of pairs) {
+      expect(hanTolerant(new RegExp(traditional)).test(other), `${traditional} -> ${other}`).toBe(true)
+      expect(hanTolerant(new RegExp(other)).test(traditional), `${other} -> ${traditional}`).toBe(true)
+    }
+  })
+
+  it('keeps unrelated characters distinct', () => {
+    expect(hanTolerant(/頁/).test('面')).toBe(false)
+    expect(hanTolerant(/刪除/).test('删掉')).toBe(false)
+  })
 })

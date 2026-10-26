@@ -1,4 +1,5 @@
 import type { ParsedDocumentPlanResult } from '@shared/generation'
+import { hanTolerant } from '@shared/han-variants'
 
 const MAX_PAGE_COUNT = 500
 const CHINESE_NUMERAL_MAP: Record<string, number> = {
@@ -6,6 +7,7 @@ const CHINESE_NUMERAL_MAP: Record<string, number> = {
   一: 1,
   二: 2,
   兩: 2,
+  两: 2,
   三: 3,
   四: 4,
   五: 5,
@@ -123,6 +125,15 @@ const parseChinesePageNumber = (value: string): number | null => {
   return CHINESE_NUMERAL_MAP[text] ?? null
 }
 
+// Reference documents and model replies are as often Simplified as Traditional (and 受衆/受眾 differ
+// by variant glyph), so these patterns are script-tolerant; see src/shared/han-variants.ts.
+const SECTION_STOP_PATTERN = hanTolerant(
+  /^(每頁要點|必須保留|風格|表達|注意事項|受衆|核心觀點|演示目標)\s*[:：]/
+)
+const PAGE_LABEL_PATTERN = hanTolerant(/第\s*([一二兩三四五六七八九十\d]{1,3})\s*頁/g)
+const OUTLINE_HEADING_PATTERN = hanTolerant(/建議大綱|大綱|目錄/)
+const PAGE_POINTS_HEADING_PATTERN = hanTolerant(/每頁要點|頁面要點|頁級要點/)
+
 const extractNumberedSectionCount = (text: string, headingPattern: RegExp): number => {
   const lines = text.split('\n')
   const startIndex = lines.findIndex((line) => headingPattern.test(line))
@@ -132,8 +143,7 @@ const extractNumberedSectionCount = (text: string, headingPattern: RegExp): numb
   for (const line of lines.slice(startIndex + 1)) {
     const trimmed = line.trim()
     if (!trimmed) continue
-    if (/^(每頁要點|必須保留|風格|表達|注意事項|受衆|核心觀點|演示目標)\s*[:：]/.test(trimmed))
-      break
+    if (SECTION_STOP_PATTERN.test(trimmed)) break
     const match = trimmed.match(/^(\d{1,2})\s*[.、．)]\s*\S+/)
     if (!match) {
       if (count > 0 && /^[^\d第]/.test(trimmed)) break
@@ -149,7 +159,7 @@ const extractNumberedSectionCount = (text: string, headingPattern: RegExp): numb
 }
 
 export const extractImpliedPageCount = (text: string): number => {
-  const pageNumbers = Array.from(text.matchAll(/第\s*([一二兩三四五六七八九十\d]{1,3})\s*頁/g))
+  const pageNumbers = Array.from(text.matchAll(PAGE_LABEL_PATTERN))
     .map((match) => parseChinesePageNumber(match[1] || ''))
     .filter((value): value is number => Boolean(value && value >= 1 && value <= MAX_PAGE_COUNT))
   const englishPageNumbers = Array.from(text.matchAll(/\bPage\s+(\d{1,2})\s*[:：.\-]/gi))
@@ -159,8 +169,8 @@ export const extractImpliedPageCount = (text: string): number => {
     pageNumbers.length > 0 || englishPageNumbers.length > 0
       ? Math.max(...pageNumbers, ...englishPageNumbers)
       : 0
-  const outlineCount = extractNumberedSectionCount(text, /建議大綱|大綱|目錄/)
-  const pagePointCount = extractNumberedSectionCount(text, /每頁要點|頁面要點|頁級要點/)
+  const outlineCount = extractNumberedSectionCount(text, OUTLINE_HEADING_PATTERN)
+  const pagePointCount = extractNumberedSectionCount(text, PAGE_POINTS_HEADING_PATTERN)
   return Math.min(MAX_PAGE_COUNT, Math.max(maxPageNumber, outlineCount, pagePointCount, 0))
 }
 
@@ -184,7 +194,7 @@ export const normalizeGeneratedPlan = (
       ? (parsed as Record<string, unknown>)
       : {}
 
-  const topicKeys = ['topic', 'title', '主題', '標題']
+  const topicKeys = ['topic', 'title', '主題', '標題', '主题', '标题']
   const briefKeys = [
     'briefText',
     'brief_text',
@@ -199,9 +209,12 @@ export const normalizeGeneratedPlan = (
     '詳細描述',
     '描述',
     '大綱',
-    '建議大綱'
+    '建議大綱',
+    '详细描述',
+    '大纲',
+    '建议大纲'
   ]
-  const pageCountKeys = ['pageCount', 'page_count', 'pages', 'totalPages', '頁數']
+  const pageCountKeys = ['pageCount', 'page_count', 'pages', 'totalPages', '頁數', '页数']
 
   const topic =
     readFirstLooseString(object, topicKeys) ||

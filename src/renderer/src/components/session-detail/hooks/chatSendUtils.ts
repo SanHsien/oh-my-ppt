@@ -5,18 +5,34 @@ import type {
   SessionPreviewPage,
   SessionDetailChatType
 } from '@renderer/types/session-detail'
+import { hanTolerant } from '@shared/han-variants'
 
 export type MainSessionEditResolution =
   | { ready: true; selectPageIds: string[] }
   | { ready: false; reason: 'page-structure' | 'page-not-found' }
 
-const ALL_PAGES_PATTERN = /\b(all|every|entire)\b|全部|所有|整套|全套|每一頁|每頁/i
-const CURRENT_PAGE_PATTERN = /當前頁|這一頁|本頁|current\s+(?:page|slide)|this\s+(?:page|slide)/i
-const EXPLICIT_PAGE_PATTERN =
+// These run on what the user typed, so every Chinese pattern is script-tolerant (Traditional,
+// Taiwan-standard and Simplified). A miss here silently turns a page-scoped edit into a whole-deck edit.
+const ALL_PAGES_PATTERN = hanTolerant(/\b(all|every|entire)\b|全部|所有|整套|全套|每一頁|每頁/i)
+const CURRENT_PAGE_PATTERN = hanTolerant(
+  /當前頁|這一頁|本頁|current\s+(?:page|slide)|this\s+(?:page|slide)/i
+)
+const EXPLICIT_PAGE_PATTERN = hanTolerant(
   /第\s*(?:\d+|[零一二兩三四五六七八九十百]+)\s*頁|\b(?:p|page|slide)\s*[-#]?\s*\d+\b|\/[a-z0-9_-]+\.html|當前頁|這一頁|本頁|current\s+(?:page|slide)|this\s+(?:page|slide)/i
+)
 const PAGE_NUMBER_SOURCE = '(?:\\d+|[零一二兩三四五六七八九十百]+)'
-const PAGE_CONTENT_TARGET_PATTERN =
+const PAGE_CONTENT_TARGET_PATTERN = hanTolerant(
   /(?:頁面|頁)\s*(?:的\s*)?(?:標題|副標題|內容|文案|文字|圖表|圖片|元素|配色|顏色|樣式|佈局|背景)|(?:page|slide)\s*(?:['’]s\s*)?(?:title|heading|subtitle|content|copy|text|chart|image|element|color|style|layout|background)\b/i
+)
+
+const PAGE_LIST_PATTERN = hanTolerant(/第\s*([\d\s、,，和與及~-]+)\s*頁/g)
+const ADD_PAGE_PATTERN = hanTolerant(
+  /(?:新增|添加|插入|複製)\s*(?:(?:一|兩|幾|\d+)\s*)?(?:個|張)?\s*(?:新)?(?:頁|頁面)/i
+)
+const DELETE_PAGE_PATTERN = hanTolerant(
+  /(?:刪除|移除|刪掉)\s*(?:(?:第\s*)?(?:\d+|[零一二兩三四五六七八九十百]+)\s*(?:頁|頁面)|當前頁|這一頁|本頁)(?:\s*$|[，。,.!?！？])/i
+)
+const REORDER_PAGES_PATTERN = hanTolerant(/(?:調整|修改|移動|重排|重新排列).{0,8}(?:頁面|頁)(?:的)?順序/i)
 
 const parseChinesePageNumber = (value: string): number | null => {
   const digits: Record<string, number> = {
@@ -24,6 +40,7 @@ const parseChinesePageNumber = (value: string): number | null => {
     一: 1,
     二: 2,
     兩: 2,
+    两: 2,
     三: 3,
     四: 4,
     五: 5,
@@ -58,13 +75,9 @@ export function isUnsupportedMainSessionPageStructureRequest(userMessage: string
   const text = userMessage.trim()
   if (PAGE_CONTENT_TARGET_PATTERN.test(text)) return false
   return (
-    /(?:新增|添加|插入|複製)\s*(?:(?:一|兩|幾|\d+)\s*)?(?:個|張)?\s*(?:新)?(?:頁|頁面)/i.test(
-      text
-    ) ||
-    /(?:刪除|移除|刪掉)\s*(?:(?:第\s*)?(?:\d+|[零一二兩三四五六七八九十百]+)\s*(?:頁|頁面)|當前頁|這一頁|本頁)(?:\s*$|[，。,.!?！？])/i.test(
-      text
-    ) ||
-    /(?:調整|修改|移動|重排|重新排列).{0,8}(?:頁面|頁)(?:的)?順序/i.test(text) ||
+    ADD_PAGE_PATTERN.test(text) ||
+    DELETE_PAGE_PATTERN.test(text) ||
+    REORDER_PAGES_PATTERN.test(text) ||
     /(?:add|insert|duplicate|create)\s+(?:(?:a|an|one|\d+)\s+)?(?:new\s+)?(?:page|slide)\b/i.test(
       text
     ) ||
@@ -111,9 +124,11 @@ export function resolveMainSessionEdit(
     if (page) pageIds.add(page.pageId)
   }
 
-  const rangePattern = new RegExp(
-    `(?:第\\s*|(?:p|page|slide)\\s*)?(${PAGE_NUMBER_SOURCE})\\s*(?:頁\\s*)?(?:到|至|[-~—–])\\s*(?:第\\s*|(?:p|page|slide)\\s*)?(${PAGE_NUMBER_SOURCE})\\s*(?:頁|pages?|slides?)?`,
-    'gi'
+  const rangePattern = hanTolerant(
+    new RegExp(
+      `(?:第\\s*|(?:p|page|slide)\\s*)?(${PAGE_NUMBER_SOURCE})\\s*(?:頁\\s*)?(?:到|至|[-~—–])\\s*(?:第\\s*|(?:p|page|slide)\\s*)?(${PAGE_NUMBER_SOURCE})\\s*(?:頁|pages?|slides?)?`,
+      'gi'
+    )
   )
   for (const match of userMessage.matchAll(rangePattern)) {
     const start = parsePageNumber(match[1])
@@ -125,16 +140,18 @@ export function resolveMainSessionEdit(
     }
   }
 
-  const pageReferencePattern = new RegExp(
-    `第\\s*(${PAGE_NUMBER_SOURCE})\\s*頁|\\b(?:p|page|slide)\\s*[-#]?\\s*(\\d+)\\b`,
-    'gi'
+  const pageReferencePattern = hanTolerant(
+    new RegExp(
+      `第\\s*(${PAGE_NUMBER_SOURCE})\\s*頁|\\b(?:p|page|slide)\\s*[-#]?\\s*(\\d+)\\b`,
+      'gi'
+    )
   )
   for (const match of userMessage.matchAll(pageReferencePattern)) {
     const pageNumber = parsePageNumber(match[1] || match[2])
     if (pageNumber !== null) addPageNumber(pageNumber)
   }
 
-  for (const match of userMessage.matchAll(/第\s*([\d\s、,，和與及~-]+)\s*頁/g)) {
+  for (const match of userMessage.matchAll(PAGE_LIST_PATTERN)) {
     for (const pageNumber of match[1].matchAll(/\d+/g)) addPageNumber(Number(pageNumber[0]))
   }
 
@@ -142,6 +159,11 @@ export function resolveMainSessionEdit(
   if (ALL_PAGES_PATTERN.test(userMessage)) return { ready: true, selectPageIds: [] }
   if (EXPLICIT_PAGE_PATTERN.test(userMessage)) return { ready: false, reason: 'page-not-found' }
   return { ready: true, selectPageIds: [] }
+}
+
+/** True when the message talks about the whole deck ("all pages", "全部", "所有页面" ...). */
+export function mentionsAllPages(userMessage: string): boolean {
+  return ALL_PAGES_PATTERN.test(userMessage)
 }
 
 export function isChatSendBlocked(input: ChatSendGuardInput): boolean {

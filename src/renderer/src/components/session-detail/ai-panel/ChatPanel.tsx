@@ -34,6 +34,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '../../ui/Tooltip'
 import { MessageBubble } from './MessageBubble'
 import { useT } from '@renderer/i18n'
 import { useChatPanelController } from '../hooks/useChatPanelController'
+import { mentionsAllPages } from '../hooks/chatSendUtils'
 import { normalizePagesForSelection } from '../shared/pageUtils'
 import { MAX_SELECTED_PAGES } from '@shared/generation'
 
@@ -159,7 +160,7 @@ export function ChatPanel({ sessionId }: { sessionId: string }): React.JSX.Eleme
       if (
         chatType === 'main' &&
         effectiveMainPageIds.length > 0 &&
-        /\b(all|every|entire)\b|全部|所有|整套|全套|每一頁|每頁/i.test(input)
+        mentionsAllPages(input)
       ) {
         toastWarning(t('sessionDetail.mainPageScopeConflictWarning'))
       }

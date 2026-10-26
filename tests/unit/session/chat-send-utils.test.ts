@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   isChatSendBlocked,
   isUnsupportedMainSessionPageStructureRequest,
+  mentionsAllPages,
   resolveChatSendContext,
   resolveMainSessionEdit
 } from '../../../src/renderer/src/components/session-detail/hooks/chatSendUtils'
@@ -164,5 +165,63 @@ describe('chat send utils', () => {
       ready: true,
       selectPageIds: ['page-2']
     })
+  })
+
+  // Simplified input must scope to the same pages. Before the fix every pattern missed it, so
+  // "只修改第 2 页的标题" came back as an unscoped (whole-deck) edit.
+  it('scopes Simplified page references exactly like Traditional ones', () => {
+    const pages = [
+      { pageId: 'page-1', pageNumber: 1 },
+      { pageId: 'page-2', pageNumber: 2 },
+      { pageId: 'page-3', pageNumber: 3 }
+    ]
+
+    expect(resolveMainSessionEdit('只修改第 2 页的标题', pages, 'page-1')).toEqual({
+      ready: true,
+      selectPageIds: ['page-2']
+    })
+    expect(resolveMainSessionEdit('只修改第三页的标题', pages, 'page-1')).toEqual({
+      ready: true,
+      selectPageIds: ['page-3']
+    })
+    expect(resolveMainSessionEdit('调整当前页和 P3 的配色', pages, 'page-2')).toEqual({
+      ready: true,
+      selectPageIds: ['page-2', 'page-3']
+    })
+    expect(resolveMainSessionEdit('统一第 1-3 页的字体', pages, 'page-1')).toEqual({
+      ready: true,
+      selectPageIds: ['page-1', 'page-2', 'page-3']
+    })
+    expect(resolveMainSessionEdit('统一第一到第两页的字体', pages, 'page-1')).toEqual({
+      ready: true,
+      selectPageIds: ['page-1', 'page-2']
+    })
+    expect(resolveMainSessionEdit('修改第 1、3 页', pages, 'page-1')).toEqual({
+      ready: true,
+      selectPageIds: ['page-1', 'page-3']
+    })
+    expect(resolveMainSessionEdit('修改第 9 页', pages, 'page-1')).toEqual({
+      ready: false,
+      reason: 'page-not-found'
+    })
+    expect(resolveMainSessionEdit('统一所有页面的标题颜色', pages, 'page-1')).toEqual({
+      ready: true,
+      selectPageIds: []
+    })
+  })
+
+  it.each(['統一所有頁面的標題', '统一所有页面的标题', '全部页面', '整套 PPT', '每页都改', 'update every slide'])(
+    'detects the whole-deck wording in %s',
+    (message) => {
+      expect(mentionsAllPages(message)).toBe(true)
+    }
+  )
+
+  it('recognises Simplified page-structure requests and still allows edits inside a page', () => {
+    expect(isUnsupportedMainSessionPageStructureRequest('删除第 2 页')).toBe(true)
+    expect(isUnsupportedMainSessionPageStructureRequest('新增一页总结')).toBe(true)
+    expect(isUnsupportedMainSessionPageStructureRequest('调整页面顺序')).toBe(true)
+    expect(isUnsupportedMainSessionPageStructureRequest('删除第 2 页的图表')).toBe(false)
+    expect(isUnsupportedMainSessionPageStructureRequest('添加页面的标题')).toBe(false)
   })
 })

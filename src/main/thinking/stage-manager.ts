@@ -1,5 +1,6 @@
 import type { ThinkingStage } from '@shared/thinking'
 import { routeThinkingIntent } from './intent-router'
+import { hanTolerant } from '@shared/han-variants'
 
 export const VALID_TRANSITIONS: Record<ThinkingStage, ThinkingStage[]> = {
   collect: ['collect', 'outline'],
@@ -54,8 +55,10 @@ function hasThinkingContentForStage(stage: ThinkingStage, thinkingMd: string): b
   return hasTopic && hasCompletePagePlan(thinkingMd)
 }
 
+const RESTART_REQUEST_PATTERN = hanTolerant(/let's start over|start over|從頭開始|重新開始/i)
+
 export function isRestartRequest(userMessage: string): boolean {
-  return /let's start over|start over|從頭開始|重新開始/i.test(userMessage)
+  return RESTART_REQUEST_PATTERN.test(userMessage)
 }
 
 function countPageHeadings(thinkingMd: string): number {

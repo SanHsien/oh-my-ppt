@@ -1,4 +1,5 @@
 import type { ThinkingStage } from '@shared/thinking'
+import { hanTolerant } from '@shared/han-variants'
 
 export type ThinkingIntent =
   | 'restart'
@@ -16,6 +17,19 @@ export interface ThinkingIntentRoute {
   reason: string
 }
 
+// Matched against what the user typed, so both scripts must work; see src/shared/han-variants.ts.
+const RESTART_PATTERN = hanTolerant(/let's start over|start over|從頭開始|重新開始/)
+const CONFIRM_READY_PATTERN = hanTolerant(
+  /可以了|生成吧|開始生成|確認生成|就按這個|ready|confirm|looks good/
+)
+const EXPAND_DRAFT_PATTERN = hanTolerant(
+  /展開|細化|詳細|繼續寫|完善.*細節|補充.*細節|豐富.*內容|內容.*豐富|豐富一下|深入.*展開|逐頁寫|寫詳細|完善一下|expand|detail|flesh out/
+)
+const REFINE_PATTERN = hanTolerant(/refine|polish|tweak|優化|調整.*細節|潤色/)
+const PLAN_OUTLINE_PATTERN = hanTolerant(
+  /adjust.*outline|change.*structure|大綱|拆頁|規劃|需要.*設計|設計吧|設計一下|出大綱|調整.*大綱|修改.*結構|可以[，,]?\s*規劃一下|規劃一下|開始吧/
+)
+
 export function routeThinkingIntent(args: {
   userMessage: string
   currentStage?: ThinkingStage
@@ -23,31 +37,23 @@ export function routeThinkingIntent(args: {
   const text = args.userMessage.trim()
   const lower = text.toLowerCase()
 
-  if (/let's start over|start over|從頭開始|重新開始/.test(lower)) {
+  if (RESTART_PATTERN.test(lower)) {
     return route('restart', 'collect', 'high', 'User explicitly asked to restart.')
   }
 
-  if (/可以了|生成吧|開始生成|確認生成|就按這個|ready|confirm|looks good/.test(lower)) {
+  if (CONFIRM_READY_PATTERN.test(lower)) {
     return route('confirm_ready', 'ready', 'high', 'User confirmed the current plan.')
   }
 
-  if (
-    /展開|細化|詳細|繼續寫|完善.*細節|補充.*細節|豐富.*內容|內容.*豐富|豐富一下|深入.*展開|逐頁寫|寫詳細|完善一下|expand|detail|flesh out/.test(
-      lower
-    )
-  ) {
+  if (EXPAND_DRAFT_PATTERN.test(lower)) {
     return route('expand_draft', 'draft', 'high', 'User asked to flesh out details.')
   }
 
-  if (/refine|polish|tweak|優化|調整.*細節|潤色/.test(lower)) {
+  if (REFINE_PATTERN.test(lower)) {
     return route('refine', 'refine', 'high', 'User asked to refine or polish existing content.')
   }
 
-  if (
-    /adjust.*outline|change.*structure|大綱|拆頁|規劃|需要.*設計|設計吧|設計一下|出大綱|調整.*大綱|修改.*結構|可以[，,]?\s*規劃一下|規劃一下|開始吧/.test(
-      lower
-    )
-  ) {
+  if (PLAN_OUTLINE_PATTERN.test(lower)) {
     return route('plan_outline', 'outline', 'high', 'User asked for outline or page planning.')
   }
 

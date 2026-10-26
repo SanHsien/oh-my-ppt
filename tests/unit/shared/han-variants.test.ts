@@ -54,4 +54,13 @@ describe('hanTolerant', () => {
     expect(hanTolerant(/頁/).test('面')).toBe(false)
     expect(hanTolerant(/刪除/).test('删掉')).toBe(false)
   })
+
+  it('does not widen group names or named back-references', () => {
+    const re = hanTolerant(/(?<頁>頁)\k<頁>/)
+    expect(re.source).toContain('(?<頁>')
+    expect(re.source).toContain('\k<頁>')
+    expect(re.test('頁頁')).toBe(true)
+    expect(hanTolerant(/(?<=第)頁/).test('第页')).toBe(true)
+    expect(hanTolerant(/頁(?!面)/).test('页面')).toBe(false)
+  })
 })

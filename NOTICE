@@ -2,3 +2,6 @@ Oh My PPT
 Copyright 2026 arcsin1 <zy19931129@gmail.com>
 
 This product includes software developed by arcsin1.
+
+This product includes character-variant data derived from OpenCC
+(https://github.com/BYVoid/OpenCC), Apache-2.0, Copyright Carbo Kuo and contributors.

@@ -8,13 +8,20 @@
  * its whole variant group, so a pattern can be written once, in either script.
  *
  * Only characters that belong to a variant group are widened; everything else is left untouched.
+ * Named groups (`(?<name>`) and named back-references (`\k<name>`) are copied verbatim, so group names
+ * are never widened.
  */
 /**
  * Variant groups, generated from OpenCC (t2s, s2t, s2tw, s2hk; character level, unioned) over the
  * CJK Unified Ideographs block. Each space-separated entry is one group of characters that people
  * use interchangeably: Simplified, Traditional, Taiwan-standard and Hong Kong / Kangxi variant
- * forms (為/爲/为, 才/纔, 眾/衆/众, 啟/啓/启, 裡/裏/里 ...). Regenerate rather than edit by hand.
+ * forms (為/爲/为, 才/纔, 眾/衆/众, 啟/啓/启, 裡/裏/里 ...). Regenerate rather than edit by hand:
+ * `python tools/gen_han_variants.py` (`--check` verifies the file is up to date).
+ *
+ * The groups are derived from the OpenCC dictionaries (https://github.com/BYVoid/OpenCC, Apache-2.0,
+ * Copyright Carbo Kuo and contributors); see NOTICE.md.
  */
+// BEGIN GENERATED (tools/gen_han_variants.py)
 const VARIANT_GROUPS: readonly string[] = (
   '㐷傌 㐽偑 㑈倲 㑩儸 㓥劏 㓨刾 㔉劚 㖊噚 㖞喎 㛀媰 㛤孋 㟥嵾 㡎幓 㤽懤 㥪慺 㧏掆 㧑撝 㧟擓 㧰擽 㩵擜 㭎棡 㭏椲 㭤樢 㭴樫 㱩殰 㱮殨 㲿瀇 㳔濧 㳕灡 㳠澾 㳡濄 㴋潚 ' +
   '㶉鸂 㶶燶 㶽煱 㺍獱 㻅璯 䁖瞜 䂵碽 䃅磾 䃮鿎 䅉稏 䅟穇 䇲筴 䉤籔 䌷紬 䌸縳 䌹絅 䌼綐 䍀繿 䍁繸 䏝膞 䓓薵 䓕薳 䓖藭 䓨罃 䗖螮 䜣訢 䜤鿁 䜩讌 䝙貙 䞐賰 䟢躎 䥑鿏 ' +
@@ -126,6 +133,7 @@ const VARIANT_GROUPS: readonly string[] = (
   '麲𪎉 麳𪎌 麷𫜑 黃黄 黉黌 黡黶 黩黷 黪黲 黽黾 黿鼋 鼂鼌 鼉鼍 鼴鼹 齊齐 齏齑 齒齿 齔龀 齕龁 齗龂 齘𬹼 齙龅 齜龇 齟龃 齠龆 齡龄 齦龈 齩𫜪 齪龊 齬龉 齭𫜭 齮𬺈 齯𫠜 ' +
   '齰𫜬 齲龋 齴𫜮 齷龌 齼𬺓 齾𫜰 龍龙 龓𫜲 龔龚 龕龛 龜龟 龭𩨎 龯𨱆 鿒鿓 '
 ).split(' ').filter(Boolean)
+// END GENERATED
 
 const VARIANTS = (() => {
   const map = new Map<string, Set<string>>()
@@ -153,9 +161,28 @@ export function hanTolerant(pattern: RegExp): RegExp {
   for (let i = 0; i < source.length; i += 1) {
     const ch = source[i]
     if (ch === '\\') {
+      // `\k<name>` names a group: copy the whole reference unchanged.
+      if (source[i + 1] === 'k' && source[i + 2] === '<') {
+        const end = source.indexOf('>', i + 3)
+        const stop = end < 0 ? source.length - 1 : end
+        out += source.slice(i, stop + 1)
+        i = stop
+        continue
+      }
       out += ch + (source[i + 1] ?? '')
       i += 1
       continue
+    }
+    if (!inClass && ch === '(' && source[i + 1] === '?' && source[i + 2] === '<') {
+      const next = source[i + 3]
+      if (next !== '=' && next !== '!') {
+        // `(?<name>`: copy the group name unchanged.
+        const end = source.indexOf('>', i + 3)
+        const stop = end < 0 ? source.length - 1 : end
+        out += source.slice(i, stop + 1)
+        i = stop
+        continue
+      }
     }
     if (inClass) {
       if (ch === ']') inClass = false

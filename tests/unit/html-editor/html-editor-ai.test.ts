@@ -490,4 +490,68 @@ describe('html-editor AI IPC', () => {
       expect.objectContaining({ message: 'AI 改造：將元素顏色改爲藍色。' })
     )
   })
+
+  describe('intent matchers accept how people actually type Chinese', () => {
+    const selected = { selector: 'body[data-page-id="doc-1"] p' }
+
+    // The Traditional conversion rewrote the intent regexes with variant glyphs only (改爲, 剛纔).
+    // Taiwan-standard input (改為, 剛才) and Simplified input (改为, 刚才) matched before and must still match.
+    it.each([
+      '把這個改為藍色',
+      '把這個設為藍色',
+      '把這個換為藍色',
+      '把這個替換為藍色',
+      '把這個改爲藍色',
+      '把这个改为蓝色',
+      '把这个设为蓝色',
+      '把这个换成蓝色',
+      '删除这个元素',
+      '移除這個元素'
+    ])('treats %s as an explicit edit that can be applied without confirmation', async (message) => {
+      const { isExplicitHtmlEditorEditRequest } = await import(
+        '../../../src/main/html-editor/html-editor-ai-handlers'
+      )
+      expect(isExplicitHtmlEditorEditRequest(message, selected)).toBe(true)
+    })
+
+    it.each(['把这个改得更现代', '把這個改得更現代', '优化一下这个'])(
+      'still treats the open-ended request %s as needing a plan first',
+      async (message) => {
+        const { isExplicitHtmlEditorEditRequest } = await import(
+          '../../../src/main/html-editor/html-editor-ai-handlers'
+        )
+        expect(isExplicitHtmlEditorEditRequest(message, selected)).toBe(false)
+      }
+    )
+
+    it.each(['剛才說的那樣', '刚才说的那样', '剛纔說的那樣', '繼續', '继续'])(
+      'keeps the conversation history when the request refers back to it (%s)',
+      async (message) => {
+        const { buildHtmlEditorAiMessages } = await import(
+          '../../../src/main/html-editor/html-editor-ai-handlers'
+        )
+        const messages = buildHtmlEditorAiMessages({
+          selectedElement: { selector: selected.selector, html: '<p>Hello</p>' },
+          recentMessages: [{ role: 'assistant', content: '上一條方案' }],
+          userMessage: message
+        })
+        expect(messages[0]).toEqual({ role: 'assistant', content: '上一條方案' })
+      }
+    )
+
+    it.each(['整頁看一下', '整页看一下', '看看周围的元素', '看看周圍的元素'])(
+      'includes the page HTML when the request is about the surroundings (%s)',
+      async (message) => {
+        const { buildHtmlEditorAiMessages } = await import(
+          '../../../src/main/html-editor/html-editor-ai-handlers'
+        )
+        const messages = buildHtmlEditorAiMessages({
+          pageHtml: '<main><h1>MARKER-PAGE</h1></main>',
+          selectedElement: { selector: selected.selector, html: '<p>Hello</p>' },
+          userMessage: message
+        })
+        expect(messages.at(-1)?.content).toContain('MARKER-PAGE')
+      }
+    )
+  })
 })

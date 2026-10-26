@@ -5,6 +5,7 @@ import { FilesystemBackend, createDeepAgent } from 'deepagents'
 import { z } from 'zod'
 import { extractModelText, resolveAgentOutputBudget, resolveModel } from '../agent-runtime/model'
 import { resolveModelTimeoutMs } from '@shared/model-timeout'
+import { hanTolerant } from '@shared/han-variants'
 import type { IpcContext } from '../ipc/context'
 import { resolveGlobalModelTimeouts, resolveModelConfigForTask } from '../config/model-config-utils'
 import { readAppLocale } from '../config/locale-utils'
@@ -219,29 +220,50 @@ function normalizePendingPlan(value: unknown): HtmlEditorAiPlan | undefined {
   return parsed.success ? (parsed.data as HtmlEditorAiPlan) : undefined
 }
 
+// Intent patterns run on what the user typed, so they must accept Traditional (both 為 and 爲),
+// Simplified and Taiwan-standard forms alike; see src/shared/han-variants.ts.
+const REFERS_TO_HISTORY_PATTERN = hanTolerant(
+  /繼續|剛才|上一條|上面|之前|這個方案|還是|然後|另外|同樣|再改/
+)
+const NEEDS_PAGE_CONTEXT_PATTERN = hanTolerant(
+  /整頁|頁面|文檔|全局|整體|佈局|結構|周圍|旁邊|其他|全部|整個/
+)
+const CONFIRMATION_PATTERN = hanTolerant(
+  /確認|按這個|按方案|直接改|改吧|執行|應用|同意|沒問題|可以改|好的改/
+)
+const CONCRETE_EDIT_VALUE_PATTERN = hanTolerant(
+  /(?:改成|改為|換成|換為|設置為|設置成|設為|變成|變為|替換為|替換成|調整為|移動到|添加|加上|改造成)(?!$)(?!一下$)/
+)
+const OPEN_ENDED_STYLE_PATTERN = hanTolerant(
+  /更?好看|更?現代|更?高級|更?專業|漂亮|美觀|簡潔|優化|美化|風格|設計感/
+)
+const VAGUE_EDIT_PATTERN = hanTolerant(/調整一下|改造一下|重新設計|改一下|處理一下/)
+const DIRECT_REMOVE_OR_TOGGLE_PATTERN = hanTolerant(/刪除|移除|隱藏|顯示/)
+const CHANGE_REQUEST_PATTERN = hanTolerant(
+  /改|換|設置|刪除|移除|隱藏|顯示|添加|加上|移動|調整|優化|美化|改造|重新設計|替換|變成|設為/
+)
+
 function shouldIncludeConversationHistory(args: HtmlEditorAiPromptArgs): boolean {
   if (!args.selectedElement || args.pendingPlan) return true
   const normalized = args.userMessage.toLowerCase().replace(/\s+/g, '')
-  return /繼續|剛纔|上一條|上面|之前|這個方案|還是|然後|另外|同樣|再改/.test(normalized)
+  return REFERS_TO_HISTORY_PATTERN.test(normalized)
 }
 
 function shouldIncludePageHtml(args: HtmlEditorAiPromptArgs): boolean {
   if (!args.pageHtml) return false
   if (!args.selectedElement) return true
   const normalized = args.userMessage.toLowerCase().replace(/\s+/g, '')
-  return /整頁|頁面|文檔|全局|整體|佈局|結構|周圍|旁邊|其他|全部|整個/.test(normalized)
+  return NEEDS_PAGE_CONTEXT_PATTERN.test(normalized)
 }
 
 function isConfirmationRequest(userMessage: string, pendingPlan?: HtmlEditorAiPlan): boolean {
   if (!pendingPlan) return false
   const normalized = userMessage.toLowerCase().replace(/\s+/g, '')
-  return /確認|按這個|按方案|直接改|改吧|執行|應用|同意|沒問題|可以改|好的改/.test(normalized)
+  return CONFIRMATION_PATTERN.test(normalized)
 }
 
 function hasConcreteEditValue(normalizedMessage: string): boolean {
-  return /(?:改成|改爲|換成|換爲|設置爲|設置成|設爲|變成|變爲|替換爲|替換成|調整爲|移動到|添加|加上|改造成)(?!$)(?!一下$)/.test(
-    normalizedMessage
-  )
+  return CONCRETE_EDIT_VALUE_PATTERN.test(normalizedMessage)
 }
 
 export function isExplicitHtmlEditorEditRequest(
@@ -250,21 +272,16 @@ export function isExplicitHtmlEditorEditRequest(
 ): boolean {
   if (!selectedElement?.selector) return false
   const normalized = userMessage.toLowerCase().replace(/\s+/g, '')
-  if (
-    /更?好看|更?現代|更?高級|更?專業|漂亮|美觀|簡潔|優化|美化|風格|設計感/.test(normalized) ||
-    /調整一下|改造一下|重新設計|改一下|處理一下/.test(normalized)
-  ) {
+  if (OPEN_ENDED_STYLE_PATTERN.test(normalized) || VAGUE_EDIT_PATTERN.test(normalized)) {
     return false
   }
-  if (/刪除|移除|隱藏|顯示/.test(normalized)) return true
+  if (DIRECT_REMOVE_OR_TOGGLE_PATTERN.test(normalized)) return true
   return hasConcreteEditValue(normalized)
 }
 
 function isHtmlEditorChangeRequest(userMessage: string): boolean {
   const normalized = userMessage.toLowerCase().replace(/\s+/g, '')
-  return /改|換|設置|刪除|移除|隱藏|顯示|添加|加上|移動|調整|優化|美化|改造|重新設計|替換|變成|設爲/.test(
-    normalized
-  )
+  return CHANGE_REQUEST_PATTERN.test(normalized)
 }
 
 function hasHtmlEditorEdits(batch: HtmlEditorAiEditBatch): boolean {

@@ -31,9 +31,9 @@ patchedDependencies:
   '@electron-internal/extract-zip@1.0.5':
     hash: 1d797100d69b77b16e9ba01ebc5925ecbd6e746cbeac3475162d5bdbedd0d22a
     path: patches/@electron-internal__extract-zip@1.0.5.patch
-  '@langchain/langgraph-sdk@1.12.1':
+  '@langchain/langgraph-sdk@~1.12.1':
     hash: 3c77277000adf65c63c43467fc695d14a9f48bc964b428a705e80e048fd1443f
-    path: patches/@langchain__langgraph-sdk@1.12.1.patch
+    path: patches/@langchain__langgraph-sdk@1.12.x.patch
   braces@3.0.3:
     hash: ac2c23168f3d41faa1f6b1aa881f07cc2b2581a8084864bbf38f84eb177dd38d
     path: patches/braces@3.0.3.patch

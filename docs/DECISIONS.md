@@ -357,3 +357,23 @@ Windows 驗收使用未發布 x64 目錄包。`tools/windows-security-smoke.ts` 
 4. 本條款與教訓寫入 `AGENTS.md` 作為硬性開發維護門禁。
 
 **理由**：桌面端開源專案發布 Release 的核心在於提供開箱即用的安裝二進位檔案，若無安裝包則 Release 失去交付意義。落實使用者糾正與全域規範。
+
+## 2026-10-26：Dependabot 更新 run 因 `ERR_PNPM_UNUSED_PATCH` 失敗——SDK 封裝 patch 改以版本範圍鍵控
+
+**現象**：Dependabot run `40238467982`（2026-10-25）對每個直接依賴（含無關的 `@arcsin1/pptx2json`、`@google/genai`）都以 `ERR_PNPM_UNUSED_PATCH  The following patches were not used: @langchain/langgraph-sdk@1.12.1` 失敗，整個 npm 更新 run 無法產生任何 PR。
+
+**根因（已用 pnpm 10.10.0 重現）**：Dependabot 執行 `pnpm update <dep>@<ver> --lockfile-only`，此指令會把整棵樹的傳遞依賴在父層範圍內重新解析。`@langchain/langgraph` 以 `~1.12.x` 依賴 SDK，lockfile 的 1.12.1 被重解析為 1.12.7，精確版本鍵 `@langchain/langgraph-sdk@1.12.1` 於是沒有任何套件可套用，pnpm 以 unused patch 中止。
+
+**上游是否已修**：沒有。`@langchain/langgraph-sdk` 1.12.1／1.12.2／1.12.4／1.12.7 的 `dist/utils/async_caller.js` 仍 import `../node_modules/.pnpm/p-retry@7.1.1/...` 與 `../node_modules/.pnpm/p-queue@9.1.0/...`；只有 2.0.0 改成 `p-retry`／`p-queue` 正常 specifier，但 `@langchain/langgraph`（含最新 1.5.2 的 `~1.12.6`）與 `deepagents` peer（`^1.9.23`）都不接受 2.x。
+
+**決定**：
+1. patch 鍵由 `@langchain/langgraph-sdk@1.12.1` 改為 `@langchain/langgraph-sdk@~1.12.1`（與 `@langchain/langgraph` 對 SDK 的範圍一致），檔名改為 `patches/@langchain__langgraph-sdk@1.12.x.patch`；patch 內容與 hash 不變。Lockfile 只改 `patchedDependencies` 的鍵與路徑。
+2. 不採 `allowUnusedPatches`／放寬 unused-patch guard：patch 仍是必要的，範圍鍵之下它對每個被解析到的 1.12.x 都必須套用成功，套不上（上游改了該檔）或不再命中（SDK 離開 1.12.x）時 pnpm 仍會大聲失敗。
+3. 不用 `dependabot.yml` ignore：SDK 是傳遞依賴，不在 `package.json`，Dependabot 的 ignore 只過濾直接依賴候選，擋不住 `pnpm update` 的傳遞重解析；加了只是裝飾。
+4. 新增 `tests/unit/security/langgraph-sdk-patch.test.ts`：釘住「patch 鍵必須是範圍而非精確版本」與「安裝後的 SDK 不得再 import 內嵌 `.pnpm` 路徑」。
+
+**驗證**：scratch 副本以 pnpm 10.10.0 重跑 `pnpm update @arcsin1/pptx2json@0.2.1 --lockfile-only --no-save -r`，舊鍵重現 `ERR_PNPM_UNUSED_PATCH`、新鍵成功並將 SDK 解析為 1.12.7 且帶 `patch_hash`；於短路徑 `pnpm install --frozen-lockfile --ignore-scripts` 實裝 1.12.7，確認 `async_caller.js` 已改為 `p-retry`／`p-queue`。
+
+**觸發條件（何時移除 patch）**：上游 SDK 的 1.x 發行檔不再 import `.pnpm` 路徑，或 `@langchain/langgraph`／`deepagents` 接受 SDK 2.x 並完成升級後，刪除 `patchedDependencies` 的該鍵、patch 檔與上述測試的第二條。
+
+**未處理**：Dependabot #53 `http-cache-semantics`（`first_patched_version=null`）維持開啟；沿用 2026-10-10 的本地 patch 緩解，不 dismiss、不宣稱歸零。

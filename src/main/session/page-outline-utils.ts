@@ -1,3 +1,4 @@
+import { hanTolerant } from '@shared/han-variants'
 import type { PPTDatabase, SessionPageRecord, SourcePageSkeletonRecord } from '../db/database'
 
 const normalizeOutlineSource = (value: string | null | undefined): string =>
@@ -29,11 +30,15 @@ const normalizeContentOutline = (value: string | null | undefined): string | nul
   return text || null
 }
 
-const outlineSectionPattern =
+// Outlines come from user documents and from sessions written by older (Simplified) versions, so
+// every Chinese pattern here must accept both scripts; see src/shared/han-variants.ts.
+const outlineSectionPattern = hanTolerant(
   /(建議大綱|推薦大綱|每頁要點|頁面要點|頁(?:面)?大綱|幻燈片大綱|Recommended outline|Per-page points|Page outline|Slide outline|Slides? outline)/i
+)
 
-const sectionStopPattern =
+const sectionStopPattern = hanTolerant(
   /^(必須保留|風格|表達|注意事項|受衆|核心觀點|演示目標|Facts\/|Style|Audience|Core argument)\s*[:：]/i
+)
 
 const cnDigitMap: Record<string, number> = {
   零: 0,
@@ -41,6 +46,7 @@ const cnDigitMap: Record<string, number> = {
   一: 1,
   二: 2,
   兩: 2,
+  两: 2,
   三: 3,
   四: 4,
   五: 5,
@@ -53,11 +59,13 @@ const cnDigitMap: Record<string, number> = {
 const normalizeDigits = (value: string): string =>
   value.replace(/[０-９]/g, (char) => String(char.charCodeAt(0) - 0xff10))
 
+const CHINESE_NUMERAL_TOKEN = hanTolerant(/^[零〇一二兩三四五六七八九十]+$/)
+
 const parsePageNumberToken = (value: string | undefined): number | null => {
   const token = normalizeDigits(String(value || '').trim())
   if (!token) return null
   if (/^\d+$/.test(token)) return Number.parseInt(token, 10)
-  if (!/^[零〇一二兩三四五六七八九十]+$/.test(token)) return null
+  if (!CHINESE_NUMERAL_TOKEN.test(token)) return null
   if (token === '十') return 10
   const tenIndex = token.indexOf('十')
   if (tenIndex >= 0) {
@@ -78,32 +86,42 @@ const stripLinePrefix = (line: string): string =>
     .replace(/^[-*+•]\s*/, '')
     .trim()
 
+const COLLECTED_POINTS_PREFIX = hanTolerant(
+  /^(?:內容要點|要點|關鍵要點|Key points?|Content points?)\s*[:：]\s*/i
+)
+const COLLECTED_PURPOSE_PREFIX = hanTolerant(/^(?:頁面目的|目的|Objective|Page purpose)\s*[:：]\s*/i)
+
 const stripCollectedLine = (line: string): string =>
   stripLinePrefix(line)
-    .replace(/^(?:內容要點|要點|關鍵要點|Key points?|Content points?)\s*[:：]\s*/i, '')
-    .replace(/^(?:頁面目的|目的|Objective|Page purpose)\s*[:：]\s*/i, '')
+    .replace(COLLECTED_POINTS_PREFIX, '')
+    .replace(COLLECTED_PURPOSE_PREFIX, '')
+
+const DROPPED_METADATA_PATTERN = hanTolerant(
+  /^(?:頁面角色|角色|來源標題|來源範圍|來源頁碼|來源|版式意圖|佈局意圖|Role|Page role|Source heading|Source range|Source page|Source|Layout intent)\s*[:：]/i
+)
 
 const isDroppedOutlineMetadataLine = (line: string): boolean =>
-  /^(?:頁面角色|角色|來源標題|來源範圍|來源頁碼|來源|版式意圖|佈局意圖|Role|Page role|Source heading|Source range|Source page|Source|Layout intent)\s*[:：]/i.test(
-    stripLinePrefix(line)
-  )
+  DROPPED_METADATA_PATTERN.test(stripLinePrefix(line))
 
 const matchExplicitPageHeading = (line: string): { pageNumber: number; rest: string } | null => {
   const text = stripLinePrefix(line)
   const patterns: Array<{ pattern: RegExp; restIndex: number }> = [
     {
-      pattern:
-        /^(?:第\s*([0-9０-９零〇一二兩三四五六七八九十]+)\s*[頁頁]|(?:P|Page|Slide)\s*([0-9０-９]+)|(?:頁面|頁|幻燈片)\s*([0-9０-９]+))\s*(?:[:：.、)\]\-–—])?\s*(.*)$/i,
+      pattern: hanTolerant(
+        /^(?:第\s*([0-9０-９零〇一二兩三四五六七八九十]+)\s*[頁頁]|(?:P|Page|Slide)\s*([0-9０-９]+)|(?:頁面|頁|幻燈片)\s*([0-9０-９]+))\s*(?:[:：.、)\]\-–—])?\s*(.*)$/i
+      ),
       restIndex: 4
     },
     {
-      pattern:
-        /^([0-9０-９]+)\s*[.、．)]\s*(?:第\s*)?(?:頁|頁面|幻燈片|Slide)\s*(?:[:：.、)\]\-–—])?\s*(.*)$/i,
+      pattern: hanTolerant(
+        /^([0-9０-９]+)\s*[.、．)]\s*(?:第\s*)?(?:頁|頁面|幻燈片|Slide)\s*(?:[:：.、)\]\-–—])?\s*(.*)$/i
+      ),
       restIndex: 2
     },
     {
-      pattern:
-        /^([0-9０-９零〇一二兩三四五六七八九十]{1,4})\s*(?:頁|頁|頁面|幻燈片)\s*(?:[:：.、)\]\-–—])?\s*(.*)$/i,
+      pattern: hanTolerant(
+        /^([0-9０-９零〇一二兩三四五六七八九十]{1,4})\s*(?:頁|頁|頁面|幻燈片)\s*(?:[:：.、)\]\-–—])?\s*(.*)$/i
+      ),
       restIndex: 2
     }
   ]
@@ -119,9 +137,13 @@ const matchExplicitPageHeading = (line: string): { pageNumber: number; rest: str
   return null
 }
 
+const NUMBERED_OUTLINE_ITEM_PATTERN = hanTolerant(
+  /^([0-9０-９]{1,3}|[零〇一二兩三四五六七八九十]{1,4})\s*[.、．)]\s*(.*)$/
+)
+
 const matchNumberedOutlineItem = (line: string): { pageNumber: number; rest: string } | null => {
   const match = stripLinePrefix(line).match(
-    /^([0-9０-９]{1,3}|[零〇一二兩三四五六七八九十]{1,4})\s*[.、．)]\s*(.*)$/
+    NUMBERED_OUTLINE_ITEM_PATTERN
   )
   if (!match) return null
   const pageNumber = parsePageNumberToken(match[1])
@@ -246,13 +268,15 @@ export async function resolveOutlinesForPages(
 
 const readLegacyMetadataValue = (source: string, labels: string[]): string => {
   const labelPattern = labels.map((label) => label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')
-  const pattern = new RegExp(`^(?:${labelPattern})\\s*[:：]\\s*(.+)$`, 'i')
+  const pattern = hanTolerant(new RegExp(`^(?:${labelPattern})\\s*[:：]\\s*(.+)$`, 'i'))
   for (const line of source.split('\n')) {
     const match = stripLinePrefix(line).match(pattern)
     if (match?.[1]?.trim()) return match[1].trim()
   }
   return ''
 }
+
+const CHAPTER_ROLE_PATTERN = hanTolerant(/chapter-divider|chapter divider|章節|分隔|封面/i)
 
 const parseLegacySourcePlanOutline = (
   source: string | null | undefined
@@ -263,7 +287,7 @@ const parseLegacySourcePlanOutline = (
   if (!sourceHeading) return null
   const reason = readLegacyMetadataValue(normalized, ['Structure basis', '結構依據']) || null
   const roleText = readLegacyMetadataValue(normalized, ['Page role', '頁面角色', '角色'])
-  const role = /chapter-divider|chapter divider|章節|分隔|封面/i.test(roleText)
+  const role = CHAPTER_ROLE_PATTERN.test(roleText)
     ? 'chapter-divider'
     : 'content'
   return { sourceHeading, reason, role }

@@ -154,6 +154,65 @@ describe('resolvePageContentOutline', () => {
   })
 })
 
+describe('resolvePageContentOutline with Simplified outlines', () => {
+  // Outlines come from the user's own reference documents and from older sessions, which are
+  // frequently Simplified. The Traditional conversion collapsed [页頁] into [頁頁].
+  it('extracts explicit Simplified page sections', () => {
+    const outline = [
+      '第 1 页：项目背景',
+      '- 市场变化',
+      '第 2 页：方案策略',
+      '- 分阶段落地',
+      '- 明确负责人',
+      '第 3 页：总结'
+    ].join('\n')
+
+    expect(resolvePageContentOutline(outline, 2)).toBe('方案策略 分阶段落地 明确负责人')
+  })
+
+  it('reads Chinese numerals and the 页面 / 幻灯片 heading forms', () => {
+    expect(resolvePageContentOutline(['第两页：方案', '- 要点甲', '第三页：收尾'].join('\n'), 2)).toBe(
+      '方案 要点甲'
+    )
+    expect(resolvePageContentOutline(['页面 1：背景', '页面 2：方案', '- 要点乙'].join('\n'), 2)).toBe(
+      '方案 要点乙'
+    )
+    expect(resolvePageContentOutline(['幻灯片 1 背景', '幻灯片 2 方案', '- 要点丙'].join('\n'), 2)).toBe(
+      '方案 要点丙'
+    )
+    expect(resolvePageContentOutline(['1. 幻灯片 背景', '2. 幻灯片 方案', '- 要点丁'].join('\n'), 2)).toBe(
+      '方案 要点丁'
+    )
+  })
+
+  it('stops a Simplified page entry before the following global brief sections', () => {
+    const outline = [
+      '每页要点：',
+      '第 1 页：背景与目标',
+      '页面角色：内容页',
+      '页面目的：解释项目背景',
+      '必须保留：',
+      '- 预算数字',
+      '风格：',
+      '- 克制'
+    ].join('\n')
+
+    expect(resolvePageContentOutline(outline, 1)).toBe('背景与目标 解释项目背景')
+  })
+
+  it('extracts numbered items inside a Simplified outline section', () => {
+    const outline = [
+      '推荐大纲',
+      '1. 封面：一句话说明主题',
+      '2. 现状分析：痛点、数据、机会',
+      '   - 补充关键指标',
+      '3. 行动计划：节奏和责任'
+    ].join('\n')
+
+    expect(resolvePageContentOutline(outline, 2)).toBe('现状分析：痛点、数据、机会 补充关键指标')
+  })
+})
+
 describe('resolveOutlinesForPages', () => {
   it('uses source page skeletons as the page outline source', async () => {
     const db = {
@@ -220,6 +279,35 @@ describe('migrateLegacyPageOutlinesToSourceSkeletons', () => {
       '方案設計',
       '里程碑'
     ])
+  })
+
+  it('reads legacy outline metadata written with Simplified labels', async () => {
+    const replaced: Parameters<PPTDatabase['replaceSourcePageSkeletons']>[0][] = []
+    const legacy = ['来源标题：方案设计', '结构依据：文档二级标题', '页面角色：章节分隔'].join('\n')
+    const db = {
+      listSourcePageSkeletons: async () => [],
+      getSession: async () => ({ id: 'session', title: '迁移测试' }) as Session,
+      listSessionPages: async () => [makeSessionPage('session-a', 'page-a', 1) as SessionPageRecord],
+      listLatestGenerationPageSnapshot: async () => [makeSnapshot('page-a', 1, legacy)],
+      replaceSourcePageSkeletons: async (args) => {
+        replaced.push(args)
+      }
+    } as Pick<
+      PPTDatabase,
+      | 'listSourcePageSkeletons'
+      | 'getSession'
+      | 'listSessionPages'
+      | 'listLatestGenerationPageSnapshot'
+      | 'replaceSourcePageSkeletons'
+    > as PPTDatabase
+
+    await migrateLegacyPageOutlinesToSourceSkeletons(db, 'session')
+
+    expect(replaced[0]?.items[0]).toMatchObject({
+      sourceHeading: '方案设计',
+      reason: '文档二级标题',
+      role: 'chapter-divider'
+    })
   })
 
   it('does not overwrite existing source page skeletons', async () => {

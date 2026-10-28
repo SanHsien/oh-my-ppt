@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   type MeasuredElement,
   computeAABBOverlap,
+  describeElement,
   inspectSlideGeometry
 } from '../../../src/shared/geometry-inspector'
 import { validateLayoutGeometry } from '../../../src/main/generation/layout-geometry-validator'
@@ -129,5 +130,48 @@ describe('geometry-inspector & Hit-Test verification', () => {
     // 預估 token (約 4 chars / token)，確認小於 100 tokens (即小於 400 chars)
     expect(result.aiPromptSnippet!.length).toBeLessThan(400)
     expect(result.aiPromptSnippet).toContain('vertical overflow 196px')
+  })
+
+  it('never reports more defects than maxDefects, even from one element', () => {
+    const report = inspectSlideGeometry(
+      [
+        {
+          tagName: 'p',
+          rect: { left: 1800, top: 1000, right: 2000, bottom: 1200, width: 200, height: 200 },
+          scrollHeight: 300,
+          clientHeight: 200,
+          scrollWidth: 300,
+          clientWidth: 200
+        }
+      ],
+      { maxDefects: 1 }
+    )
+    expect(report.totalDefects).toBe(1)
+  })
+
+  it('detects overflow past the left and top edges of the canvas and of the parent', () => {
+    const offCanvas = inspectSlideGeometry([
+      { tagName: 'div', rect: { left: -300, top: -200, right: -100, bottom: -50, width: 200, height: 150 } }
+    ])
+    expect(offCanvas.pass).toBe(false)
+    expect(offCanvas.defects.map((d) => d.message).join('\n')).toMatch(
+      /left edge by 300px[\s\S]*top edge by 200px/
+    )
+
+    const outOfParent = inspectSlideGeometry([
+      {
+        tagName: 'div',
+        rect: { left: 76, top: 120, right: 200, bottom: 160, width: 124, height: 40 },
+        parentId: 'card',
+        parentRect: { left: 100, top: 100, right: 660, bottom: 460, width: 560, height: 360 }
+      }
+    ])
+    expect(outOfParent.defects[0]?.message).toContain('exceeds parent #card left by 24px')
+  })
+
+  it('describes an svg whose className is not a string', () => {
+    // In Chromium an <svg>'s className is an SVGAnimatedString.
+    const svg = { tagName: 'svg', className: { baseVal: 'icon big' } as unknown as string }
+    expect(describeElement(svg)).toBe('svg.icon.big')
   })
 })

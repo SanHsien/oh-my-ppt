@@ -55,9 +55,14 @@ export const computeAABBOverlap = (a: Rect, b: Rect): { overlapX: number; overla
   return { overlapX, overlapY }
 }
 
-export const describeElement = (el: { id?: string; className?: string; tagName: string }): string => {
+export const describeElement = (el: { id?: string; className?: unknown; tagName: string }): string => {
   const idPart = el.id ? `#${el.id}` : ''
-  const classPart = el.className ? `.${el.className.trim().split(/\s+/).slice(0, 2).join('.')}` : ''
+  // An <svg>'s className is an SVGAnimatedString in browsers, not a string.
+  const rawClass =
+    typeof el.className === 'string'
+      ? el.className
+      : String((el.className as { baseVal?: unknown } | undefined)?.baseVal ?? '')
+  const classPart = rawClass.trim() ? `.${rawClass.trim().split(/\s+/).slice(0, 2).join('.')}` : ''
   return `${el.tagName.toLowerCase()}${idPart}${classPart}`
 }
 
@@ -72,6 +77,10 @@ export const inspectSlideGeometry = (
   const overlapThreshold = options.overlapThreshold ?? 8
 
   const defects: GeometryDefect[] = []
+  // One element can produce several defects; stop at maxDefects, not just between elements.
+  const report = (defect: GeometryDefect) => {
+    if (defects.length < maxDefects) defects.push(defect)
+  }
 
   for (const el of elements) {
     if (defects.length >= maxDefects) break
@@ -81,7 +90,7 @@ export const inspectSlideGeometry = (
     if (el.scrollHeight !== undefined && el.clientHeight !== undefined && el.clientHeight > 0) {
       const vDiff = el.scrollHeight - el.clientHeight
       if (vDiff > overflowThreshold) {
-        defects.push({
+        report({
           type: 'text-overflow',
           element: elDesc,
           overflowPx: vDiff,
@@ -94,7 +103,7 @@ export const inspectSlideGeometry = (
     if (el.scrollWidth !== undefined && el.clientWidth !== undefined && el.clientWidth > 0) {
       const hDiff = el.scrollWidth - el.clientWidth
       if (hDiff > overflowThreshold) {
-        defects.push({
+        report({
           type: 'text-overflow',
           element: elDesc,
           overflowPx: hDiff,
@@ -105,9 +114,29 @@ export const inspectSlideGeometry = (
     }
 
     // 2. 畫布視窗邊界超出 (Canvas Overflow)
+    if (el.rect.left < -overflowThreshold) {
+      const diff = Math.round(-el.rect.left)
+      report({
+        type: 'boundary-overflow',
+        element: elDesc,
+        overflowPx: diff,
+        axis: 'horizontal',
+        message: `${elDesc} overflows canvas left edge by ${diff}px`
+      })
+    }
+    if (el.rect.top < -overflowThreshold) {
+      const diff = Math.round(-el.rect.top)
+      report({
+        type: 'boundary-overflow',
+        element: elDesc,
+        overflowPx: diff,
+        axis: 'vertical',
+        message: `${elDesc} overflows canvas top edge by ${diff}px`
+      })
+    }
     if (el.rect.right > canvasWidth + overflowThreshold) {
       const diff = Math.round(el.rect.right - canvasWidth)
-      defects.push({
+      report({
         type: 'boundary-overflow',
         element: elDesc,
         overflowPx: diff,
@@ -117,7 +146,7 @@ export const inspectSlideGeometry = (
     }
     if (el.rect.bottom > canvasHeight + overflowThreshold) {
       const diff = Math.round(el.rect.bottom - canvasHeight)
-      defects.push({
+      report({
         type: 'boundary-overflow',
         element: elDesc,
         overflowPx: diff,
@@ -129,10 +158,32 @@ export const inspectSlideGeometry = (
     // 3. 超出父容器 (Parent Overflow)
     if (el.parentRect) {
       const parentDesc = el.parentId ? `#${el.parentId}` : 'parent'
+      const pDiffLeft = Math.round(el.parentRect.left - el.rect.left)
+      const pDiffTop = Math.round(el.parentRect.top - el.rect.top)
+      if (pDiffLeft > overflowThreshold) {
+        report({
+          type: 'parent-overflow',
+          element: elDesc,
+          parent: parentDesc,
+          overflowPx: pDiffLeft,
+          axis: 'horizontal',
+          message: `${elDesc} exceeds parent ${parentDesc} left by ${pDiffLeft}px`
+        })
+      }
+      if (pDiffTop > overflowThreshold) {
+        report({
+          type: 'parent-overflow',
+          element: elDesc,
+          parent: parentDesc,
+          overflowPx: pDiffTop,
+          axis: 'vertical',
+          message: `${elDesc} exceeds parent ${parentDesc} top by ${pDiffTop}px`
+        })
+      }
       const pDiffRight = Math.round(el.rect.right - el.parentRect.right)
       const pDiffBottom = Math.round(el.rect.bottom - el.parentRect.bottom)
       if (pDiffRight > overflowThreshold) {
-        defects.push({
+        report({
           type: 'parent-overflow',
           element: elDesc,
           parent: parentDesc,
@@ -142,7 +193,7 @@ export const inspectSlideGeometry = (
         })
       }
       if (pDiffBottom > overflowThreshold) {
-        defects.push({
+        report({
           type: 'parent-overflow',
           element: elDesc,
           parent: parentDesc,
@@ -171,7 +222,7 @@ export const inspectSlideGeometry = (
         const minOverlap = Math.round(Math.min(overlapX, overlapY))
         const aDesc = describeElement(a)
         const bDesc = describeElement(b)
-        defects.push({
+        report({
           type: 'element-overlap',
           element: aDesc,
           parent: bDesc,

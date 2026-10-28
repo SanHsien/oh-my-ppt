@@ -64,7 +64,7 @@ const isNewerVersion = (latestVersion: string, currentVersion: string): boolean 
   return false
 }
 
-const fetchLatestRelease = async (): Promise<UpdateAvailablePayload | null> => {
+export const fetchLatestRelease = async (): Promise<UpdateAvailablePayload | null> => {
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), 8000)
   try {
@@ -96,7 +96,11 @@ const fetchLatestRelease = async (): Promise<UpdateAvailablePayload | null> => {
     const downloadhome = typeof manifest.html_url === 'string' && manifest.html_url.trim()
       ? manifest.html_url.trim()
       : typeof manifest.downloadhome === 'string' ? manifest.downloadhome.trim() : ''
-    const changeLog = typeof manifest.body === 'string' ? manifest.body.trim() : typeof manifest.changeLog === 'string' ? manifest.changeLog.trim() : ''
+    // The dialog opens changeLog as a link. A GitHub release's body is Markdown text, not a URL, so
+    // link to the release page; the old version.json manifest already gave a URL.
+    const changeLog = typeof manifest.html_url === 'string' && manifest.html_url.trim()
+      ? manifest.html_url.trim()
+      : typeof manifest.changeLog === 'string' ? manifest.changeLog.trim() : ''
 
     if (!latestVersion || !isNewerVersion(latestVersion, currentVersion)) return null
     return {

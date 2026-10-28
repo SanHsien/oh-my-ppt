@@ -4,6 +4,7 @@ import type { StyleParseResult } from './file'
 import { invokeVisionModelText } from '../../agent-runtime/provider/vision'
 import type { ModelRuntimeConfig } from '../../agent-runtime/model'
 import { isSupportedImageMimeType, normalizeImageMimeType } from '@shared/image-mime'
+import { hanTolerant } from '@shared/han-variants'
 
 export async function parseStyleImage(args: {
   imageBase64: string
@@ -85,6 +86,7 @@ async function parseStyleImageResponseWithRepairs(
 
 export function assertImageWasRead(text: string): void {
   const normalized = text.toLowerCase()
+  // Model replies come in either script; see src/shared/han-variants.ts.
   const missingImagePatterns = [
     /未提供圖片/,
     /未上傳圖片/,
@@ -98,7 +100,7 @@ export function assertImageWasRead(text: string): void {
     /image (?:was )?not (?:provided|uploaded|attached)/,
     /cannot (?:analyze|inspect|see|view) (?:the )?image/,
     /unable to (?:analyze|inspect|see|view) (?:the )?image/
-  ]
+  ].map(hanTolerant)
   if (missingImagePatterns.some((pattern) => pattern.test(normalized))) {
     throw new Error('當前模型未能讀取圖片，請在設置中切換到支持多模態的模型後重試')
   }

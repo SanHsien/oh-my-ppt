@@ -55,7 +55,8 @@ vi.mock('../../../src/main/agent-runtime/model', () => ({
 }))
 
 vi.mock('../../../src/main/utils/proxy', () => ({
-  applyProxy: settingsHandlersState.applyProxyMock
+  applyProxy: settingsHandlersState.applyProxyMock,
+  redactProxyUrl: (url: string) => url
 }))
 
 vi.mock('../../../src/main/config/locale-utils', () => ({

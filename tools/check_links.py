@@ -8,6 +8,7 @@
 
 from __future__ import annotations
 
+import os
 import re
 import sys
 from pathlib import Path
@@ -60,21 +61,42 @@ def iter_documents() -> list[Path]:
     return required
 
 
-def _missing_relative(path: Path, target: str) -> str | None:
+def _exists_with_exact_case(resolved: Path, root: Path) -> bool:
+    """Whether the path exists with this exact letter case: GitHub is case-sensitive, Windows is not."""
+    if not resolved.exists():
+        return False
+    top = Path(os.path.abspath(root))
+    try:
+        parts = resolved.relative_to(top).parts
+    except ValueError:
+        return True
+    current = top
+    for part in parts:
+        if part not in {entry.name for entry in current.iterdir()}:
+            return False
+        current = current / part
+    return True
+
+
+def _missing_relative(path: Path, target: str, root: Path = ROOT) -> str | None:
     target = target.strip().strip("<>")
     if not target or target.startswith(SKIP_PREFIXES):
         return None
-    file_part = unquote(target.split("#", 1)[0])
+    # [x](path "title"): the address ends at the first whitespace.
+    address = target.split(None, 1)[0].strip("<>")
+    file_part = unquote(re.split(r"[?#]", address, maxsplit=1)[0])
     if not file_part:
         return None
-    resolved = (path.parent / file_part).resolve()
-    if resolved.exists():
+    base = root if file_part.startswith("/") else path.parent
+    # abspath, not resolve(): on Windows resolve() returns the real letter case and hides a mismatch.
+    resolved = Path(os.path.abspath(base / file_part.lstrip("/")))
+    if _exists_with_exact_case(resolved, root):
         return None
     try:
-        shown = resolved.relative_to(ROOT)
+        shown = resolved.relative_to(os.path.abspath(root))
     except ValueError:
         shown = resolved
-    return f"{target} → 找不到 {shown}"
+    return f"{target} → 找不到 {shown}（或大小寫不符）"
 
 
 def check_document(path: Path) -> list[str]:

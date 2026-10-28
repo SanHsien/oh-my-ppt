@@ -4,11 +4,13 @@ import { buildThinkingSourcePlan } from '../../../src/main/thinking/source-plan'
 import { extractOutlineTitles } from '../../../src/main/ipc/utils'
 import { scanDocumentOutline } from '../../../src/main/io/document-outline-scan'
 import { normalizeProgressLabel, progressDisplayLabel } from '../../../src/shared/progress'
+import { normalizeGeneratedImagePrompt } from '../../../src/main/image-generation/prompt-director'
 
 // Text that people and models write comes in Simplified as often as in Traditional, and Taiwan-standard
 // Traditional (啟, 為, 眾) differs from the variant glyphs the source tree was converted to (啓, 爲, 衆).
 // Each case below states one input in Simplified (or Taiwan-standard) and expects what its Traditional
 // twin already gets. See src/shared/han-variants.ts.
+
 describe('content credibility reads Simplified metric claims', () => {
   it('flags an unsupported Simplified metric like its Traditional twin', () => {
     const run = (line: string) =>
@@ -62,5 +64,12 @@ describe('progress labels from agent status', () => {
   it('keeps a Simplified 第N页 label as it is', () => {
     expect(progressDisplayLabel('zh', '第 3 頁重試成功')).toBe('第 3 頁重試成功')
     expect(progressDisplayLabel('zh', '第 3 页重试成功')).toBe('第 3 页重试成功')
+  })
+})
+
+describe('image prompt director output', () => {
+  it('drops a Simplified 提示词 prefix like 提示詞', () => {
+    expect(normalizeGeneratedImagePrompt('提示詞：一隻貓')).toBe('一隻貓')
+    expect(normalizeGeneratedImagePrompt('提示词：一只猫')).toBe('一只猫')
   })
 })

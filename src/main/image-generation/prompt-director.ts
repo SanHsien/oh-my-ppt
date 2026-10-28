@@ -4,6 +4,7 @@ import type { ModelRuntimeConfig } from '../agent-runtime/model'
 import { extractModelText, resolveModel } from '../agent-runtime/model'
 import { buildImagePromptGenerationMessages } from '../agent-runtime/prompt'
 import { resolveModelTimeoutMs } from '@shared/model-timeout'
+import { hanTolerant } from '@shared/han-variants'
 
 export type ImagePromptDirectorConfig = {
   provider: string
@@ -61,11 +62,14 @@ export const compactPageContentForImageDirector = (html: string): string => {
   return (slotLines.length > 0 ? slotLines.join('\n') : fallback).slice(0, 6000)
 }
 
+// The model may label its answer 提示詞 or 提示词.
+const PROMPT_LABEL_PREFIX = hanTolerant(/^\s*(?:prompt|提示詞)\s*[:：]\s*/i)
+
 export const normalizeGeneratedImagePrompt = (raw: string): string =>
   raw
     .replace(/^```(?:text|markdown|md)?\s*/i, '')
     .replace(/```$/i, '')
-    .replace(/^\s*(?:prompt|提示詞)\s*[:：]\s*/i, '')
+    .replace(PROMPT_LABEL_PREFIX, '')
     .replace(/\s+/g, ' ')
     .trim()
 

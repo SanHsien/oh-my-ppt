@@ -18,6 +18,9 @@ describe('pptx import title heuristics', () => {
     expect(isLowValueTitleText('单击此处输入标题')).toBe(true)
     expect(isLowValueTitleText('请输入文字')).toBe(true)
     expect(isLowValueTitleText('年度經營回顧')).toBe(false)
+    // A year followed by PPT is a real title, not the 1ppt.com template watermark.
+    expect(isLowValueTitleText('2021PPT 年度工作總結')).toBe(false)
+    expect(isLowValueTitleText('www.1ppt.com 模板')).toBe(true)
   })
 
   it('recognizes Simplified deck title keywords', () => {

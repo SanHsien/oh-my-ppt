@@ -191,7 +191,7 @@ const isLowValueTitleText = (text: string): boolean => {
 const normalized = text.toLowerCase()
 if (!normalized) return true
 if (/https?:\/\//i.test(text) || /www\./i.test(text)) return true
-  if (normalized.includes('ppt模板') || normalized.includes('1ppt')) return true
+  if (normalized.includes('ppt模板') || normalized.includes('1ppt.com')) return true
 if (PLACEHOLDER_TITLE_PATTERN.test(text)) return true
  if (normalized.includes('thank you for your attention')) return true
  return false

@@ -36,7 +36,7 @@
 | `tools/upstream_baseline.json` | 上游審查水位記錄 |
 | `src/shared/geometry-inspector.ts`、`src/renderer/src/lib/dom-geometry-inspector.ts`、`src/main/generation/layout-geometry-validator.ts` | DOM Bounding Box & AABB 碰撞量測，以及在投影片左上角疊紅色英文徽章的標註圖層函式（有單元測試）；**尚未接上**生成、編輯或預覽流程，目前不影響產出 |
 | `.cursor/rules/no-upstream-pr.mdc` | 防止誤向 upstream 開 PR 的機械防護規則 |
-| `.github/workflows/ci.yml` | 純 Windows 原生（windows-latest，Python 3.10–3.14）門禁 CI |
+| `.github/workflows/ci.yml` | 純 Windows 原生 CI：Python 3.10–3.14 維護門禁，加上產品 typecheck 與 vitest（Node 24） |
 | `.github/workflows/upstream-check.yml` | 每週定期檢查 upstream/main 的未審查 commit、PR 與 issue |
 | `.github/workflows/dependency-freshness.yml` | 每月定期檢查維護依賴新鮮度 |
 

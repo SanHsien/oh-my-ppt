@@ -38,7 +38,7 @@ pwsh -NoProfile -File tools\bootstrap_dev.ps1
 
 ### 產品開發與測試
 
-Windows 產品工具鏈需要 Node.js `>=22.12.0` 與 pnpm `10.10.0`，對應 Electron 42／`@electron/get` 5 的最低 Node 版本。維護骨架 CI 只執行 Python gate，未安裝 Node 或執行產品驗收。
+Windows 產品工具鏈需要 Node.js `>=22.12.0` 與 pnpm `10.10.0`，對應 Electron 42／`@electron/get` 5 的最低 Node 版本。CI 的 `product tests` job（Windows、Node 24）以 `pnpm install --frozen-lockfile` 安裝後執行 `pnpm run typecheck` 與 `pnpm test`（vitest）；`dev_check.ps1` 本身仍只跑 Python gate。打包與 Electron 實機驗收不在 CI。測試中有 15 個預設跳過：`tests/unit/html-pptx/font-experiment.test.ts` 的 5 個要設 `FONT_EXPERIMENT_DIR` 才跑（字型實驗，會寫出檔案）；`tests/unit/html-pptx/extract-script.test.ts` 的 10 個要有同層的 `../html2pptx/src` 原始碼才跑，CI 上不會執行。
 
 若需進行 Electron 桌面應用程式的開發與偵錯：
 
@@ -84,7 +84,7 @@ $env:OHMYPPT_SMOKE_REPORT = "$PWD\smoke-report.json"
 3. `pytest tools/tests`（使用獨立的 `tools/pytest.ini`）
 4. `python tools/check_links.py`（驗證所有維護文件相對連結）
 
-CI 在 Windows-latest 矩陣（Python 3.10–3.14）跑同一套 gate。推 `main` 前先跑本機 gate。
+CI 在 Windows-latest 矩陣（Python 3.10–3.14）跑同一套 gate，另有一個 `product tests` job 跑 typecheck 與 vitest。推 `main` 前先跑本機 gate，改到產品程式時也跑 `pnpm test`。
 
 ## 依賴新鮮度
 

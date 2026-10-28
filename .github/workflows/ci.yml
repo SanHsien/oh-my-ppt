@@ -43,3 +43,33 @@ jobs:
       - name: Canonical Windows development gate
         shell: pwsh
         run: pwsh -NoProfile -File tools/dev_check.ps1
+
+  # The product's own tests: dev_check above only runs the Python maintenance gate, so without
+  # this job a broken main-process or renderer change would leave CI green.
+  product-tests:
+    name: product tests (windows / node 24)
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+
+      - name: Install pnpm (version from package.json packageManager)
+        shell: pwsh
+        run: npm install --global "pnpm@$((Get-Content package.json | ConvertFrom-Json).packageManager.Split('@')[1])"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Unit tests (vitest)
+        run: pnpm test

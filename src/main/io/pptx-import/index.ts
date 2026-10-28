@@ -43,6 +43,7 @@ import {
   unsupportedChartWarning
 } from './chart-renderer'
 import { buildAnimationAttrs, buildBlockStyle, clampNumber } from './render-shared'
+import { hanTolerant } from '@shared/han-variants'
 import type {
   FlattenedElement,
   ImageRegistry,
@@ -179,20 +180,26 @@ const flattenElements = (
   return flattened
 }
 
+// Imported decks are often Simplified; see src/shared/han-variants.ts. 覆盤 is the tree's word-level
+// conversion of 复盘 (复 and 覆 are not one variant group), so 复盤 is listed too.
+const PLACEHOLDER_TITLE_PATTERN = hanTolerant(/單擊此處輸入|請輸入/)
+const DECK_TITLE_KEYWORD_PATTERN = hanTolerant(
+  /(總結|彙報|報告|計劃|規劃|方案|覆盤|复盤|目錄|概述|情況|不足|introduction|overview|summary|agenda|conclusion|plan|report|review)/i
+)
+
 const isLowValueTitleText = (text: string): boolean => {
 const normalized = text.toLowerCase()
 if (!normalized) return true
 if (/https?:\/\//i.test(text) || /www\./i.test(text)) return true
   if (normalized.includes('ppt模板') || normalized.includes('1ppt')) return true
-if (text.includes('單擊此處輸入') || text.includes('請輸入')) return true
+if (PLACEHOLDER_TITLE_PATTERN.test(text)) return true
  if (normalized.includes('thank you for your attention')) return true
  return false
 }
 
 const hasCjkText = (text: string): boolean => /[\u3400-\u9fff]/.test(text)
 
-const hasDeckTitleKeyword = (text: string): boolean =>
-  /(總結|彙報|報告|計劃|規劃|方案|覆盤|目錄|概述|情況|不足|introduction|overview|summary|agenda|conclusion|plan|report|review)/i.test(text)
+const hasDeckTitleKeyword = (text: string): boolean => DECK_TITLE_KEYWORD_PATTERN.test(text)
 
 const warningFromParseIssue = (issue: ParseIssue): ImportWarning => {
   const location = [
@@ -1530,6 +1537,8 @@ const buildTableBlock = (args: {
 }
 
 export const __pptxImporterTestUtils = {
+  isLowValueTitleText,
+  hasDeckTitleKeyword,
   buildShapeBlock,
   buildTextBlock,
   buildTableBlock,

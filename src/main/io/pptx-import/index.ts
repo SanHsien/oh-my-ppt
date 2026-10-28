@@ -187,11 +187,21 @@ const DECK_TITLE_KEYWORD_PATTERN = hanTolerant(
   /(總結|彙報|報告|計劃|規劃|方案|覆盤|复盤|目錄|概述|情況|不足|introduction|overview|summary|agenda|conclusion|plan|report|review)/i
 )
 
+// The 1ppt.com template watermark is matched as a whole host (the domain itself or one of its
+// subdomains), not as a substring, so "evil-1ppt.com.example.org" or "my1ppt.community" do not count.
+const WATERMARK_HOST = '1ppt.com'
+const HOST_LIKE_TOKEN_PATTERN = /[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+/g
+
+const mentionsWatermarkHost = (normalized: string): boolean =>
+  (normalized.match(HOST_LIKE_TOKEN_PATTERN) ?? []).some(
+    (host) => host === WATERMARK_HOST || host.endsWith(`.${WATERMARK_HOST}`)
+  )
+
 const isLowValueTitleText = (text: string): boolean => {
 const normalized = text.toLowerCase()
 if (!normalized) return true
 if (/https?:\/\//i.test(text) || /www\./i.test(text)) return true
-  if (normalized.includes('ppt模板') || normalized.includes('1ppt.com')) return true
+  if (normalized.includes('ppt模板') || mentionsWatermarkHost(normalized)) return true
 if (PLACEHOLDER_TITLE_PATTERN.test(text)) return true
  if (normalized.includes('thank you for your attention')) return true
  return false

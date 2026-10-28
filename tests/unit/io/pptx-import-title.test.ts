@@ -23,6 +23,22 @@ describe('pptx import title heuristics', () => {
     expect(isLowValueTitleText('www.1ppt.com 模板')).toBe(true)
   })
 
+  it('matches the 1ppt.com watermark as a whole host, not as a substring', () => {
+    // The domain itself, a subdomain, a scheme-less path and mixed case are all the watermark.
+    expect(isLowValueTitleText('1ppt.com')).toBe(true)
+    expect(isLowValueTitleText('WWW.1PPT.COM')).toBe(true)
+    expect(isLowValueTitleText('cdn.1ppt.com')).toBe(true)
+    expect(isLowValueTitleText('更多模板請見 1ppt.com/ppt。')).toBe(true)
+    expect(isLowValueTitleText('1ppt.com模板下載')).toBe(true)
+    expect(isLowValueTitleText('https://static.1ppt.com/a.png')).toBe(true)
+    // Another host that merely contains the string is a real title candidate.
+    expect(isLowValueTitleText('evil-1ppt.com')).toBe(false)
+    expect(isLowValueTitleText('my1ppt.com')).toBe(false)
+    expect(isLowValueTitleText('1ppt.com.example.org')).toBe(false)
+    expect(isLowValueTitleText('1ppt.company 年度報告')).toBe(false)
+    expect(isLowValueTitleText('docs.example.org/1ppt.com-guide')).toBe(false)
+  })
+
   it('recognizes Simplified deck title keywords', () => {
     expect(hasDeckTitleKeyword('年度工作彙報')).toBe(true)
     expect(hasDeckTitleKeyword('年度工作汇报')).toBe(true)

@@ -39,6 +39,14 @@ describe('pptx import title heuristics', () => {
     expect(isLowValueTitleText('docs.example.org/1ppt.com-guide')).toBe(false)
   })
 
+  it('scans long untrusted text in linear time', () => {
+    const long = 'a'.repeat(200_000)
+    const started = performance.now()
+    expect(isLowValueTitleText(long)).toBe(false)
+    expect(isLowValueTitleText(`${long} 1ppt.com`)).toBe(true)
+    expect(performance.now() - started).toBeLessThan(500)
+  })
+
   it('recognizes Simplified deck title keywords', () => {
     expect(hasDeckTitleKeyword('年度工作彙報')).toBe(true)
     expect(hasDeckTitleKeyword('年度工作汇报')).toBe(true)

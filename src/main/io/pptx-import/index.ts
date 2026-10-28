@@ -190,7 +190,9 @@ const DECK_TITLE_KEYWORD_PATTERN = hanTolerant(
 // The 1ppt.com template watermark is matched as a whole host (the domain itself or one of its
 // subdomains), not as a substring, so "evil-1ppt.com.example.org" or "my1ppt.community" do not count.
 const WATERMARK_HOST = '1ppt.com'
-const HOST_LIKE_TOKEN_PATTERN = /[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+/g
+// The lookbehind starts a match only at the beginning of a run, which keeps the scan linear on long
+// dot-free input from untrusted pptx text (the nested-quantifier form was quadratic).
+const HOST_LIKE_TOKEN_PATTERN = /(?<![a-z0-9-])[a-z0-9-]+(?:\.[a-z0-9-]+)+/g
 
 const mentionsWatermarkHost = (normalized: string): boolean =>
   (normalized.match(HOST_LIKE_TOKEN_PATTERN) ?? []).some(

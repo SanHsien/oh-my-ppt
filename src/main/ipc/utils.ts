@@ -1,4 +1,5 @@
 /** Pure utility functions used across IPC handlers. */
+import { hanTolerant } from '@shared/han-variants'
 
 export const parseJsonObject = (value: unknown): Record<string, unknown> => {
   if (value && typeof value === "object" && !Array.isArray(value)) {
@@ -106,13 +107,16 @@ export const sleep = (ms: number, signal?: AbortSignal) =>
     }
   });
 
+// The user writes 第N頁 or 第N页; see src/shared/han-variants.ts.
+const EXPLICIT_PAGE_LINE = hanTolerant(/^第\s*[一二三四五六七八九十百\d]+\s*頁\s*[:：]\s*(.+)$/i)
+
 export const extractOutlineTitles = (prompt: string): string[] =>
   prompt
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter(Boolean)
     .map((line) => {
-      const explicit = line.match(/^第\s*[一二三四五六七八九十百\d]+\s*頁\s*[:：]\s*(.+)$/i);
+      const explicit = line.match(EXPLICIT_PAGE_LINE);
       if (explicit?.[1]) return explicit[1].trim();
       const numbered = line.match(/^\d+\s*[.、]\s*(.+)$/);
       if (numbered?.[1]) return numbered[1].trim();

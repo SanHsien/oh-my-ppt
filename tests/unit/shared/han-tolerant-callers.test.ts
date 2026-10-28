@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { findUnsupportedPrecisionClaims } from '../../../src/main/thinking/content-credibility'
 import { buildThinkingSourcePlan } from '../../../src/main/thinking/source-plan'
+import { extractOutlineTitles } from '../../../src/main/ipc/utils'
 
 // Text that people and models write comes in Simplified as often as in Traditional, and Taiwan-standard
 // Traditional (啟, 為, 眾) differs from the variant glyphs the source tree was converted to (啓, 爲, 衆).
@@ -26,5 +27,12 @@ describe('thinking source plan reads Simplified page roles', () => {
     expect(plan('章節過渡')).toMatchObject({ role: 'chapter-divider' })
     expect(plan('章节过渡')).toMatchObject({ role: 'chapter-divider' })
     expect(plan('标题页')).toMatchObject({ role: 'chapter-divider' })
+  })
+})
+
+describe('outline titles from a user message', () => {
+  it('reads Simplified 第N页 lines', () => {
+    expect(extractOutlineTitles('第1頁：市場概況\n第2頁：競品')).toEqual(['市場概況', '競品'])
+    expect(extractOutlineTitles('第1页：市场概况\n第二页：竞品')).toEqual(['市场概况', '竞品'])
   })
 })

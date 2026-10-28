@@ -44,4 +44,24 @@ describe('chart data import formats', () => {
     expect(result.canceled).toBe(false)
     expect(result.rowCount).toBe(2)
   })
+
+  it('reads rich text, hyperlink, formula and date cells of an xlsx as their text and values', async () => {
+    const ExcelJS = (await import('exceljs')).default
+    const workbook = new ExcelJS.Workbook()
+    const sheet = workbook.addWorksheet('data')
+    sheet.addRow(['month', 'sales'])
+    sheet.addRow([{ richText: [{ text: 'Jan' }] }, 10])
+    sheet.addRow([{ text: 'Feb', hyperlink: 'https://example.com' }, { formula: '10+10', result: 20 }])
+    sheet.addRow([new Date(Date.UTC(2026, 2, 1)), 30])
+    const dir = await mkdtemp(path.join(os.tmpdir(), 'ohmyppt-chart-import-'))
+    roots.push(dir)
+    const file = path.join(dir, 'data.xlsx')
+    await workbook.xlsx.writeFile(file)
+
+    const result = await parseChartDataFile(file)
+    const rows = JSON.parse(result.dataJson as string) as Array<Record<string, unknown>>
+
+    expect(rows.map((row) => row.x)).toEqual(['Jan', 'Feb', '2026-03-01'])
+    expect(JSON.stringify(rows)).not.toContain('[object Object]')
+  })
 })

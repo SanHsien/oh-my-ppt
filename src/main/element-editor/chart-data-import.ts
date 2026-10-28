@@ -180,6 +180,24 @@ function normalizeChartRows(rows: RawRow[]): {
 // exceljs reads Office Open XML (.xlsx) only; legacy binary .xls is not offered.
 export const CHART_DATA_EXTENSIONS = ['csv', 'tsv', 'txt', 'json', 'xlsx']
 
+/**
+ * An exceljs cell value as the plain text or number a user sees in Excel: rich text and hyperlink
+ * cells are objects, formulas carry their cached result, and dates are Date objects.
+ */
+const excelCellValue = (v: unknown): unknown => {
+  if (v === null || v === undefined) return ''
+  if (v instanceof Date) return v.toISOString().slice(0, 10)
+  if (typeof v !== 'object') return v
+  const cell = v as Record<string, unknown>
+  if (Array.isArray(cell.richText)) {
+    return cell.richText.map((part) => String((part as { text?: unknown }).text ?? '')).join('')
+  }
+  if ('result' in cell) return excelCellValue(cell.result)
+  if ('formula' in cell || 'sharedFormula' in cell || 'error' in cell) return ''
+  if ('text' in cell) return excelCellValue(cell.text)
+  return ''
+}
+
 export async function parseChartDataFile(filePath: string): Promise<ParsedChartDataResult> {
   const ext = path.extname(filePath).toLowerCase()
   let rawRows: RawRow[] = []
@@ -213,15 +231,7 @@ export async function parseChartDataFile(filePath: string): Promise<ParsedChartD
     const tableData: unknown[][] = []
     worksheet.eachRow((row) => {
       const values = Array.isArray(row.values) ? row.values.slice(1) : []
-      tableData.push(
-        values.map((v) =>
-          v === null || v === undefined
-            ? ''
-            : typeof v === 'object' && 'result' in (v as Record<string, unknown>)
-              ? (v as Record<string, unknown>).result
-              : v
-        )
-      )
+      tableData.push(values.map(excelCellValue))
     })
     rawRows = rowsFromTable(tableData)
   } else {

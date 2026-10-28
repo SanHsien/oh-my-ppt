@@ -34,7 +34,7 @@
 | `tools/check_upstream_updates.py` | 上游 commit、PR、issue 水位追蹤與差異分析 |
 | `tools/check_dependency_freshness.py` | 依賴新鮮度與過期版本審查 |
 | `tools/upstream_baseline.json` | 上游審查水位記錄 |
-| `DOM 幾何 Hit-Test 跑版量測` | 以本機 Chromium DOM Bounding Box & AABB 碰撞量測取代昂貴多模態截圖，將跑版檢測壓至 < 100 Tokens，提供即時紅框尺寸標記圖層 |
+| `src/shared/geometry-inspector.ts`、`src/renderer/src/lib/dom-geometry-inspector.ts`、`src/main/generation/layout-geometry-validator.ts` | DOM Bounding Box & AABB 碰撞量測與紅框標註圖層函式（有單元測試）；**尚未接上**生成、編輯或預覽流程，目前不影響產出 |
 | `.cursor/rules/no-upstream-pr.mdc` | 防止誤向 upstream 開 PR 的機械防護規則 |
 | `.github/workflows/ci.yml` | 純 Windows 原生（windows-latest，Python 3.10–3.14）門禁 CI |
 | `.github/workflows/upstream-check.yml` | 每週定期檢查 upstream/main 的未審查 commit、PR 與 issue |

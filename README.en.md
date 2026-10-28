@@ -144,10 +144,10 @@ In addition to the core capabilities of Oh My PPT, this maintenance fork introdu
 4. 🇹🇼 **Full Traditional Chinese Localization & Ad Removal**:
    - Removed simplified Chinese README, aligned bilingual documentation, and purged all upstream advertisements and sponsor links.
 
-5. 📐 **DOM Bounding Box & Hit-Test Geometry QA (Token Usage Down from 1k to <100)**:
-   - **No Expensive Multimodal Vision Screenshots**: Avoid traditional "render → screenshot → vision model read → guess adjustment" loops that consume ~1,000 tokens per slide with inaccurate pixel alignment.
-   - **Local Chromium Geometry Engine**: Programmatically computes element bounding boxes (`getBoundingClientRect`), AABB element overlap collisions, canvas/parent boundary overflows, and vertical text clippings (`scrollHeight > clientHeight`) into a structured diagnostic report under 100 tokens.
-   - **Live Visual Measurement Overlay**: Supports in-app visual measurement overlays (e.g. "+24px overflow", "12px overlap", "196px clipping") for instant inspection.
+5. 📐 **DOM Bounding Box & Hit-Test Geometry Inspector (built and tested, not yet wired into the app)**:
+   - **Goal**: replace the "render → screenshot → vision model reads it → guess a fix" layout check, which costs about 1,000 tokens per slide and cannot measure pixels precisely.
+   - **What exists**: `src/shared/geometry-inspector.ts` turns element bounding boxes (`getBoundingClientRect`) into AABB overlaps, canvas/parent overflows and vertical text clipping (`scrollHeight > clientHeight`) in a compact structured report; `src/renderer/src/lib/dom-geometry-inspector.ts` collects the elements of a slide DOM and has a function that toggles a red-box overlay with pixel labels (e.g. "+24px overflow", "12px overlap"); `src/main/generation/layout-geometry-validator.ts` turns the report into a validation result. Unit tests: `tests/unit/presentation/geometry-inspector.test.ts`.
+   - **Current limits**: no generation, editing or preview path calls these functions yet, and the preview has no button for the overlay, so the inspector does not change any output and does not reduce token usage yet.
 
 ---
 

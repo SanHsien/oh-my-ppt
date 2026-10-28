@@ -240,6 +240,14 @@ const copyPageResources = async (args: {
       resourcePathMap.set(resourceKey, `./${targetRelative}`)
     } catch (err: any) {
       if (err && (err.code === 'EISDIR' || err.code === 'ENOENT')) continue
+      // Windows reports copyFile(directory) as EPERM; a reference to a folder is no resource.
+      if (err?.code === 'EPERM') {
+        const isDirectory = await fs.promises
+          .stat(sourcePath)
+          .then((stat) => stat.isDirectory())
+          .catch(() => false)
+        if (isDirectory) continue
+      }
       throw err
     }
   }

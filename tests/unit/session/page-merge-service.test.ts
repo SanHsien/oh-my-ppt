@@ -324,6 +324,23 @@ describe('mergeSessionPages', () => {
     ).rejects.toMatchObject({ code: 'PAGE_MERGE_SLIDE_SIZE_MISMATCH' })
   })
 
+  it('skips a reference to a directory instead of failing the merge', async () => {
+    // On Windows copyFile(directory) fails with EPERM, not EISDIR.
+    await fs.promises.writeFile(
+      path.join(sourceProjectDir, 'page-one.html'),
+      '<html><body data-page-id="page-one"><img src="./images"><p>One</p></body></html>'
+    )
+    const context = createContext()
+
+    const result = await mergeSessionPages(context as never, {
+      targetSessionId: 'target',
+      sourceSessionId: 'source',
+      sourcePageIds: ['source-page-1']
+    })
+
+    expect(result.insertedPageIds).toHaveLength(1)
+  })
+
   it('rejects a page when a required local resource is missing', async () => {
     await fs.promises.writeFile(
       path.join(sourceProjectDir, 'page-one.html'),

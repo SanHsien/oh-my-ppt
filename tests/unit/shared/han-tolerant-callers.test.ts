@@ -3,6 +3,7 @@ import { findUnsupportedPrecisionClaims } from '../../../src/main/thinking/conte
 import { buildThinkingSourcePlan } from '../../../src/main/thinking/source-plan'
 import { extractOutlineTitles } from '../../../src/main/ipc/utils'
 import { scanDocumentOutline } from '../../../src/main/io/document-outline-scan'
+import { normalizeProgressLabel, progressDisplayLabel } from '../../../src/shared/progress'
 
 // Text that people and models write comes in Simplified as often as in Traditional, and Taiwan-standard
 // Traditional (啟, 為, 眾) differs from the variant glyphs the source tree was converted to (啓, 爲, 衆).
@@ -46,5 +47,20 @@ describe('document outline scan reads Simplified unit titles', () => {
     expect(hints('項目覆盤')).toContain('### 項目覆盤')
     expect(hints('项目复盘')).toContain('### 项目复盘')
     expect(hints('其他雜談')).not.toContain('### 其他雜談')
+  })
+})
+
+describe('progress labels from agent status', () => {
+  it('maps Simplified status labels like their Traditional twins', () => {
+    expect(normalizeProgressLabel('檢查頁面')).toBe('checking')
+    expect(normalizeProgressLabel('检查页面')).toBe('checking')
+    expect(normalizeProgressLabel('生成失败')).toBe('failed')
+    expect(normalizeProgressLabel('已创建')).toBe('completed')
+    expect(normalizeProgressLabel('准备画布')).toBe('preparing')
+  })
+
+  it('keeps a Simplified 第N页 label as it is', () => {
+    expect(progressDisplayLabel('zh', '第 3 頁重試成功')).toBe('第 3 頁重試成功')
+    expect(progressDisplayLabel('zh', '第 3 页重试成功')).toBe('第 3 页重试成功')
   })
 })

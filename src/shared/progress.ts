@@ -1,3 +1,5 @@
+import { hanTolerant } from './han-variants'
+
 export type AppLocale = 'zh' | 'en'
 
 export type ProgressStatusKey =
@@ -55,7 +57,9 @@ const PROGRESS_TEXT: Record<ProgressStatusKey, Record<AppLocale, string>> = {
   }
 }
 
-const LABEL_MAP: Array<[RegExp, ProgressStatusKey]> = [
+// Status labels come from agent tool calls and may be written in either script.
+const LABEL_MAP: Array<[RegExp, ProgressStatusKey]> = (
+  [
   [/取消|cancel/i, 'canceled'],
   [/失敗|錯誤|fail|error/i, 'failed'],
   [/重試|retry/i, 'retrying'],
@@ -66,7 +70,9 @@ const LABEL_MAP: Array<[RegExp, ProgressStatusKey]> = [
   [/理解|分析|understand|analyz/i, 'understanding'],
   [/生成|寫入|更新|填充|generate|generating|writing|updating|filling/i, 'generating'],
   [/收尾|finaliz/i, 'finalizing']
-]
+  ] as Array<[RegExp, ProgressStatusKey]>
+).map(([pattern, key]) => [hanTolerant(pattern), key])
+const PAGE_LABEL_PATTERN = hanTolerant(/^(?:P\d+\b|第\s*\d+\s*頁)/i)
 
 export const normalizeLocale = (locale: AppLocale | undefined): AppLocale =>
   locale === 'en' ? 'en' : 'zh'
@@ -93,6 +99,6 @@ export const progressDisplayLabel = (
   rawLabel: string | undefined
 ): string => {
   const label = (rawLabel || '').trim()
-  if (/^(?:P\d+\b|第\s*\d+\s*頁)/i.test(label)) return label
+  if (PAGE_LABEL_PATTERN.test(label)) return label
   return progressLabel(locale, label)
 }

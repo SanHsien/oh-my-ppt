@@ -1,3 +1,5 @@
+import { hanTolerant } from '@shared/han-variants'
+
 export interface CredibilityIssue {
   line: number
   text: string
@@ -5,10 +7,14 @@ export interface CredibilityIssue {
 }
 
 const BENCHMARK_PATTERN = /\b(MMLU|HumanEval|MT-Bench|SWE-bench|GSM8K|GPQA|BIG-bench)\b/i
-const METRIC_WORD_PATTERN =
+// Model-written briefs come in Simplified as often as Traditional; see src/shared/han-variants.ts.
+const METRIC_WORD_PATTERN = hanTolerant(
   /成本|價格|準確率|召回率|錯誤率|幻覺|提升|下降|降低|縮短|節省|突破|達到|保持|超過|優化|損失|參數|token|fps|benchmark|score|accuracy|cost|latency|throughput/i
-const EXACT_VALUE_PATTERN =
+)
+const EXACT_VALUE_PATTERN = hanTolerant(
   /(?:[$￥]\s*\d|\d+(?:\.\d+)?\s*(?:%|美元|元|倍|fps|K|M|B|T|萬|億|千億|萬億|token|tokens?)|\b\d+(?:\.\d+)?\s*(?:->|→|至|-)\s*\d+(?:\.\d+)?)/i
+)
+const STRUCTURAL_NUMBER_PATTERN = hanTolerant(/時長|分鐘|頁|頁面數|Page Count/i)
 
 export function findUnsupportedPrecisionClaims(args: {
   markdown: string
@@ -46,6 +52,6 @@ function isAllowedStructuralNumber(text: string): boolean {
     /^##\s*Page\s+\d+\s*:/.test(text) ||
     /^##\s*Page Count$/i.test(text) ||
     /^\d+$/.test(text) ||
-    /時長|分鐘|頁|頁面數|Page Count/i.test(text)
+    STRUCTURAL_NUMBER_PATTERN.test(text)
   )
 }

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { findUnsupportedPrecisionClaims } from '../../../src/main/thinking/content-credibility'
 import { buildThinkingSourcePlan } from '../../../src/main/thinking/source-plan'
 import { extractOutlineTitles } from '../../../src/main/ipc/utils'
+import { scanDocumentOutline } from '../../../src/main/io/document-outline-scan'
 
 // Text that people and models write comes in Simplified as often as in Traditional, and Taiwan-standard
 // Traditional (啟, 為, 眾) differs from the variant glyphs the source tree was converted to (啓, 爲, 衆).
@@ -34,5 +35,16 @@ describe('outline titles from a user message', () => {
   it('reads Simplified 第N页 lines', () => {
     expect(extractOutlineTitles('第1頁：市場概況\n第2頁：競品')).toEqual(['市場概況', '競品'])
     expect(extractOutlineTitles('第1页：市场概况\n第二页：竞品')).toEqual(['市场概况', '竞品'])
+  })
+})
+
+describe('document outline scan reads Simplified unit titles', () => {
+  it('suggests a short Simplified 复盘 section as a standalone slide like 覆盤', () => {
+    const hints = (unit: string) =>
+      scanDocumentOutline(['# 報告', '', '## 第一章', '內容', '', `### ${unit}`, '一句話。', '', '## 第二章', '內容'].join('\n'))
+        .recommendedSplitHints.join('\n')
+    expect(hints('項目覆盤')).toContain('### 項目覆盤')
+    expect(hints('项目复盘')).toContain('### 项目复盘')
+    expect(hints('其他雜談')).not.toContain('### 其他雜談')
   })
 })

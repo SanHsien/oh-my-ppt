@@ -3,6 +3,7 @@ import { gfmFromMarkdown } from 'mdast-util-gfm'
 import { toString } from 'mdast-util-to-string'
 import { gfm } from 'micromark-extension-gfm'
 import type { ListItem, Nodes, Root } from 'mdast'
+import { hanTolerant } from '@shared/han-variants'
 import {
   SECTION_AGENDA_REASON_PREFIX_EN,
   SECTION_AGENDA_REASON_PREFIX_ZH,
@@ -49,12 +50,17 @@ export interface DocumentOutlinePageCountEstimate {
   basis: string
 }
 
-const METRIC_PATTERN =
+// Headings come from the user's source document, in either script; see src/shared/han-variants.ts.
+// 覆盤 is the word-level conversion of 复盘 (复 and 覆 are not one variant group), so 复盤 is listed too.
+const METRIC_PATTERN = hanTolerant(
   /(?:\d+(?:\.\d+)?\s*%|\b\d{4}\b|[$￥€]\s*\d|\d+(?:\.\d+)?\s*(?:萬|億|million|billion|k|m|bn)\b)/i
-const HIGH_SIGNAL_PATTERN =
+)
+const HIGH_SIGNAL_PATTERN = hanTolerant(
   /(?:結論|風險|行動|決策|指標|增長|下降|summary|risk|action|decision|metric|growth|decline)/i
-const STANDALONE_UNIT_TITLE_PATTERN =
-  /(?:方法|清單|模板|話術|案例|技巧|步驟|計劃|覆盤|指標|配置|標準|策略|架構|對比|怎麼辦|Q\d+|Day\s*\d+|method|checklist|template|script|case|tips|steps|plan|review|metric|strategy|workflow|standard|comparison|how to|q\d+)/i
+)
+const STANDALONE_UNIT_TITLE_PATTERN = hanTolerant(
+  /(?:方法|清單|模板|話術|案例|技巧|步驟|計劃|覆盤|复盤|指標|配置|標準|策略|架構|對比|怎麼辦|Q\d+|Day\s*\d+|method|checklist|template|script|case|tips|steps|plan|review|metric|strategy|workflow|standard|comparison|how to|q\d+)/i
+)
 const H2_OWN_BODY_SLIDE_CHAR_COUNT = 160
 const DEEP_STANDALONE_SLIDE_CHAR_COUNT = 240
 const DEEP_STANDALONE_HIGH_SIGNAL_CHAR_COUNT = 120

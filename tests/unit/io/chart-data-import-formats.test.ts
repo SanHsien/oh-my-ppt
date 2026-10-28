@@ -64,4 +64,13 @@ describe('chart data import formats', () => {
     expect(rows.map((row) => row.x)).toEqual(['Jan', 'Feb', '2026-03-01'])
     expect(JSON.stringify(rows)).not.toContain('[object Object]')
   })
+
+  it('recognizes a Simplified first header like its Traditional twin', async () => {
+    // Only the numeric header row decides here, so the first cell must be read as a header word.
+    for (const header of ['產品', '产品']) {
+      const file = await tempFile(`${header}.csv`, `${header},2021,2022\nA,1,2\nB,3,4\n`)
+      const result = await parseChartDataFile(file)
+      expect(result.rowCount, header).toBe(2)
+    }
+  })
 })

@@ -5,6 +5,7 @@ import path from 'path'
 import { createRequire } from 'module'
 import type { IpcContext } from '../ipc/context'
 import type { ParsedChartDataResult } from '../../shared/chart-data'
+import { hanTolerant } from '@shared/han-variants'
 
 const require = createRequire(import.meta.url)
 const MAX_ROWS = 200
@@ -28,6 +29,8 @@ const TABLE_X_HEADER_KEYS = [
   '地區',
   '產品'
 ]
+// The header comes from the user's file, in either script; see src/shared/han-variants.ts.
+const TABLE_X_HEADER_PATTERN = hanTolerant(new RegExp(`^(?:${TABLE_X_HEADER_KEYS.join('|')})$`))
 
 type RawRow = Record<string, unknown> | unknown[]
 type ExcelJsApi = {
@@ -89,7 +92,7 @@ function rowsFromTable(table: unknown[][]): RawRow[] {
   const firstRow = table[0] || []
   const firstCell = String(firstRow[0] ?? '').trim().toLowerCase()
   const hasHeader =
-    TABLE_X_HEADER_KEYS.includes(firstCell) ||
+    TABLE_X_HEADER_PATTERN.test(firstCell) ||
     firstRow.some((cell, index) => index > 0 && toFiniteNumber(cell) === null)
   if (!hasHeader) return table
   const headers = firstRow.map((cell, index) =>

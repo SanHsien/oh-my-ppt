@@ -9,6 +9,16 @@ function isSocksUrl(url: string): boolean {
   return url.startsWith('socks5://') || url.startsWith('socks://')
 }
 
+/** The proxy address without its credentials (http://user:pass@host is how this version authenticates). */
+export function redactProxyUrl(proxyUrl: string): string {
+  try {
+    const url = new URL(proxyUrl)
+    return `${url.protocol}//${url.host}`
+  } catch {
+    return '(invalid proxy url)'
+  }
+}
+
 export function applyProxy(proxyUrl: string | undefined): void {
   if (!originalDispatcher) {
     originalDispatcher = getGlobalDispatcher()
@@ -25,7 +35,7 @@ export function applyProxy(proxyUrl: string | undefined): void {
   closeCurrentProxy()
   currentProxyDispatcher = dispatcher
   setGlobalDispatcher(dispatcher)
-  log.info('[proxy] applied', url)
+  log.info('[proxy] applied', redactProxyUrl(url))
 }
 
 export function clearProxy(): void {

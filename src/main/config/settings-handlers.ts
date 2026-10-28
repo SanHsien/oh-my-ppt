@@ -1,7 +1,7 @@
 import { BrowserWindow, app, dialog, ipcMain } from 'electron'
 import log from 'electron-log/main.js'
 import { resolveModel } from '../agent-runtime/model'
-import { applyProxy } from '../utils/proxy'
+import { applyProxy, redactProxyUrl } from '../utils/proxy'
 import type { IpcContext } from '../ipc/context'
 import {
   CONFIGURABLE_MODEL_TIMEOUT_PROFILES,
@@ -185,7 +185,7 @@ export function registerSettingsHandlers(ctx: IpcContext): void {
         applyProxy(nextProxy || undefined)
       } catch (proxyError) {
         log.error('[settings:save] failed to apply proxy', {
-          proxyUrl: nextProxy,
+          proxyUrl: nextProxy ? redactProxyUrl(nextProxy) : '',
           message: proxyError instanceof Error ? proxyError.message : String(proxyError)
         })
         throw new Error(

@@ -86,6 +86,18 @@ describe('proxy dispatcher management', () => {
     )
   })
 
+  it('logs the proxy without its username and password', async () => {
+    const { applyProxy, redactProxyUrl } = await loadProxyModule()
+
+    applyProxy('http://alice:s3cret@127.0.0.1:7890')
+
+    expect(proxyTestState.ProxyAgentMock).toHaveBeenCalledWith('http://alice:s3cret@127.0.0.1:7890')
+    expect(JSON.stringify(proxyTestState.logMock.info.mock.calls)).not.toContain('s3cret')
+    expect(proxyTestState.logMock.info).toHaveBeenCalledWith('[proxy] applied', 'http://127.0.0.1:7890')
+    expect(redactProxyUrl('socks5://bob:pw@10.0.0.1:1080')).toBe('socks5://10.0.0.1:1080')
+    expect(redactProxyUrl('not a url')).toBe('(invalid proxy url)')
+  })
+
   it('applies SOCKS proxy via Socks5ProxyAgent', async () => {
     const { applyProxy } = await loadProxyModule()
 

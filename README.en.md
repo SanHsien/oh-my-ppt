@@ -93,7 +93,7 @@ Oh My PPT provides a fresh approach:
 - 🎬 **Animation Support** — 16+ slide transition effects plus Anime.js v4-powered element animations.
 - 🎞️ **Per-element Animation Controls** — Select individual text, image, or chart elements to configure entrance, emphasis, or exit effects.
 - 🧮 **Math Formula Rendering** — Native rendering for common LaTeX formulas.
-- 📄 **Multiple Export Formats** — PDF, batch PNG, vertical long PNG, and MP4 video.
+- 📄 **Multiple Export Formats** — PDF, batch PNG, vertical long PNG, and MP4 video (MP4 needs your own ffmpeg; see Export below).
 - 🏷️ **Session Management** — Differentiates AI-created sessions from imported PPTX files with renaming support.
 - 🔄 **Version History Rollback** — Automatic saves on every change with one-click rollback to any prior state.
 - 📦 **One-click Standalone Package** — Bundles the HTML deck into a standalone file runnable in any browser without extra software.
@@ -182,7 +182,7 @@ Supports six export and sharing pathways:
 - **PDF**: Ideal for direct distribution, archiving, and printing.
 - **Batch PNG Package**: One-click batch export of all slide pages as images.
 - **Long PNG**: Vertically stitches the entire deck into a high-resolution long image for social feeds and mobile reading.
-- **MP4 Video**: Exports animated presentation videos for video platforms and marketing demonstrations.
+- **MP4 Video**: Exports animated presentation videos for video platforms and marketing demonstrations. **The installer does not include a video encoder**: put ffmpeg at `resources\app.asar.unpacked\resources\ffmpeg\ffmpeg.exe` under the install folder first, otherwise export fails with "視頻編碼器缺失".
 - **Standalone HTML Package**: Packages slides and runtime assets into a single file for offline presentation in any browser.
 
 ---

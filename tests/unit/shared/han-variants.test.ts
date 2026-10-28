@@ -63,4 +63,15 @@ describe('hanTolerant', () => {
     expect(hanTolerant(/(?<=第)頁/).test('第页')).toBe(true)
     expect(hanTolerant(/頁(?!面)/).test('页面')).toBe(false)
   })
+
+  it('widens a character next to a literal hyphen in a class', () => {
+    // A hyphen first or last in a class, or escaped, is a literal, not a range operator.
+    for (const pattern of [/[為-]/, /[-為]/, /[\-為]/, /[^-為]/]) {
+      const widened = hanTolerant(pattern)
+      expect(widened.test('為')).toBe(pattern.test('為'))
+      expect(widened.test('为')).toBe(pattern.test('為'))
+    }
+    // A real range keeps its endpoints untouched.
+    expect(hanTolerant(/[一-十]/).test('五')).toBe(true)
+  })
 })

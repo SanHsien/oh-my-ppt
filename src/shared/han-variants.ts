@@ -162,6 +162,8 @@ export function hanTolerant(pattern: RegExp): RegExp {
   const source = pattern.source
   let out = ''
   let inClass = false
+  // Index of the first character inside the current class (after `[` and an optional `^`).
+  let classBody = 0
   for (let i = 0; i < source.length; i += 1) {
     const ch = source[i]
     if (ch === '\\') {
@@ -191,8 +193,12 @@ export function hanTolerant(pattern: RegExp): RegExp {
     if (inClass) {
       if (ch === ']') inClass = false
       const variants = VARIANTS.get(ch)
-      // A literal range such as 一-十 must not be split by inserted characters.
-      const isRangeEndpoint = source[i - 1] === '-' || source[i + 1] === '-'
+      // A literal range such as 一-十 must not be split by inserted characters. A hyphen first or
+      // last in the class, or escaped, is a literal and makes no range.
+      const rangeBefore =
+        source[i - 1] === '-' && i - 1 > classBody && source[i - 2] !== '\\'
+      const rangeAfter = source[i + 1] === '-' && source[i + 2] !== undefined && source[i + 2] !== ']'
+      const isRangeEndpoint = rangeBefore || rangeAfter
       out += variants && !isRangeEndpoint ? Array.from(variants).join('') : ch
       continue
     }
@@ -203,6 +209,7 @@ export function hanTolerant(pattern: RegExp): RegExp {
         out += '^'
         i += 1
       }
+      classBody = i + 1
       continue
     }
     const variants = VARIANTS.get(ch)

@@ -677,8 +677,17 @@ export class GitHistoryService {
       })
     }
     const gitignorePath = path.join(projectDir, '.gitignore')
+    // Only a missing file gets the default content; any other failure must not replace the
+    // user's own rules (a locked file on Windows used to be overwritten here).
+    let existing: string | null = null
     try {
-      const existing = await fs.promises.readFile(gitignorePath, 'utf-8')
+      existing = await fs.promises.readFile(gitignorePath, 'utf-8')
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException)?.code !== 'ENOENT') throw error
+    }
+    if (existing === null) {
+      await fs.promises.writeFile(gitignorePath, GITIGNORE_CONTENT, 'utf-8')
+    } else {
       const lines = new Set(existing.split(/\r?\n/).map((line) => line.trim()))
       const missing = GITIGNORE_ENTRIES.filter((entry) => !lines.has(entry))
       if (missing.length > 0) {
@@ -689,8 +698,6 @@ export class GitHistoryService {
           'utf-8'
         )
       }
-    } catch {
-      await fs.promises.writeFile(gitignorePath, GITIGNORE_CONTENT, 'utf-8')
     }
   }
 

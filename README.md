@@ -146,7 +146,7 @@ Oh My PPT 提供全新解法：
 
 5. 📐 **DOM Bounding Box & Hit-Test 幾何量測模組（已實作與測試，尚未接上產品流程）**：
    - **目標**：取代「渲染 → 截圖 → 多模態模型讀圖 → 猜測修改」這種單頁近千 Token、又難精確量到像素的版面檢查。
-   - **已有的部分**：`src/shared/geometry-inspector.ts` 從元素外框（`getBoundingClientRect`）算出 AABB 交疊（Overlap）、超出畫布或父容器（Overflow）與文字高度截斷（`scrollHeight > clientHeight`），輸出精簡的結構化報告；`src/renderer/src/lib/dom-geometry-inspector.ts` 從投影片 DOM 收集元素，並提供以紅框與像素標籤（如「超出 24px」、「重疊 12px」）標註的圖層切換函式；`src/main/generation/layout-geometry-validator.ts` 把報告整理成驗證結果。單元測試在 `tests/unit/presentation/geometry-inspector.test.ts`。
+   - **已有的部分**：`src/shared/geometry-inspector.ts` 從元素外框（`getBoundingClientRect`）算出 AABB 交疊（Overlap）、超出畫布或父容器（Overflow）與文字高度截斷（`scrollHeight > clientHeight`），輸出精簡的結構化報告；`src/renderer/src/lib/dom-geometry-inspector.ts` 從投影片 DOM 收集元素，並提供切換標註圖層的函式（在投影片左上角疊一排紅色英文徽章，例如 `[text-overflow] … vertical overflow 24px`，不會框住元素本身）；`src/main/generation/layout-geometry-validator.ts` 把報告整理成驗證結果。單元測試在 `tests/unit/presentation/geometry-inspector.test.ts`。
    - **目前的限制**：生成、編輯與預覽流程都還沒有呼叫這些函式，預覽端也沒有開啟標註圖層的按鈕，所以它不會影響實際產出，也還沒有降低 Token 用量。
 
 ---

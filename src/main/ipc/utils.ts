@@ -1,5 +1,5 @@
 /** Pure utility functions used across IPC handlers. */
-import { hanTolerant } from '@shared/han-variants'
+import { hanTolerant } from "@shared/han-variants";
 
 export const parseJsonObject = (value: unknown): Record<string, unknown> => {
   if (value && typeof value === "object" && !Array.isArray(value)) {

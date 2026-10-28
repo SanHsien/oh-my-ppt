@@ -60,16 +60,16 @@ const PROGRESS_TEXT: Record<ProgressStatusKey, Record<AppLocale, string>> = {
 // Status labels come from agent tool calls and may be written in either script.
 const LABEL_MAP: Array<[RegExp, ProgressStatusKey]> = (
   [
-  [/取消|cancel/i, 'canceled'],
-  [/失敗|錯誤|fail|error/i, 'failed'],
-  [/重試|retry/i, 'retrying'],
-  [/完成|已生成|已更新|已創建|complete|completed|done|generated|updated|created/i, 'completed'],
-  [/檢查|驗證|校驗|check|verif|validation/i, 'checking'],
-  [/規劃|結構|大綱|整理.*大綱|plan|structur|outline/i, 'planning'],
-  [/畫布|準備|本地.*就緒|canvas|prepar|ready/i, 'preparing'],
-  [/理解|分析|understand|analyz/i, 'understanding'],
-  [/生成|寫入|更新|填充|generate|generating|writing|updating|filling/i, 'generating'],
-  [/收尾|finaliz/i, 'finalizing']
+    [/取消|cancel/i, 'canceled'],
+    [/失敗|錯誤|fail|error/i, 'failed'],
+    [/重試|retry/i, 'retrying'],
+    [/完成|已生成|已更新|已創建|complete|completed|done|generated|updated|created/i, 'completed'],
+    [/檢查|驗證|校驗|check|verif|validation/i, 'checking'],
+    [/規劃|結構|大綱|整理.*大綱|plan|structur|outline/i, 'planning'],
+    [/畫布|準備|本地.*就緒|canvas|prepar|ready/i, 'preparing'],
+    [/理解|分析|understand|analyz/i, 'understanding'],
+    [/生成|寫入|更新|填充|generate|generating|writing|updating|filling/i, 'generating'],
+    [/收尾|finaliz/i, 'finalizing']
   ] as Array<[RegExp, ProgressStatusKey]>
 ).map(([pattern, key]) => [hanTolerant(pattern), key])
 const PAGE_LABEL_PATTERN = hanTolerant(/^(?:P\d+\b|第\s*\d+\s*頁)/i)

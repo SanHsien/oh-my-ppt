@@ -84,9 +84,7 @@ export function buildThinkingSourcePlan(
       const roleText = readThinkingPageField(blockLines, 'Role')
       const pageOutline = buildThinkingPageOutline(blockLines)
       const roleBasis = `${heading.title}\n${roleText}`
-      const role = CHAPTER_ROLE_PATTERN.test(roleBasis)
-        ? 'chapter-divider'
-        : 'content'
+      const role = CHAPTER_ROLE_PATTERN.test(roleBasis) ? 'chapter-divider' : 'content'
 
       return {
         pageNumber: heading.pageNumber,

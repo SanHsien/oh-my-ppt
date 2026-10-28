@@ -122,4 +122,36 @@ describe('html-editor:openDocument', () => {
     expect(state.normalizeImportedHtml).toHaveBeenCalledTimes(2)
     expect(readCount).toBe(2)
   })
+
+  it('writes the migrated runtime html over the file, not after its old bytes', async () => {
+    const docId = 'doc-migrate'
+    const workspaceDir = path.join(storagePath, 'html-editor', docId)
+    const htmlPath = path.join(workspaceDir, 'current.html')
+    await fs.promises.mkdir(workspaceDir, { recursive: true })
+    await fs.promises.writeFile(htmlPath, '<html><body>legacy content that is long</body></html>', 'utf-8')
+    const migrated = '<html><head><script src="runtime.js"></script></head><body>legacy</body></html>'
+    state.normalizeImportedHtml.mockImplementation(() => ({ html: migrated, designWidth: 1280, title: '' }))
+
+    const { registerHtmlEditorHandlers } =
+      await import('../../../src/main/html-editor/html-editor-handlers')
+    registerHtmlEditorHandlers({
+      mainWindow: null,
+      db: {
+        getHtmlEditDocument: vi.fn().mockResolvedValue({
+          id: docId,
+          title: 'Document',
+          sourcePath: null,
+          htmlPath,
+          designWidth: 1280
+        }),
+        createHtmlEditVersionAndTouch: vi.fn().mockResolvedValue(undefined)
+      },
+      resolveStoragePath: vi.fn().mockResolvedValue(storagePath)
+    } as never)
+
+    const result = (await state.handlers.get('html-editor:openDocument')!({}, { docId })) as { html: string }
+
+    expect(result.html).toBe(migrated)
+    expect(await fs.promises.readFile(htmlPath, 'utf-8')).toBe(migrated)
+  })
 })

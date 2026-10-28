@@ -778,8 +778,9 @@ export function registerHtmlEditorHandlers(ctx: IpcContext): void {
         })
         if (normalized.html !== html) {
           try {
+            // readFile left the offset at the old end; truncate does not move it, so write at 0.
             await handle.truncate(0)
-            await handle.writeFile(normalized.html, { encoding: 'utf-8' })
+            await handle.write(normalized.html, 0, 'utf-8')
             file = await handle.stat()
             await ensureHtmlRepo(document.dir)
             const commitSha = await commitHtmlFile(document.dir, 'current.html', '補全編輯運行時')

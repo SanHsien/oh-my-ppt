@@ -457,7 +457,7 @@ export const en = {
     baseUrlHint: 'Enter a service URL compatible with the selected provider protocol.',
     baseUrlHintGoogle: 'Leave empty for official Google API. Fill only if using a proxy.',
     maxTokensHint:
-      'Max output tokens, default 4096. Generally no need to change. Adjust based on model limits.',
+      'Max output tokens, default 4096. Generally no need to change. Adjust based on model limits. Generating and editing pages always uses at least 16384 (reasoning models spend part of the budget first), so a model capped below 16384 may reject those requests.',
     disableTemperature: 'Disable temperature',
     disableTemperatureHint:
       'Keeping temperature enabled is recommended. Disable it only when unsupported, as this may affect generation results.',

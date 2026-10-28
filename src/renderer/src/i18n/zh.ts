@@ -437,7 +437,8 @@ export const zh = {
     imageProviderOfficialDocs: '官方文件',
     baseUrlHint: '請填寫相容 provider 協議的服務地址。',
     baseUrlHintGoogle: '使用 Google 官方 API 無需填寫，使用代理時填寫代理地址。',
-    maxTokensHint: '模型最大輸出 token 數，預設 4096。一般無需修改，可按模型支援的上限調整。',
+    maxTokensHint:
+      '模型最大輸出 token 數，預設 4096。一般無需修改，可按模型支援的上限調整。生成與編輯頁面時至少使用 16384（推理模型會先用掉部分額度），模型上限低於 16384 時可能被拒。',
     disableTemperature: '關閉temperature',
     disableTemperatureHint:
       '建議不要關閉! 僅當模型(比如：kimi2.6)明確不支援 temperature 引數時使用，關閉後可能影響生成效果。',

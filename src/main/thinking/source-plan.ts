@@ -1,6 +1,11 @@
 import path from 'path'
 import type { SourceDocumentPlan } from '@shared/generation'
+import { hanTolerant } from '@shared/han-variants'
 
+// The Role field and page titles are written by the model, in either script.
+const CHAPTER_ROLE_PATTERN = hanTolerant(
+  /chapter|section|divider|cover|title|agenda|章節|過渡|封面|目錄|標題/i
+)
 const MAX_THINKING_PAGE_OUTLINE_CHARS = 520
 const MAX_THINKING_PAGE_KEY_POINTS = 10
 
@@ -79,9 +84,7 @@ export function buildThinkingSourcePlan(
       const roleText = readThinkingPageField(blockLines, 'Role')
       const pageOutline = buildThinkingPageOutline(blockLines)
       const roleBasis = `${heading.title}\n${roleText}`
-      const role = /chapter|section|divider|cover|title|agenda|章節|過渡|封面|目錄|標題/i.test(
-        roleBasis
-      )
+      const role = CHAPTER_ROLE_PATTERN.test(roleBasis)
         ? 'chapter-divider'
         : 'content'
 

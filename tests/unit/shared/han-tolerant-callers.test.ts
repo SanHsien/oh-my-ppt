@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { findUnsupportedPrecisionClaims } from '../../../src/main/thinking/content-credibility'
+import { buildThinkingSourcePlan } from '../../../src/main/thinking/source-plan'
 
 // Text that people and models write comes in Simplified as often as in Traditional, and Taiwan-standard
 // Traditional (啟, 為, 眾) differs from the variant glyphs the source tree was converted to (啓, 爲, 衆).
@@ -12,5 +13,18 @@ describe('content credibility reads Simplified metric claims', () => {
     expect(run('- 準確率提升到95%')).toHaveLength(1)
     expect(run('- 准确率提升到95%')).toHaveLength(1)
     expect(run('- 成本节省 3 万元')).toHaveLength(1)
+  })
+})
+
+describe('thinking source plan reads Simplified page roles', () => {
+  it('treats a Simplified chapter page as a chapter divider', () => {
+    const plan = (role: string) =>
+      buildThinkingSourcePlan(
+        ['# Thinking Brief', '## Topic', '方案', '', '## Page 1: 第一部分', `- Role: ${role}`, '', '正文'].join('\n'),
+        '/tmp/thinking.md'
+      )?.pageSkeleton[0]
+    expect(plan('章節過渡')).toMatchObject({ role: 'chapter-divider' })
+    expect(plan('章节过渡')).toMatchObject({ role: 'chapter-divider' })
+    expect(plan('标题页')).toMatchObject({ role: 'chapter-divider' })
   })
 })

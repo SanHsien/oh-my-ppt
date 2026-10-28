@@ -10,9 +10,13 @@
  * Only characters that belong to a variant group are widened; everything else is left untouched.
  * Named groups (`(?<name>`) and named back-references (`\k<name>`) are copied verbatim, so group names
  * are never widened.
+ *
+ * Widening is per character, so it cannot bridge a word the tree's conversion rewrote as a whole:
+ * 复盘 became 覆盤, and 复 and 覆 are not one variant group. Such words need their other spelling
+ * listed next to them (覆盤|复盤).
  */
 /**
- * Variant groups, generated from OpenCC (t2s, s2t, s2tw, s2hk; character level, unioned) over the
+ * Variant groups, generated from OpenCC (t2s, s2t, s2tw, s2hk, tw2s, hk2s; character level, unioned) over the
  * CJK Unified Ideographs block. Each space-separated entry is one group of characters that people
  * use interchangeably: Simplified, Traditional, Taiwan-standard and Hong Kong / Kangxi variant
  * forms (為/爲/为, 才/纔, 眾/衆/众, 啟/啓/启, 裡/裏/里 ...). Regenerate rather than edit by hand:

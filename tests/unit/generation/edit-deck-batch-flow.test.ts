@@ -238,6 +238,39 @@ describe('deck edit batch flow', () => {
     expect(emittedLabels).not.toContain('已完成')
   })
 
+  it('maps Taiwan-standard and Simplified step labels to the page editing label', async () => {
+    // The tree's own pattern was written with the variant glyph 啓; a model writes 啟 or 启.
+    for (const label of ['正在啟動', '启动编辑', '正在编辑']) {
+      const fixture = await createFixture(1)
+      const emittedLabels: string[] = []
+      await executeDeckEditBatchFlow({
+        pageRefs: fixture.pageRefs,
+        indexPath: fixture.indexPath,
+        originalUserMessage: '修改第一頁',
+        runId: 'run-step-label-script',
+        appLocale: 'zh',
+        launchStaggerMs: 0,
+        emit: (chunk) => {
+          if ('label' in chunk.payload) emittedLabels.push(chunk.payload.label)
+        },
+        validateChangedPages: () => [],
+        buildRetryMessage: () => null,
+        runPageAttempt: async ({ pageId, emit }) => {
+          emit({
+            type: 'llm_status',
+            payload: { runId: 'run-step-label-script', stage: 'editing', label, progress: 40 }
+          })
+          const page = fixture.pageRefs.find((item) => item.pageId === pageId)!
+          await fs.promises.writeFile(page.htmlPath, validPageHtml(page.pageId, 'after'), 'utf-8')
+          return 'done'
+        }
+      })
+
+      expect(emittedLabels, label).toContain('正在編輯 P1')
+      expect(emittedLabels, label).not.toContain(label)
+    }
+  })
+
   it('logs a heartbeat without emitting user-visible progress while a model request is silent', async () => {
     const fixture = await createFixture(1)
     const emitted: Array<{ label?: string; detail?: string }> = []

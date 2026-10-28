@@ -4,6 +4,7 @@ import log from 'electron-log/main.js'
 import type { GenerateChunkEvent } from '@shared/generation'
 import type { EditedPageDescriptor, InvalidEditedPage } from './generation-utils'
 import { isCancellationMessage } from './status-utils'
+import { hanTolerant } from '@shared/han-variants'
 
 export const BATCH_EDIT_CHUNK_SIZE = 2
 export const BATCH_EDIT_LAUNCH_STAGGER_MS = 100
@@ -234,6 +235,12 @@ const computeGlobalProgress = (totalPages: number, pageProgress: Map<string, num
   return Math.round(10 + (sum / total) * 0.8)
 }
 
+// Step labels come from the page agent in either script (啟動/啓動/启动); see src/shared/han-variants.ts.
+const COMPLETED_STEP_LABEL = hanTolerant(/完成|complete|done/i)
+const STEP_LABEL = hanTolerant(
+  /理解|分析|規劃|準備|啓動|生成|編輯|完成|understand|analyz|plan|prepar|start|generat|edit|complet/i
+)
+
 const remapChunk = (
   chunk: GenerateChunkEvent,
   args: {
@@ -254,7 +261,7 @@ const remapChunk = (
   )
   args.lastProgress.value = progress
   const reportsCompletedStep =
-    chunk.type === 'llm_status' && /完成|complete|done/i.test(chunk.payload.label)
+    chunk.type === 'llm_status' && COMPLETED_STEP_LABEL.test(chunk.payload.label)
   return {
     ...chunk,
     payload: {
@@ -265,9 +272,7 @@ const remapChunk = (
             ? `P${args.pageNumber} step completed, validating page`
             : `P${args.pageNumber} 當前步驟完成，正在校驗頁面`
           : chunk.type === 'llm_status' &&
-        /理解|分析|規劃|準備|啓動|生成|編輯|完成|understand|analyz|plan|prepar|start|generat|edit|complet/i.test(
-          chunk.payload.label
-        )
+        STEP_LABEL.test(chunk.payload.label)
           ? args.appLocale === 'en'
             ? `Editing P${args.pageNumber}`
             : `正在編輯 P${args.pageNumber}`

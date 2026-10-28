@@ -5,7 +5,7 @@
 - Remediation: 同日 fork-local overlay（不回貢）
 - Upstream reviewed through: `6d1b08bf3b0c91bb25c4372fa67222f40e086720`
 - Primary environment: Windows 11、PowerShell 7+、Python 3.10-3.14（本機 gate）；產品 Node.js `>=20`、pnpm `10.10.0`
-- Status: 維護骨架與 Windows 門禁建立完成。R-01～R-08 已全數修復解決。
+- Status: 維護骨架與 Windows 門禁建立完成。R-01～R-08 已全數修復解決。2026-10-28 深度掃描的修復回註在 R-15、R-17。
 
 ## 結論
 
@@ -49,10 +49,10 @@ gh repo set-default --view
 | R-12 | P2 | 全面更新上游 v2.5.0 重構後遺留的過期 prompt 單元測試字串斷言（涵蓋 `layout-budget`、`layout-catalog`、`size-layout-skills`、`content-expansion` 等） |
 | R-13 | P2 | 修復 Windows 11 原生路徑反斜線、CRLF 換行符與非管理員權限 symlink `EPERM` 之測試相容性問題 |
 | R-14 | P2 | 強化單元測試中 SQLite 暫存資料庫之釋放與暫存目錄清理，並將 Vitest 逾時門檻擴充至 20 秒，全量 220 個測試檔、1,170 個測試 100% 綠燈 |
-| R-15 | P1 | 全面修復 GitHub Code scanning（CodeQL 50 項安全性警告全數修復歸零）與 Dependabot 依賴套件漏洞覆蓋：@babel/core、@xmldom/xmldom、app-builder-lib、brace-expansion、builder-util-runtime、drizzle-orm、esbuild、js-yaml、protobufjs、ws，並將 extract-zip 透過 overrides 替換為官方 @electron-internal/extract-zip，xlsx 遷移至無漏洞的 exceljs，pnpm audit 達到 0 known vulnerabilities。 |
+| R-15 | P1 | 全面修復 GitHub Code scanning（CodeQL 50 項安全性警告全數修復歸零）與 Dependabot 依賴套件漏洞覆蓋：@babel/core、@xmldom/xmldom、app-builder-lib、brace-expansion、builder-util-runtime、drizzle-orm、esbuild、js-yaml、protobufjs、ws，並將 extract-zip 透過 overrides 替換為官方 @electron-internal/extract-zip，xlsx 遷移至無漏洞的 exceljs，pnpm audit 達到 0 known vulnerabilities。；**後續修復**：R-15 的 xlsx→exceljs 遷移另見 R-17（P2）的後續修復；圖表匯入的簡中表頭判斷於 commit `fa3f2a7`（2026-10-28）修正 |
 | R-16 | P1 | 補齊 `@electron-internal/extract-zip` CommonJS 支援補丁（解決 CJS `require('extract-zip')` 載入錯誤導致 electron 安裝失敗問題）、納管 `docs/design/node-agent-runtime-prompt-inventory.md`、修復 `html-editor-handlers.ts` 語法錯誤與單元測試契約，確認 Dependabot 42 項漏洞（含 xlsx 與 extract-zip）0 open / pnpm audit 0 漏洞，全量 221 個測試檔、1,171 個測試及 dev_check 100% 綠燈（commit `89adcbe`，2026-09-27） |
-| R-17 | P2 | 驗收發現 R-15 的 xlsx→exceljs 遷移造成功能倒退：exceljs 只讀 `.xlsx`，選檔視窗卻仍開放舊版 `.xls`，選了只會得到「讀取失敗」。改為不再開放 `.xls`（`CHART_DATA_EXTENSIONS`），直接選到 `.xls` 時提示「請另存為 .xlsx」；補 `tests/unit/io/chart-data-import-formats.test.ts`，全量 222 個測試檔、1,174 個測試通過（2026-09-28） |
-| R-17 | P1 | 徹底修復 CodeQL 檔案系統 TOCTOU 警告（Alert 25, 26, 51）：將 `html-editor-handlers.ts` 之 `openDocument` 檔案存取重構為原子 FileHandle 模式，在同一句柄完成 stat/read/truncate/write/re-stat，徹底消除任何二度 open 路徑之競態條件（2026-09-28） |
+| R-17 | P2 | 驗收發現 R-15 的 xlsx→exceljs 遷移造成功能倒退：exceljs 只讀 `.xlsx`，選檔視窗卻仍開放舊版 `.xls`，選了只會得到「讀取失敗」。改為不再開放 `.xls`（`CHART_DATA_EXTENSIONS`），直接選到 `.xls` 時提示「請另存為 .xlsx」；補 `tests/unit/io/chart-data-import-formats.test.ts`，全量 222 個測試檔、1,174 個測試通過（2026-09-28）；**後續修復**：exceljs 的 rich text／超連結／公式／日期儲存格原本變成 `[object Object]` 或長日期字串，改為依型別取值（commit `7368dfc`，2026-10-28） |
+| R-17 | P1 | 徹底修復 CodeQL 檔案系統 TOCTOU 警告（Alert 25, 26, 51）：將 `html-editor-handlers.ts` 之 `openDocument` 檔案存取重構為原子 FileHandle 模式，在同一句柄完成 stat/read/truncate/write/re-stat，徹底消除任何二度 open 路徑之競態條件（2026-09-28）；**後續修復**：此重構讓 `handle.readFile()` 後的位移停在舊檔尾，`truncate(0)` 不會移動它，遷移後的 HTML 被寫在一段 NUL 位元組之後；改為 `handle.write(html, 0)`（commit `5fb2a00`，2026-10-28） |
 
 ## 接受、不改契約
 

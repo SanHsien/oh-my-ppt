@@ -79,11 +79,12 @@ def _exists_with_exact_case(resolved: Path, root: Path) -> bool:
 
 
 def _missing_relative(path: Path, target: str, root: Path = ROOT) -> str | None:
-    target = target.strip().strip("<>")
-    if not target or target.startswith(SKIP_PREFIXES):
+    target = target.strip()
+    # [x](<a b.md> "title") may hold spaces inside <>; otherwise the address ends at whitespace.
+    bracketed = re.match(r"<([^>]*)>", target)
+    address = bracketed.group(1) if bracketed else target.split(None, 1)[0] if target else ""
+    if not address or address.startswith(SKIP_PREFIXES):
         return None
-    # [x](path "title"): the address ends at the first whitespace.
-    address = target.split(None, 1)[0].strip("<>")
     file_part = unquote(re.split(r"[?#]", address, maxsplit=1)[0])
     if not file_part:
         return None

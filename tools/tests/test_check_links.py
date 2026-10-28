@@ -36,3 +36,11 @@ def test_a_link_with_the_wrong_letter_case_is_broken(tmp_path: Path) -> None:
     assert check_links._missing_relative(readme, "docs/decisions.md", root) is not None
     assert check_links._missing_relative(readme, "Docs/DECISIONS.md", root) is not None
     assert check_links._missing_relative(readme, "docs/DECISIONS.md#top", root) is None
+
+
+def test_an_angle_bracket_link_may_contain_spaces(tmp_path: Path) -> None:
+    root = _repo(tmp_path)
+    (root / "docs" / "a b.md").write_text("x\n", encoding="utf-8")
+    readme = root / "README.md"
+    assert check_links._missing_relative(readme, "<docs/a b.md>", root) is None
+    assert check_links._missing_relative(readme, '<docs/a b.md> "title"', root) is None

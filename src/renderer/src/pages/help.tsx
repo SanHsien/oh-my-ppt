@@ -8,7 +8,7 @@ import { HelpCircle, Cpu, Brain, Check, Copy, Search } from 'lucide-react'
 const FAQ_ITEMS = [
   {
     q: '如何下載與安裝？',
-    a: '從本專案的 GitHub Releases 頁面下載最新版檔案。我們提供「標準安裝版（.exe）」與「綠色免安裝可攜版（.zip）」。雙擊 setup 安裝程式即可自動完成安裝並建立捷徑；免安裝版解壓縮後直接執行 ohmyppt.exe 即可使用。'
+    a: '從本專案的 GitHub Releases 頁面下載最新版檔案。目前只提供「標準安裝版（.exe）」：雙擊 setup 安裝程式即可自動完成安裝並建立捷徑。'
   },
   {
     q: '需要保持聯網嗎？所有資料是否安全？',

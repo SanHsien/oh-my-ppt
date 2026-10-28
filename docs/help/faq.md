@@ -21,7 +21,7 @@
 ### 1. 如何下載與安裝？
 從 [SanHsien/oh-my-ppt Releases](https://github.com/SanHsien/oh-my-ppt/releases) 頁面下載最新版檔案：
 - **標準安裝版**（`oh-my-ppt-*-setup.exe`）：雙擊啟動安裝精靈，自動建立桌面與開始功能表捷徑。
-- **綠色免安裝版**（`oh-my-ppt-*-win-x64-portable.zip`）：解壓縮至任意目錄後，直接執行 `ohmyppt.exe` 即可使用。
+- 目前沒有免安裝的可攜版（打包設定 `electron-builder.yml` 只有 NSIS 安裝檔）。
 
 ### 2. 需要保持聯網嗎？
 核心功能完全**本地優先（Local-first）**：

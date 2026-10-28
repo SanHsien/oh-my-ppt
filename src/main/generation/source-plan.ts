@@ -205,7 +205,8 @@ const DATA_FOCUS_PATTERN = hanTolerant(
 const COMPARISON_PATTERN = hanTolerant(/對比|比較|差異|競品|comparison|versus|vs\.?/i)
 const PROCESS_PATTERN = hanTolerant(/流程|步驟|路徑|機制|workflow|process|step|how to/i)
 const TIMELINE_PATTERN = hanTolerant(/計劃|階段|路線|節奏|timeline|roadmap|phase|schedule/i)
-const SUMMARY_PATTERN = hanTolerant(/總結|結論|覆盤|summary|conclusion|takeaway/i)
+// 覆盤 is the tree's word-level conversion of 复盘; 复 and 覆 are not one variant group.
+const SUMMARY_PATTERN = hanTolerant(/總結|結論|覆盤|复盤|summary|conclusion|takeaway/i)
 
 const inferLayoutIntentFromSkeletonTitle = (
   item: SourceDocumentPlan['pageSkeleton'][number]

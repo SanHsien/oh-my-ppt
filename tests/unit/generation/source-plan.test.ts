@@ -153,6 +153,7 @@ describe('source page skeleton planning', () => {
     ['实施流程', 'process'],
     ['发展路线', 'timeline'],
     ['总结与结论', 'summary'],
+    ['项目复盘', 'summary'],
     ['背景介绍', 'concept']
   ])('infers the layout intent of the Simplified heading %s as %s', (heading, intent) => {
     const sourcePlan = sourcePlanFromSkeletonRows([

@@ -21,6 +21,7 @@ import {
   extractHtmlPageToPptxSlide
 } from './html-pptx/renderer'
 import { resolvePptxExportLayout } from './html-pptx/static-background'
+import { SLIDE_PACK_TARGETS, slidePackReadme } from './slide-pack-readme'
 import {
   exportHtmlPagesToVideo,
   normalizeVideoExportFps,
@@ -910,15 +911,7 @@ export function registerExportHandlers(ctx: IpcContext): void {
         ? path.join(process.cwd(), 'resources')
         : path.join(process.resourcesPath, 'app.asar.unpacked', 'resources')
 
-      const targets = [
-        {
-          platform: 'windows-amd64',
-          bin: 'slide-pack-windows-amd64.exe',
-          ext: '.exe',
-          os: 'win32',
-          arch: 'x64'
-        }
-      ]
+      const targets = SLIDE_PACK_TARGETS
 
       const rawTitle =
         typeof session.title === 'string' && session.title.trim() ? session.title.trim() : 'slides'
@@ -1018,24 +1011,7 @@ export function registerExportHandlers(ctx: IpcContext): void {
         progress: 95
       })
       // Write README.txt
-      const readmeContent = `演示文稿預覽包
-================
-
-雙擊對應平臺的文件即可在瀏覽器中打開演示。
-
-文件說明：
-  *-macos-arm64.app.zip     → Apple Silicon Mac (M1/M2/M3/M4)
-  *-macos-amd64.app.zip     → Intel Mac
-  *-windows-amd64.exe       → Windows 電腦
-
-使用方法：
-  macOS：先解壓 .app.zip，再雙擊 .app 打開
-  Windows：雙擊 .exe 文件打開
-  如果提示"無法打開"，請右鍵 → 打開 → 確認打開
-
-打開後會自動啓動瀏覽器顯示演示。
-關閉終端窗口或按 Ctrl+C 即可停止。
-`
+      const readmeContent = slidePackReadme(targets)
       fs.writeFileSync(path.join(outputFolder, 'README.txt'), readmeContent, 'utf-8')
 
       if (generatedFiles.length === 0) {

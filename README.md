@@ -182,7 +182,7 @@ PPTX 解析與結構化轉換為 Oh My PPT 完全自研。複雜形狀、圖表�
 - **PDF**：適合直接發送、歸檔與列印。
 - **PNG 圖片包**：一鍵批次導出所有投影片單張圖片。
 - **PNG 長圖**：全套頁面縱向拼接成高解析長圖，適合社羣分享與行動端閱讀。
-- **MP4 影片**：導出為動畫影片，適合社羣影音平臺與展示宣傳。**安裝檔不含影片編碼器**：要先把 ffmpeg 放到 安裝目錄下的 `resources\app.asar.unpacked\resources\ffmpeg\ffmpeg.exe`，否則會顯示「視頻編碼器缺失」。
+- **MP4 影片**：導出為動畫影片，適合社羣影音平臺與展示宣傳。**目前發布的安裝檔不含影片編碼器**（建置時 `resources/ffmpeg/ffmpeg.exe` 存在才會被 `build/after-pack.cjs` 打包進去）：要先把 ffmpeg 放到 安裝目錄下的 `resources\app.asar.unpacked\resources\ffmpeg\ffmpeg.exe`，否則會顯示「視頻編碼器缺失」。
 - **HTML 獨立運行包**：將簡報與資源打包，雙擊可在任何瀏覽器離線全螢幕演示。
 
 ---

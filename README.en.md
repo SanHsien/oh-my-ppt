@@ -182,7 +182,7 @@ Supports six export and sharing pathways:
 - **PDF**: Ideal for direct distribution, archiving, and printing.
 - **Batch PNG Package**: One-click batch export of all slide pages as images.
 - **Long PNG**: Vertically stitches the entire deck into a high-resolution long image for social feeds and mobile reading.
-- **MP4 Video**: Exports animated presentation videos for video platforms and marketing demonstrations. **The installer does not include a video encoder**: put ffmpeg at `resources\app.asar.unpacked\resources\ffmpeg\ffmpeg.exe` under the install folder first, otherwise export fails with "視頻編碼器缺失".
+- **MP4 Video**: Exports animated presentation videos for video platforms and marketing demonstrations. **The released installer does not include a video encoder** (`build/after-pack.cjs` packs one only if `resources/ffmpeg/ffmpeg.exe` exists at build time): put ffmpeg at `resources\app.asar.unpacked\resources\ffmpeg\ffmpeg.exe` under the install folder first, otherwise export fails with "視頻編碼器缺失".
 - **Standalone HTML Package**: Packages slides and runtime assets into a single file for offline presentation in any browser.
 
 ---

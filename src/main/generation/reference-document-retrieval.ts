@@ -3,6 +3,7 @@ import path from 'path'
 import { createRequire } from 'module'
 import log from 'electron-log/main.js'
 import { Jieba } from '@node-rs/jieba'
+import { hanTolerant } from '@shared/han-variants'
 
 type JiebaDictModule = {
   dict: Uint8Array
@@ -108,9 +109,13 @@ const splitQueryPhrases = (input: string): string[] => {
   return Array.from(new Set(phrases)).slice(0, 8)
 }
 
-const extractStructuredTokens = (input: string): string[] => {
+const STRUCTURED_TOKEN_PATTERN = hanTolerant(
+  /(?:[Pp][0-9]+)|(?:\d{4}[-/.年]\d{1,2}(?:[-/.月]\d{1,2}日?)?)|(?:\d+(?:\.\d+)?%)|(?:\d+(?:\.\d+)?(?:萬元|億元|萬|億|元)?)|(?:[A-Za-z][A-Za-z0-9_-]{1,})/g
+)
+
+export const extractStructuredTokens = (input: string): string[] => {
   const tokenMatches = input.match(
-    /(?:[Pp][0-9]+)|(?:\d{4}[-/.年]\d{1,2}(?:[-/.月]\d{1,2}日?)?)|(?:\d+(?:\.\d+)?%)|(?:\d+(?:\.\d+)?(?:萬|億|元|萬元|億元)?)|(?:[A-Za-z][A-Za-z0-9_-]{1,})/g
+    STRUCTURED_TOKEN_PATTERN
   )
   return Array.from(new Set(tokenMatches || [])).filter((item) => !isGenericTerm(item))
 }

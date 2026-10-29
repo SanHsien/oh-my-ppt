@@ -14,7 +14,6 @@
 | 項目 | 為什麼 | 驗收方式 | 建議執行者 | 證據 |
 | --- | --- | --- | --- | --- |
 | 讓 Windows 封裝冒煙斷言「沒有被擋下的外部請求」 | `blockedRequests` 只記錄不斷言，隔離網路若破功冒煙仍會過 | 冒煙腳本在 `blockedRequests` 非空時失敗；在 Windows 實跑一次（`docs/DEVELOPMENT.md:68` 的指令，會開視窗）輸出 `blockedRequests: []` 且 exit 0；人為注入一次外部 fetch 時 exit 非 0 | Claude Sonnet | `tools/windows-security-smoke.ts:21,34-42`；深掃報告「刻意不修」第一條（深掃報告（2026-10-2x）） |
-| 修剩下兩處簡繁辨識：`generation/reference-document-retrieval.ts` 只取到 `3.5亿元` 的 `3.5`（`萬\|億` 沒涵蓋簡體 `亿`），`speech/handlers.ts` 認不得舊版簡中講稿標題 `第 3 页` | 全庫簡轉繁後，這兩處是已知仍漏的辨識，會讓簡中來源的文件摘要或講稿拆頁出錯 | 每處先寫修前失敗的測試再修；`pnpm test` 與 `pnpm run typecheck` 綠；`pwsh -NoProfile -File tools\dev_check.ps1` 綠 | Claude Sonnet | 深掃報告（2026-10-2x）「刻意不修」低影響簡繁條；`src/shared/han-variants.ts` 既有異體字群 |
 | 把 CI 的 `product tests (windows / node 24)` 加進 `main` 的 branch protection 必要檢查 | 目前必要檢查只有 `test (windows / py3.14)`，新 job 紅燈不會擋合併（含 Dependabot PR） | `gh api repos/SanHsien/oh-my-ppt/branches/main/protection/required_status_checks` 的 contexts 含 `product tests (windows / node 24)`；規則上 agent 不改 branch protection，需維護者操作 | 維護者 | `.github/workflows/ci.yml:50`；深掃報告（2026-10-2x）「需要維護者注意」 |
 | 移除已完成交接的 `HANDOFF.md`，並把 `README.md:115` 的版本標示對到 `package.json` 版本 | `HANDOFF.md` 是 2026-09-27 的交接，內容全是已完成事項，留著會被當成待辦；README 功能段標題寫 v2.5.3，發行版是 2.6.0。刪檔屬破壞性操作，需維護者明確同意 | `HANDOFF.md` 不在 `git ls-files`；刪除前先確認其中的決策（xlsx 改 exceljs、`extract-zip` 覆寫、CodeQL TOCTOU）在 `docs/DECISIONS.md` 或 `REVIEW.md` 有對應記錄，缺的先補；README 標示與 `package.json` 一致；`tools\dev_check.ps1` 綠（含連結檢查） | 維護者 | `HANDOFF.md:1-20`；`README.md:115`；`package.json:3` |
 

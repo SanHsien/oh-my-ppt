@@ -10,9 +10,11 @@ import type { IpcContext } from '../ipc/context'
 import { resolveGlobalModelTimeouts, resolveModelConfigForTask } from '../config/model-config-utils'
 import { extractModelText, resolveModel } from '../agent-runtime/model'
 import { readAppLocale, uiText } from '../config/locale-utils'
+import { hanTolerant } from '@shared/han-variants'
 
 const SPEECH_DIR = 'speech'
 const SPEECH_SCRIPT_FILE = 'speech-script.md'
+const SPEECH_PAGE_HEADING_NUMBER_PATTERN = hanTolerant(/第\s*(\d+)\s*頁/)
 
 function resolveSpeechScriptPath(projectDir: string): string {
   return path.join(projectDir, SPEECH_DIR, SPEECH_SCRIPT_FILE)
@@ -51,19 +53,19 @@ function normalizeSpeechPartHeading(part: string, pageNumber: number, title: str
   return body ? `${heading}\n\n${body}` : heading
 }
 
-function isSpeechSectionForPage(section: string, pageNumber: number, title: string): boolean {
+export function isSpeechSectionForPage(section: string, pageNumber: number, title: string): boolean {
   const heading = normalizeHeadingText(
     section.split(/\r?\n/).find((line) => line.trim().length > 0) || ''
   )
   if (!heading) return false
-  if (new RegExp(`(?:第\\s*${pageNumber}\\s*頁|slide\\s*${pageNumber}\\b)`, 'i').test(heading)) {
+  if (hanTolerant(new RegExp(`(?:第\\s*${pageNumber}\\s*頁|slide\\s*${pageNumber}\\b)`, 'i')).test(heading)) {
     return true
   }
   const normalizedTitle = title.replace(/\s+/g, ' ').trim().toLowerCase()
   return Boolean(normalizedTitle) && heading.includes(normalizedTitle)
 }
 
-function upsertSpeechSection(existingScript: string | null, pageNumber: number, title: string, section: string): string {
+export function upsertSpeechSection(existingScript: string | null, pageNumber: number, title: string, section: string): string {
   const nextSection = section.trim()
   if (!existingScript?.trim()) return nextSection
 
@@ -79,7 +81,7 @@ function upsertSpeechSection(existingScript: string | null, pageNumber: number, 
     sections.sort((a, b) => {
       const getPageNumber = (item: string): number => {
         const heading = normalizeHeadingText(item.split(/\r?\n/)[0] || '')
-        const zh = heading.match(/第\s*(\d+)\s*頁/)
+        const zh = heading.match(SPEECH_PAGE_HEADING_NUMBER_PATTERN)
         const en = heading.match(/slide\s*(\d+)\b/i)
         return Number(zh?.[1] || en?.[1] || Number.MAX_SAFE_INTEGER)
       }

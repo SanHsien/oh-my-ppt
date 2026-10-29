@@ -23,6 +23,10 @@ const evidence: Record<string, unknown> = {
 const timer = setTimeout(() => finish(new Error('Smoke exceeded its 90 second cap')), 90000)
 function finish(error?: unknown): void {
   clearTimeout(timer)
+  const blocked = evidence.blockedRequests as string[] | undefined
+  if (!error && blocked && blocked.length > 0) {
+    error = new Error(`Expected 0 blocked external requests, got ${blocked.length}: ${JSON.stringify(blocked)}`)
+  }
   evidence.end = new Date().toISOString()
   evidence.success = !error
   if (error) evidence.error = error instanceof Error ? error.stack : String(error)
@@ -84,5 +88,6 @@ void app.whenReady().then(async () => {
   evidence.renderer = renderer
   evidence.window = { contextIsolation: window.webContents.getLastWebPreferences().contextIsolation,
     nodeIntegration: window.webContents.getLastWebPreferences().nodeIntegration }
+  assert.deepEqual(blockedRequests, [])
   finish()
 }).catch(finish)

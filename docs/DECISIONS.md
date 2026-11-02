@@ -1,5 +1,17 @@
 # 維護決策
 
+## 2026-11-02：上游審查（`b937ae5` → `4cd11c6`，3 筆 commit、0 筆新 PR、2 筆新 issue、網站 2.9.0 不變）
+
+| 項目 | 判斷 | 證據與觸發條件 |
+| --- | --- | --- |
+| `b83b2d1`、`753ec2b` | 跳過 | `git show --stat` 只動 `README.md`／`README_EN.md` 與 `docs/images/OhMyPPT.png` → `ohmyppt.webp`，無 `src/`。本 fork 的 README 已繁中化並去廣告。 |
+| `4cd11c6` | 跳過 | 只改 `README.md` 2 行：贊助商「透明人」的推廣連結 `aff=` 參數。贊助推廣內容本 fork 不採用（同 2026-10-24 判斷）。 |
+| issue #154（換模型後 API 驗證失敗、上傳參考檔報錯） | 不處理 | 錯誤字串 `"auto" tool choice requires --enable-auto-tool-choice and --tool-call-parser` 是使用者自架推論伺服器（vLLM 類）未開工具呼叫的伺服器端設定；`grep -rn "toolChoice\|tool_choice" src --include=*.ts` 無命中，本 fork 不自行指定 tool_choice。第一項只在特定模型（GLM5.3F）發生，其他模型皆通過，同為伺服器端差異。**觸發條件**：有人在本 fork 以標準 OpenAI 相容端點重現。 |
+| issue #155（內建 agent 讀外部目錄、聯網查詢） | 不處理 | 功能請求，上游未回應；本 fork 的 agent 工具集中在 `src/main/agent-runtime/tools/deck-tools.ts`，擴大檔案系統與網路權限會動到產品主流程與安全邊界。**觸發條件**：維護者決定開放 agent 外部資料來源時再評估。 |
+| 網站 | 無變動 | `--strict` 報告「Documentation website: up to date」（2.9.0）。 |
+
+Baseline 推進：`reviewed_through` → `4cd11c6`、`reviewed_issue_through` → 155、`reviewed_date` → 2026-11-02。
+
 ## 2026-10-24：上游審查（`56bc56d` → `b937ae5`，8 筆 commit、0 筆新 PR、2 筆新 issue、網站 2.8.0 → 2.9.0）
 
 | 項目 | 判斷 | 證據與觸發條件 |

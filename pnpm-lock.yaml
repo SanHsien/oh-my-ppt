@@ -55,8 +55,8 @@ importers:
         specifier: 0.0.2
         version: 0.0.2
       '@arcsin1/pptx2json':
-        specifier: 0.1.12
-        version: 0.1.12
+        specifier: 0.2.1
+        version: 0.2.1
       '@arcsin1/presentation-editor-runtime':
         specifier: 0.0.8
         version: 0.0.8
@@ -193,8 +193,8 @@ importers:
         specifier: ^1.37.6
         version: 1.44.10
       katex:
-        specifier: ^0.18.9
-        version: 0.18.10
+        specifier: ^0.19.1
+        version: 0.19.1
       langchain:
         specifier: ^1.4.1
         version: 1.6.1(@langchain/core@1.3.4(openai@7.47.0(google-auth-library@10.9.1)(undici@8.12.3)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(openai@7.47.0(google-auth-library@10.9.1)(undici@8.12.3)(ws@8.22.0)(zod@4.6.7))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(ws@8.22.0)
@@ -241,14 +241,14 @@ importers:
         specifier: ^7.18.4
         version: 7.18.5(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       slate:
-        specifier: ^0.126.2
-        version: 0.126.2
+        specifier: ^0.147.4
+        version: 0.147.4
       slate-history:
-        specifier: ^0.113.1
-        version: 0.113.1(slate@0.126.2)
+        specifier: ^0.144.0
+        version: 0.144.0(slate@0.147.4)
       slate-react:
-        specifier: ^0.127.1
-        version: 0.127.1(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(slate-dom@0.124.1(slate@0.126.2))(slate@0.126.2)
+        specifier: ^0.147.5
+        version: 0.147.5(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(slate-dom@0.124.1(slate@0.147.4))(slate@0.147.4)
       sonner:
         specifier: ^2.0.7
         version: 2.0.8(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -377,8 +377,8 @@ packages:
   '@arcsin1/pptx-ooxml-geometry@0.0.2':
     resolution: {integrity: sha512-KOqbDTY6hFgxHyhW2Euist7t0HmrUZlw0HaHfWMNobXQu5hD6iDu4yfwqy9kuYVR4E7SVbH64pdwyt+AuiDT/w==}
 
-  '@arcsin1/pptx2json@0.1.12':
-    resolution: {integrity: sha512-tpBFXEWBd7xp3lLGHmun2MLStVJzoKikqSOdndnmrlv7KI6OI8pUuqVjwDLU4Fa+iBKtOcazJfzhsA/VtyFcKQ==}
+  '@arcsin1/pptx2json@0.2.1':
+    resolution: {integrity: sha512-579YSDGCKeBQEr9VAViwGrrdmX8SJSpv2m4GWEeKEmvNHnsD4Jlu+RYriIf6jCrvwBbWkjQMqYqxCp/IeukrKQ==}
 
   '@arcsin1/presentation-editor-runtime@0.0.8':
     resolution: {integrity: sha512-GMPpzFGIQ3fGWUmMEDQktXiJMaDlh4K3a7l0yQXTkmK/lunTEBOXvLPut1Y6P5RILo1EoWi1Wvn7Yr46gHcyiA==}
@@ -3639,9 +3639,6 @@ packages:
   is-hexadecimal@2.0.1:
     resolution: {integrity: sha512-DgZQp241c8oO6cA1SbTEWiXeoxV42vlcJxgH+B3hi1AiqqKruZR3ZGF8In3fj4+/y/7rHvlOZLZtgJ/4ttYGZg==}
 
-  is-hotkey@0.2.0:
-    resolution: {integrity: sha512-UknnZK4RakDmTgz4PI1wIph5yxSs/mvChWs9ifnlXsKuXgWmOkY/hAE0H/k2MIqH0RlRye0i1oC07MCRSD28Mw==}
-
   is-hotkey@0.2.1:
     resolution: {integrity: sha512-r/T66LS/FY5o4Duw1rre/wMTngTuuRjzIqKioM/sWaqXcIBnCS5FIpqsoKIYox4nuWUR/aQL/d2PCdW4PFtQzw==}
 
@@ -3668,10 +3665,6 @@ packages:
   is-plain-obj@4.1.0:
     resolution: {integrity: sha512-+Pgi+vMuUNkJyExiMBt5IlFoMyKnr5zhJ4Uspz58WOhBF5QoIZkFyNHIbBAtHwzVAgk5RtndVNsDRN61/mmDqg==}
     engines: {node: '>=12'}
-
-  is-plain-object@5.0.0:
-    resolution: {integrity: sha512-VRSzKkbMm5jMDoKLbltAkFQ5Qr7VDiTFGXxYFXXowVj387GeGNOCsOH6Msy00SGZ3Fp84b1Naa1psqgcCIEP5Q==}
-    engines: {node: '>=0.10.0'}
 
   is-plain-object@5.1.0:
     resolution: {integrity: sha512-bUi/yjmtKYcRVUtWRGr0UA6xEFh2I6zWUwMrUXB3s7bmYCaZ8a+0ZsTRkrawh/mzlSD1Y0Ph8bp/U+TvBpWDNw==}
@@ -3701,8 +3694,8 @@ packages:
     resolution: {integrity: sha512-p3EcsicXjit7SaskXHs1hA91QxgTw46Fv6EFKKGS5DRFLD8yKnohjF3hxoju94b/OcMZoQukzpPpBE9uLVKzgQ==}
     engines: {node: '>= 0.4'}
 
-  is-unsafe@2.0.2:
-    resolution: {integrity: sha512-HgbIHPBH0KHHCcjLfGsCvhtPTVxjaAZlXjwdz7/GQC40SjSe4sfQsar8J5VFo8JOSbarkpV0OLG95bbaNd9aAQ==}
+  is-unsafe@2.0.3:
+    resolution: {integrity: sha512-ZBllczCCO267vgdFb6Tq3pv+LhHaCiGMdr+ZsuL+OopruAg7S+3ZDs1vD0RPC0uSrkjzbraxaGjtX1YBxjPeFQ==}
 
   is-weakmap@2.0.2:
     resolution: {integrity: sha512-K5pXYOm9wqY1RgjpL3YTkF39tni1XajUIkawTLUo9EZEVUFga5gSQJF8nNS7ZwJQ02y+1YCNYcMh+HIf1ZqE+w==}
@@ -3826,8 +3819,8 @@ packages:
   jws@4.0.1:
     resolution: {integrity: sha512-EKI/M/yqPncGUUh44xz0PxSidXFr/+r0pA70+gIYhjv+et7yxM+s29Y+VGDkovRofQem0fs7Uvf4+YmAdyRduA==}
 
-  katex@0.18.10:
-    resolution: {integrity: sha512-/B6p9eY9DX7aHBfpkHdpirDTZ5QH9xTwL9y837PWuzuv41O5jFdqNQwVQEQsimY0/iVNkwBY4+4hMfhQ7d4Dbw==}
+  katex@0.19.1:
+    resolution: {integrity: sha512-jG8uKntjSEcm2EpQOh0XturpPuuC9r3Sq5HLHdsFdWZT27E672SF19QEi+of0/YeOy15lDgRhKvr5614uRrEfA==}
     hasBin: true
 
   keyv@4.5.4:
@@ -4890,28 +4883,28 @@ packages:
     peerDependencies:
       slate: '>=0.121.0'
 
-  slate-history@0.113.1:
-    resolution: {integrity: sha512-J9NSJ+UG2GxoW0lw5mloaKcN0JI0x2IA5M5FxyGiInpn+QEutxT1WK7S/JneZCMFJBoHs1uu7S7e6pxQjubHmQ==}
+  slate-history@0.144.0:
+    resolution: {integrity: sha512-+ZTjXWyXTSxvzkCC4UW0xd6PTlsP8ZUPEkJXTt9M1SK2HjDisBrgQZbFFk8XxbpLaWZaL5DZIG3/WGPPj3muNg==}
     peerDependencies:
-      slate: '>=0.65.3'
+      slate: '>=0.114.3'
 
-  slate-react@0.127.1:
-    resolution: {integrity: sha512-ZiLJEEfKeAuRCOK7M7NAEA/lwhoCecikDWMQj6zbOJCKmZtIv4+7wdwmB2w3gZfrjVNmZWKbaP4zHORILVvc5g==}
+  slate-react@0.147.5:
+    resolution: {integrity: sha512-XTMz12tMWOi/hRs8PtH9FFEndPt5ZGiPmWcRLmcXACngPo8qtufiBwd7PYG0xRhYo0AsR0g5Ps9NtnBIq8s6lg==}
     peerDependencies:
       '@types/lodash': ^4.14.0
       '@types/react': '>=18.0.0'
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
       slate: '>=0.121.0'
-      slate-dom: '>=0.119.1'
+      slate-dom: '>=0.141.0'
     peerDependenciesMeta:
       '@types/lodash':
         optional: true
       '@types/react':
         optional: true
 
-  slate@0.126.2:
-    resolution: {integrity: sha512-38C8GU9awiEbroZm+DzXEFUWKptb1QV9xcgcUjseas4PtqQdBnEPITocosYzFHXEVrlkafjZEv8KH8pjhe0esQ==}
+  slate@0.147.4:
+    resolution: {integrity: sha512-AaoMVtj+6AUhMAvMubk9OZn7cdA5MsZLWbt+jx5RvHimd3lDRhQhKVgLy6uegwT2lEYB8lDKqWGcN6vU8W2V9w==}
 
   sonner@2.0.8:
     resolution: {integrity: sha512-UM/ByIoFra8yzV75n1o0Puu0bw5U/9UNnDacrJNspekBewIfsQ3D6ez1nvlWpt7aTsO6rujQtifBpycwIivqlg==}
@@ -4994,8 +4987,8 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
-  strnum@2.4.2:
-    resolution: {integrity: sha512-rDG3Ah4TV0k1hWvLSzkZtMmLN9+eS+h3knq4MP6A42Y3Yh5qGNnOUs1jJkoSr8FG5dsL28c7KgkIBzSEykqtuw==}
+  strnum@2.5.1:
+    resolution: {integrity: sha512-UM4nTLWzQiDBseVxUGxN0wJzIk0UU89Qi7pKXz9qISo+lhviJikTuikBsK/oFRlpvYHvSdz0TVoLyQ+sEpYwxA==}
 
   style-to-js@1.1.21:
     resolution: {integrity: sha512-RjQetxJrrUJLQPHbLku6U/ocGtzyjbJMP9lCNK7Ag0CNh690nSH8woqWH9u16nMjYBAok+i7JO1NP2pOy8IsPQ==}
@@ -5518,7 +5511,7 @@ snapshots:
 
   '@arcsin1/pptx-ooxml-geometry@0.0.2': {}
 
-  '@arcsin1/pptx2json@0.1.12':
+  '@arcsin1/pptx2json@0.2.1':
     dependencies:
       fast-xml-parser: 5.11.2
       jszip: 3.10.2
@@ -8603,9 +8596,9 @@ snapshots:
     dependencies:
       '@nodable/entities': 3.1.0
       fast-xml-builder: 1.3.1
-      is-unsafe: 2.0.2
+      is-unsafe: 2.0.3
       path-expression-matcher: 1.6.2
-      strnum: 2.4.2
+      strnum: 2.5.1
       xml-naming: 0.3.0
 
   fastq@1.20.1:
@@ -9064,8 +9057,6 @@ snapshots:
 
   is-hexadecimal@2.0.1: {}
 
-  is-hotkey@0.2.0: {}
-
   is-hotkey@0.2.1: {}
 
   is-map@2.0.3: {}
@@ -9082,8 +9073,6 @@ snapshots:
   is-number@7.0.0: {}
 
   is-plain-obj@4.1.0: {}
-
-  is-plain-object@5.0.0: {}
 
   is-plain-object@5.1.0: {}
 
@@ -9115,7 +9104,7 @@ snapshots:
     dependencies:
       which-typed-array: 1.1.20
 
-  is-unsafe@2.0.2: {}
+  is-unsafe@2.0.3: {}
 
   is-weakmap@2.0.2: {}
 
@@ -9250,7 +9239,7 @@ snapshots:
       jwa: 2.0.1
       safe-buffer: 5.2.1
 
-  katex@0.18.10:
+  katex@0.19.1:
     dependencies:
       commander: 15.0.0
 
@@ -10558,7 +10547,7 @@ snapshots:
     dependencies:
       semver: 7.7.4
 
-  slate-dom@0.124.1(slate@0.126.2):
+  slate-dom@0.124.1(slate@0.147.4):
     dependencies:
       '@juggle/resize-observer': 3.4.0
       direction: 1.0.4
@@ -10566,30 +10555,29 @@ snapshots:
       is-plain-object: 5.1.0
       lodash: 4.18.1
       scroll-into-view-if-needed: 3.1.0
-      slate: 0.126.2
+      slate: 0.147.4
       tiny-invariant: 1.3.1
 
-  slate-history@0.113.1(slate@0.126.2):
+  slate-history@0.144.0(slate@0.147.4):
     dependencies:
-      is-plain-object: 5.0.0
-      slate: 0.126.2
+      slate: 0.147.4
 
-  slate-react@0.127.1(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(slate-dom@0.124.1(slate@0.126.2))(slate@0.126.2):
+  slate-react@0.147.5(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(slate-dom@0.124.1(slate@0.147.4))(slate@0.147.4):
     dependencies:
       '@juggle/resize-observer': 3.4.0
       direction: 1.0.4
-      is-hotkey: 0.2.0
+      is-hotkey: 0.2.1
       lodash: 4.18.1
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
       scroll-into-view-if-needed: 3.1.0
-      slate: 0.126.2
-      slate-dom: 0.124.1(slate@0.126.2)
+      slate: 0.147.4
+      slate-dom: 0.124.1(slate@0.147.4)
       tiny-invariant: 1.3.1
     optionalDependencies:
       '@types/react': 19.3.0
 
-  slate@0.126.2: {}
+  slate@0.147.4: {}
 
   sonner@2.0.8(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
     dependencies:
@@ -10694,7 +10682,7 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  strnum@2.4.2:
+  strnum@2.5.1:
     dependencies:
       anynum: 1.0.1
 

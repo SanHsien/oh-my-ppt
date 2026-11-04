@@ -1,5 +1,19 @@
 # 維護決策
 
+## 2026-11-04：Dependabot #72（minimatch，GHSA-g3hv-75wg-m249）— 延後，有證據
+
+**現況**：公告的 `vulnerable_version_range` 為 `< 11.0.1`，唯一修補線是 11.0.1，lockfile 裡 3.1.5、5.1.9、9.0.9、10.2.5、10.2.6 都被算進去。要讓告警關閉，每個消費者都得跑在 11.0.1 上。
+
+**為什麼不能只靠 lockfile／overrides**：minimatch 11 的 CommonJS 匯出是具名物件（`typeof m.minimatch === "function"`，但 `m.default` 為 `undefined`），不再像 3.x 那樣 `module.exports` 本身就是函式。綁住舊版的消費者：
+- `exceljs@4.4.0`（**執行期依賴**）→ `archiver@5.3.2` → `archiver-utils` → `glob@7.2.3` → `minimatch@3.1.5`；`exceljs` → `unzipper@0.10.14` → `fstream` → `rimraf@2.6.3` → `glob@7.2.3`。
+- 各 `eslint@9` 相關套件（`@eslint/config-array`、`@eslint/eslintrc`、`@electron-toolkit/eslint-config-*`）→ `minimatch@3.1.5`。
+- `filelist`、`archiver@5.3.2` → `readdir-glob@1.1.3` → `minimatch@5.1.9`（後者亦在執行期）。
+
+**實測（在姊妹 repo voxavatar 上，同一批套件：glob@7.2.3、dir-compare）**：`overrides: { "minimatch": "11.0.1" }` 後，`dir-compare` 的 `compareSync` 丟 `(0 , minimatch_1.default) is not a function`；`glob@7.2.3` 的 `sync("*.json")` 丟 `Cannot read properties of undefined (reading 'charAt')`。本 repo 沒有另外實測，是依相同套件版本與 `pnpm why minimatch` 的依賴樹推定；exceljs 在執行期，風險比 voxavatar 更高，所以不套全域 override。
+
+**決定**：不改 manifest／lock、不 dismiss，告警保持開啟。漏洞類型是 minimatch 處理特製 glob 模式時的放大（DoS）；本次沒有逐一稽核各消費者的模式來源，所以不以「用不到」為由 dismiss。
+**重審條件**（任一成立就重看）：`exceljs`／`archiver`／`archiver-utils`／`glob` 發布改用 minimatch ≥ 11（或放寬範圍）的版本；`pnpm why minimatch` 不再出現 < 11 的版本；公告新增 3.x、5.x、9.x、10.x 的修補版。
+
 ## 2026-11-02：上游審查（`b937ae5` → `4cd11c6`，3 筆 commit、0 筆新 PR、2 筆新 issue、網站 2.9.0 不變）
 
 | 項目 | 判斷 | 證據與觸發條件 |

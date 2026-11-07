@@ -1,5 +1,31 @@
 # 更新日誌 / Changelog
 
+## 2026-11-07 · v2.6.1 (SanHsien 維護版)
+
+### 中文
+
+- **修正 HTML 編輯器開檔遷移後的 NUL 殘留**：舊版 `current.html` 在開檔時遷移，新內容會被寫在舊長度個 NUL 位元組之後，現在改為從檔案開頭寫入。
+- **修正更新對話框的「更新說明」按鈕**：按鈕原本打開的是 Release 內文（Markdown 文字，會被解成 app.asar 內的 file 路徑），現在打開該 Release 頁面。
+- **修正圖表資料匯入**：Excel 的 rich text、超連結、公式與日期儲存格不再變成 `[object Object]` 或日期長字串（日期顯示為 YYYY-MM-DD）；簡體標頭（例如「产品」）也能被辨認為表頭。
+- **簡體中文輸入相容**：意圖判斷、頁面參照、大綱解析、PPTX 匯入、進度狀態、`萬／億` 金額與頁碼等多處比對，簡體與繁體都能讀（han-variants 一系列修正）。
+- **PPTX 匯入浮水印判斷**：只把 1ppt.com 本身（含子網域）視為模板浮水印，不再誤傷含 `1ppt` 字樣的標題；並修掉長文字下的二次方回溯（10 萬字約 4.7 秒）。
+- **匯出投影片包 README**：只列出實際產出的 Windows 檢視器，移除不存在的 macOS 說明。
+- **其他修正**：代理伺服器網址（含帳密）不再寫入日誌；頁面合併遇到目錄型圖片參照時在 Windows 上改為略過而非整個合併失敗；歷史版本初始化失敗時不再覆蓋使用者既有的 `.gitignore`。
+- **依賴與建置**：Electron 41 → 42.11.18、electron-vite 5 → 6、`@chenglou/pretext` 1.0.0、`slate` 系列、`katex`、`zod`、`undici`、`vite` 等升版；補上 `slate-dom` 直接依賴（鎖定檔原本停在 0.124.1，與 `slate-react` 0.147.5 的 peer 需求 >=0.141.0 不符，前端打包會失敗）。
+- **交付說明**：Release 僅提供 NSIS 安裝檔（Windows x64）；沒有可攜 zip；MP4 匯出需要使用者自行提供 ffmpeg，安裝檔不內建。
+
+### English
+
+- **Fixed NUL residue after the HTML editor migrates a legacy document on open**: the migrated HTML was written after as many NUL bytes as the old file length; it is now written at offset 0.
+- **Fixed the update dialog's changelog button**: it used to open the Release body (Markdown text, resolved to a file path inside app.asar); it now opens the Release page.
+- **Fixed chart data import**: Excel rich text, hyperlink, formula and date cells no longer become `[object Object]` or a long date string (dates read as YYYY-MM-DD); a Simplified first header cell (e.g. "产品") is recognized as a header.
+- **Simplified Chinese input compatibility**: intent routing, page references, outline parsing, PPTX import, progress labels, `萬/億` amounts and page numbers accept both scripts (the han-variants fix series).
+- **PPTX import watermark check**: only 1ppt.com itself (and its subdomains) counts as a template watermark, so titles containing `1ppt` are kept; quadratic backtracking on long text (about 4.7 s for 100k characters) is gone.
+- **Slide pack README**: lists only the Windows viewer actually built; the nonexistent macOS instructions are removed.
+- **Other fixes**: proxy URLs (with credentials) are no longer written to the log; page merge skips a directory-valued image reference on Windows instead of failing; history initialization no longer overwrites an existing `.gitignore` when appending fails.
+- **Dependencies and build**: Electron 41 → 42.11.18, electron-vite 5 → 6, `@chenglou/pretext` 1.0.0, plus `slate`, `katex`, `zod`, `undici`, `vite` bumps; added `slate-dom` as a direct dependency (the lockfile pinned 0.124.1 while `slate-react` 0.147.5 needs >=0.141.0, which broke the renderer bundle).
+- **Delivery notes**: the Release ships the NSIS installer only (Windows x64); there is no portable zip; MP4 export needs a user-supplied ffmpeg, which the installer does not bundle.
+
 ## 2026-09-14 · v2.5.3 (SanHsien 維護版)
 
 ### 中文

@@ -59,6 +59,17 @@ def test_readme_pair_cross_links_and_names_the_fork() -> None:
     assert "tools\\bootstrap_dev.ps1" in zh or "tools/bootstrap_dev.ps1" in zh
 
 
+def test_readme_feature_heading_names_the_packaged_version() -> None:
+    """The feature heading must not lag behind the version users download."""
+    version = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))["version"]
+    for name in ("README.md", "README.en.md"):
+        lines = (ROOT / name).read_text(encoding="utf-8").splitlines()
+        headings = [line for line in lines if line.startswith("## ") and re.search(r"v\d+\.\d+\.\d+", line)]
+        assert headings, f"{name} has no versioned feature heading"
+        for heading in headings:
+            assert f"v{version}" in heading, f"{name}: {heading!r} does not match package.json {version}"
+
+
 def test_gitignore_covers_user_data_and_reports() -> None:
     text = (ROOT / ".gitignore").read_text(encoding="utf-8")
     assert ".env" in text

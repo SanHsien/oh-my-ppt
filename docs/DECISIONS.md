@@ -1,5 +1,24 @@
 # 維護決策
 
+## 2026-11-08：Dependabot #73（minimatch，GHSA-g3hv-75wg-m249，`>= 7.0.0, < 11.0.1`）— 只在開發工具鏈，判定可容忍並關閉告警
+
+**現況**：#73 建立於 2026-11-07T15:39:06Z，`dependency.scope` 為 `development`，唯一修補版 11.0.1（`gh api repos/SanHsien/oh-my-ppt/dependabot/alerts/73`）。公告範圍已不含 3.x、5.x（見下方 2026-11-04 條目的狀態更新），lockfile 內落在範圍的是 9.0.9、10.2.5、10.2.6。
+
+**可達性（2026-11-08 實測）**：`pnpm why minimatch --prod` 只出現 `exceljs` → `archiver`／`unzipper` 底下的 3.1.5 與 5.1.9，兩者都在公告範圍之外；`pnpm why minimatch --dev` 才出現 9.0.9 與 10.2.5／10.2.6，消費者是 `eslint` 9.39.5 與其外掛（`eslint-plugin-react`、`eslint-plugin-react-hooks`、`eslint-plugin-react-refresh`、`@electron-toolkit/eslint-config-ts`、`@electron-toolkit/eslint-config-prettier`）以及 `electron-builder` 26.15.3。這些只在維護者本機與 CI 的 lint／打包階段跑，不進安裝檔的執行期。
+
+**為什麼不升到 11.0.1**：11 的 CommonJS 匯出形狀改變（2026-11-04 條目），全域 override 會弄壞 `eslint` 與 `electron-builder` 的 minimatch 呼叫（`electron-builder` 用到 minimatch 10 的 `expand`，見「無官方修補版的三項依賴」段）。本次沒有另外實測 11.0.1 對這兩個工具的影響，是依上述已實測的 voxavatar 結果與依賴樹推定。
+
+**決定**：不改 manifest／lock；以 `tolerable_risk` 關閉 #73。漏洞是 minimatch 處理特製 glob 模式時的放大（DoS），觸發它要把攻擊者控制的模式交給 lint／打包階段，而這些模式來自維護者自己的設定檔與 `package.json`，且影響只是本機建置變慢，不是使用者端或資料外洩。與 2026-11-04 條目不同的是：當時 3.x／5.x 的 `exceljs` 執行期路徑在範圍內所以保持開啟；範圍縮成 `>= 7.0.0` 之後執行期路徑已不在內，開啟告警不再對應任何可行動項目。
+**副作用**：Dependabot 的 `npm_and_yarn ... for minimatch` 資安更新 run 在 2026-11-03 與 2026-11-07 都 failure（run #1686755361、#1686778250 等），原因是它無法解析出可用的 11.x 組合；關閉告警後這類 run 預期停止，**尚未驗證**，關閉後要看下一次排程。
+**重審條件**（任一成立）：`pnpm why minimatch --prod` 出現 `>= 7.0.0, < 11.0.1` 的版本；`eslint` 或 `electron-builder` 發布改用 minimatch >= 11 的版本；公告把範圍再擴大。
+
+## 2026-11-08：`http-cache-semantics` 公告已撤回，本地 patch 保留
+
+`gh api advisories/GHSA-ch52-4w7c-c8xp --jq .withdrawn_at` 回 `2026-10-28T21:13:39Z`；`gh api "repos/SanHsien/oh-my-ppt/dependabot/alerts?state=all"` 沒有 `http-cache-semantics` 的告警（2026-11-08）。因此「無官方修補版的三項依賴」段對它的「仍在 audit」「不得 dismiss」已不適用，Dependabot 對該套件沒有可行動項目。
+
+**決定**：`patches/http-cache-semantics@4.2.0.patch` 與 `tests/unit/security/dependency-boundaries.test.ts` 的對應斷言**保留**：patch 已被測試釘住且無害，拿掉要動 `patchedDependencies` 與 lockfile，沒有收益。
+**重審條件**：下次升級 `http-cache-semantics` 或需要動 `patchedDependencies` 時，一併評估移除；`braces`、`sprintf-js` 兩筆不受影響。
+
 ## 2026-11-08：產品 CI 加上 `pnpm run build` 步驟
 
 **背景**：2026-11-07 發 v2.6.1 前發現 `main` 的打包早已壞掉。Dependabot #46 把 `slate-react` 升到 0.147.5，鎖檔的 `slate-dom` 仍是 0.124.1，打包報 `"copyNodeInUse" is not exported`；CI 只跑型別檢查與 vitest，兩者都不打包，所以一直是綠的。`42ee3b9` 把 `slate-dom` 改成直接依賴後修好。

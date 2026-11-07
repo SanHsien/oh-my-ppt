@@ -112,7 +112,7 @@ Oh My PPT provides a fresh approach:
 ---
 
 <a id="fork-features"></a>
-## 🌟 Fork-Exclusive Features & What's New in v2.5.3
+## 🌟 Fork-Exclusive Features & What's New in v2.6.1
 
 In addition to the core capabilities of Oh My PPT, this maintenance fork introduces several exclusive enhancements:
 

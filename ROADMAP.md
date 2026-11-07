@@ -6,7 +6,7 @@
 ## 現況
 
 `oh-my-ppt` 是 `arcsin1/oh-my-ppt` 的 Windows-only 維護 fork（Electron＋React＋TypeScript 的本地優先 AI 簡報工具，`FORK.md`）。最近 release 是 v2.6.1（2026-11-07，tag 指向 `095165e`，資產只有 NSIS 安裝檔與 blockmap），`package.json:3` 同為 2.6.1；v2.6.0 之後的使用者可見修正都已打進這個安裝檔。
-健康度（2026-11-08 `gh` 查詢）：open PR 0、code scanning 0；CI、CodeQL 在 `main`（`376ce83`）最近一次皆 success；Dependabot 有 1 筆 open（#73 `minimatch`，medium、scope development，`docs/DECISIONS.md` 2026-11-08 條目判定為只在開發工具鏈、建議以 `tolerable_risk` 關閉）；`http-cache-semantics` 公告已於 2026-10-28 撤回，不再有該告警；issues 在 GitHub 上已停用，open issue 數是「未查到」，不是 0。Dependabot 的 npm 更新 run 在 `2b17d8e`（2026-10-26）修掉 `ERR_PNPM_UNUSED_PATCH` 之後已恢復：`npm_and_yarn in /. - Update #1671327775` 於 2026-11-01 success，2026-11-03 另有多筆 success；只有針對 `minimatch` 的資安更新 run 持續 failure（#1686755361、#1686778250，2026-11-07），原因見上述決策條目。上游審查水位在 `b937ae5`（v2.9.0，`tools/upstream_baseline.json`）；它不是本 fork HEAD 的祖先（本 fork 起點是上游 `6d1b08b`），這是已知情況、不是缺陷。
+健康度（2026-11-08 `gh` 查詢）：open PR 0、code scanning 0；CI、CodeQL 在 `main`（`376ce83`）最近一次皆 success；Dependabot open 0（#73 `minimatch` 已在 2026-11-07 以 `tolerable_risk` 關閉；medium、scope development，`docs/DECISIONS.md` 2026-11-08 條目記錄判定為只在開發工具鏈）；`http-cache-semantics` 公告已於 2026-10-28 撤回，不再有該告警；issues 在 GitHub 上已停用，open issue 數是「未查到」，不是 0。Dependabot 的 npm 更新 run 在 `2b17d8e`（2026-10-26）修掉 `ERR_PNPM_UNUSED_PATCH` 之後已恢復：`npm_and_yarn in /. - Update #1671327775` 於 2026-11-01 success，2026-11-03 另有多筆 success；只有針對 `minimatch` 的資安更新 run 持續 failure（#1686755361、#1686778250，2026-11-07），原因見上述決策條目。上游審查水位在 `b937ae5`（v2.9.0，`tools/upstream_baseline.json`）；它不是本 fork HEAD 的祖先（本 fork 起點是上游 `6d1b08b`），這是已知情況、不是缺陷。
 
 ## 近期：可以直接動手
 

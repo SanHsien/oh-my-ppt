@@ -5,7 +5,7 @@
 
 ## 現況
 
-`oh-my-ppt` 是 `arcsin1/oh-my-ppt` 的 Windows-only 維護 fork（Electron＋React＋TypeScript 的本地優先 AI 簡報工具，`FORK.md`）。最近已發行的 release 是 v2.6.0（2026-10-17）；v2.6.1 的版本號、`CHANGELOG.md` 段與安裝檔已在 `release/v2.6.1` 備妥，tag 與 Release 要等維護者發布，發布前以 `gh release list` 為準。
+`oh-my-ppt` 是 `arcsin1/oh-my-ppt` 的 Windows-only 維護 fork（Electron＋React＋TypeScript 的本地優先 AI 簡報工具，`FORK.md`）。最近 release 是 v2.6.0（2026-10-17），`package.json:3` 同為 2.6.0；`main` 在那之後多了使用者可見的修正（`5fb2a00`、`55f0f01`、`7368dfc`），尚未發行。
 健康度：open PR 0、code scanning 0、CI／CodeQL／Upstream check 在 `main` 最近一次皆 success；Dependabot 有 1 筆 open（high，`http-cache-semantics`，advisory 沒有修補版，已有本地 patch，見 `docs/DECISIONS.md:21`）；issues 在 GitHub 上已停用，open issue 數是「未查到」，不是 0（2026-10-29 `gh` 查詢）。
 卡住的地方：Dependabot 的 npm 更新 run 在 2026-10-18、10-24、10-25 都 failure，根因 `ERR_PNPM_UNUSED_PATCH` 已在 `2b17d8e`（2026-10-26）修掉並在本機以 Dependabot 同一條指令驗證，但修正之後還沒有一次排程 run 的結果（`docs/DECISIONS.md:361-380`；Dependabot 深掃報告 2026-10-26）。上游審查水位在 `b937ae5`（v2.9.0，`tools/upstream_baseline.json`）；它不是本 fork HEAD 的祖先（本 fork 起點是上游 `6d1b08b`），這是已知情況、不是缺陷。
 
@@ -13,13 +13,14 @@
 
 | 項目 | 為什麼 | 驗收方式 | 建議執行者 | 證據 |
 | --- | --- | --- | --- | --- |
-| 把 CI 的 `product tests (windows / node 24)` 加進 `main` 的 branch protection 必要檢查 | 目前必要檢查只有 `test (windows / py3.14)`，新 job 紅燈不會擋合併（含 Dependabot PR） | `gh api repos/SanHsien/oh-my-ppt/branches/main/protection/required_status_checks` 的 contexts 含 `product tests (windows / node 24)`；規則上 agent 不改 branch protection，需維護者操作 | 維護者 | `.github/workflows/ci.yml:50`；深掃報告（2026-10-2x）「需要維護者注意」 |
+| CI 加上 renderer／主進程打包步驟（`pnpm run build`，即 `electron-vite build`） | 2026-11-07 發 v2.6.1 前發現 `main` 的 `pnpm run build:win` 早已壞掉（Dependabot #46 把 `slate-react` 升到 0.147.5，但鎖檔的 `slate-dom` 還是 0.124.1，打包時報 `copyNodeInUse is not exported`），CI 卻一直是綠的，因為 CI 只跑型別檢查與 vitest，沒有打包 | 在 `ci.yml` 的 Windows job 跑 `pnpm run build`；用 `slate-dom` 退回 0.124.1 的鎖檔確認會轉紅，修好後轉綠；把該 job 加進 branch protection 的必要檢查 | Claude Sonnet | `42ee3b9`（slate-dom 修正）；`.github/workflows/ci.yml` |
 | 移除已完成交接的 `HANDOFF.md`，並把 `README.md:115` 的版本標示對到 `package.json` 版本 | `HANDOFF.md` 是 2026-09-27 的交接，內容全是已完成事項，留著會被當成待辦；README 功能段標題寫 v2.5.3，發行版是 2.6.0。刪檔屬破壞性操作，需維護者明確同意 | `HANDOFF.md` 不在 `git ls-files`；刪除前先確認其中的決策（xlsx 改 exceljs、`extract-zip` 覆寫、CodeQL TOCTOU）在 `docs/DECISIONS.md` 或 `REVIEW.md` 有對應記錄，缺的先補；README 標示與 `package.json` 一致；`tools\dev_check.ps1` 綠（含連結檢查） | 維護者 | `HANDOFF.md:1-20`；`README.md:115`；`package.json:3` |
 
 ## 中期：等條件成立再做
 
 | 項目 | 觸發條件 | 驗收方式 | 建議執行者 | 證據 |
 | --- | --- | --- | --- | --- |
+| 發下一個修補版（v2.6.1 或之後）：把 v2.6.0 之後的使用者可見修正打進安裝檔 | 維護者決定發版。這幾項在 v2.6.0 安裝檔裡仍存在：HTML 編輯器開檔遷移後寫入舊內容尾端的 NUL 殘留（`5fb2a00`）、更新對話框的更新說明按鈕打開錯誤連結（`55f0f01`）、圖表匯入 rich text／超連結／日期欄位變 `[object Object]`（`7368dfc`） | `package.json` 版本、tag、Release 一致；CI 與 CodeQL success；Release 資產只有 NSIS 安裝檔且說明如實（無可攜 zip、不含 ffmpeg）；`CHANGELOG.md` 補版本段 | 維護者 | 深掃報告（2026-10-2x） 第二段 F1／F2／F3；`package.json:3`；2026-10-29 `gh` 查詢（最近 release） |
 | 審查上游新項目並判斷採用與否 | `Upstream check` workflow（週一）轉 failure，代表上游有水位之後的新 commit、PR、issue 或網站版本；failure 不是工具壞 | `docs/DECISIONS.md` 新增一筆逐項判斷與證據；`tools/upstream_baseline.json` 水位推進；採用者先有紅燈測試，`pnpm test` 綠。注意上游 v2.9.0 之後的功能原始碼未公開（`docs/DECISIONS.md:3-13`） | Claude Sonnet | `.github/workflows/upstream-check.yml:11`；`docs/DECISIONS.md:3-13`；`AGENTS.md:8` |
 | 移除 `@langchain/langgraph-sdk` 的封裝 patch | 上游 SDK 的 1.x 發行檔不再 import `.pnpm` 內嵌路徑，或 `@langchain/langgraph`／`deepagents` 接受 SDK 2.x 並完成升級 | `package.json` 的 `patchedDependencies` 該鍵、`patches/@langchain__langgraph-sdk@1.12.x.patch`、`tests/unit/security/langgraph-sdk-patch.test.ts` 第二條同一個 commit 移除；`pnpm install --frozen-lockfile`、`pnpm test`、封裝冒煙皆綠；下一次 Dependabot npm run success | Claude Sonnet | `docs/DECISIONS.md:361-380`（觸發條件段） |
 | 重審 Dependabot `http-cache-semantics` 的處置 | advisory 的 `first_patched_version` 出現，或套件 4.3.x 之後確實處理 `max-stale`（見 `docs/DECISIONS.md:21` 的重審條件） | 以同一組實測（shared cache、`max-age=60`＋`Set-Cookie`、`max-stale=99999999`）驗證新版 `evaluateRequest` 不再直接 hit；升版後移除 `patches/http-cache-semantics@4.2.0.patch` 與 `tests/unit/security/dependency-boundaries.test.ts` 對應斷言；`gh api repos/SanHsien/oh-my-ppt/dependabot/alerts?state=open` 無該筆 | Claude Opus | `docs/DECISIONS.md:21`；2026-10-29 `gh` 查詢（安全告警） |

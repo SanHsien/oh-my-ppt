@@ -13,7 +13,6 @@
 
 | 項目 | 為什麼 | 驗收方式 | 建議執行者 | 證據 |
 | --- | --- | --- | --- | --- |
-| CI 加上 renderer／主進程打包步驟（`pnpm run build`，即 `electron-vite build`） | 2026-11-07 發 v2.6.1 前發現 `main` 的 `pnpm run build:win` 早已壞掉（Dependabot #46 把 `slate-react` 升到 0.147.5，但鎖檔的 `slate-dom` 還是 0.124.1，打包時報 `copyNodeInUse is not exported`），CI 卻一直是綠的，因為 CI 只跑型別檢查與 vitest，沒有打包 | 在 `ci.yml` 的 Windows job 跑 `pnpm run build`；用 `slate-dom` 退回 0.124.1 的鎖檔確認會轉紅，修好後轉綠；把該 job 加進 branch protection 的必要檢查 | Claude Sonnet | `42ee3b9`（slate-dom 修正）；`.github/workflows/ci.yml` |
 | 移除已完成交接的 `HANDOFF.md`，並把 `README.md:115` 的版本標示對到 `package.json` 版本 | `HANDOFF.md` 是 2026-09-27 的交接，內容全是已完成事項，留著會被當成待辦；README 功能段標題寫 v2.5.3，發行版是 2.6.0。刪檔屬破壞性操作，需維護者明確同意 | `HANDOFF.md` 不在 `git ls-files`；刪除前先確認其中的決策（xlsx 改 exceljs、`extract-zip` 覆寫、CodeQL TOCTOU）在 `docs/DECISIONS.md` 或 `REVIEW.md` 有對應記錄，缺的先補；README 標示與 `package.json` 一致；`tools\dev_check.ps1` 綠（含連結檢查） | 維護者 | `HANDOFF.md:1-20`；`README.md:115`；`package.json:3` |
 
 ## 中期：等條件成立再做

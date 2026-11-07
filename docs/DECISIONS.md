@@ -1,5 +1,14 @@
 # 維護決策
 
+## 2026-11-08：產品 CI 加上 `pnpm run build` 步驟
+
+**背景**：2026-11-07 發 v2.6.1 前發現 `main` 的打包早已壞掉。Dependabot #46 把 `slate-react` 升到 0.147.5，鎖檔的 `slate-dom` 仍是 0.124.1，打包報 `"copyNodeInUse" is not exported`；CI 只跑型別檢查與 vitest，兩者都不打包，所以一直是綠的。`42ee3b9` 把 `slate-dom` 改成直接依賴後修好。
+
+**決定**：在 `product tests (windows / node 24)` job（已是 branch protection 必要檢查）於安裝後加 `pnpm run build`（`electron-vite build`，產出 main／preload／renderer）。**不跑 electron-builder**：不產安裝檔，維持 CI 時間；打包層級的問題留給發版流程。這只加在 CI；本機 `tools\dev_check.ps1` 仍不跑產品構建（見 AGENTS.md）。
+
+**證據**：在 worktree 把 `package.json`／`pnpm-lock.yaml` 退回 `42ee3b9~1`（slate-dom 0.124.1）後 `pnpm run build` exit 1，訊息為 `"copyNodeInUse" is not exported by ".../slate-dom@0.124.1_slate@0.147.4/.../index.es.js", imported by ".../slate-react@0.147.5_.../index.es.js"`；回到目前 `main` 則 exit 0（`✓ built in 14.50s`）。
+**重審條件**：該步驟耗時讓 job 逼近 30 分鐘 timeout，或需要驗證安裝檔層級問題時再考慮加 electron-builder。
+
 ## 2026-11-04：Dependabot #72（minimatch，GHSA-g3hv-75wg-m249）— 延後，有證據
 
 **現況**：公告的 `vulnerable_version_range` 為 `< 11.0.1`，唯一修補線是 11.0.1，lockfile 裡 3.1.5、5.1.9、9.0.9、10.2.5、10.2.6 都被算進去。要讓告警關閉，每個消費者都得跑在 11.0.1 上。

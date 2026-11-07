@@ -68,6 +68,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # electron-vite build only (main / preload / renderer bundles); no electron-builder, no installer.
+      # Typecheck and vitest never bundle, so a dependency pair that cannot be bundled (slate-react
+      # 0.147.5 vs slate-dom 0.124.1) stayed green until a release build.
+      - name: Build (electron-vite)
+        run: pnpm run build
+
       - name: Typecheck
         run: pnpm run typecheck
 

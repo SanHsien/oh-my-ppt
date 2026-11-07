@@ -5,7 +5,7 @@
 
 ## 現況
 
-`oh-my-ppt` 是 `arcsin1/oh-my-ppt` 的 Windows-only 維護 fork（Electron＋React＋TypeScript 的本地優先 AI 簡報工具，`FORK.md`）。最近 release 是 v2.6.0（2026-10-17），`package.json:3` 同為 2.6.0；`main` 在那之後多了使用者可見的修正（`5fb2a00`、`55f0f01`、`7368dfc`），尚未發行。
+`oh-my-ppt` 是 `arcsin1/oh-my-ppt` 的 Windows-only 維護 fork（Electron＋React＋TypeScript 的本地優先 AI 簡報工具，`FORK.md`）。最近 release 是 v2.6.1（2026-11-07，tag 指向 `095165e`，資產只有 NSIS 安裝檔與 blockmap），`package.json:3` 同為 2.6.1；v2.6.0 之後的使用者可見修正都已打進這個安裝檔。
 健康度：open PR 0、code scanning 0、CI／CodeQL／Upstream check 在 `main` 最近一次皆 success；Dependabot 有 1 筆 open（high，`http-cache-semantics`，advisory 沒有修補版，已有本地 patch，見 `docs/DECISIONS.md:21`）；issues 在 GitHub 上已停用，open issue 數是「未查到」，不是 0（2026-10-29 `gh` 查詢）。
 卡住的地方：Dependabot 的 npm 更新 run 在 2026-10-18、10-24、10-25 都 failure，根因 `ERR_PNPM_UNUSED_PATCH` 已在 `2b17d8e`（2026-10-26）修掉並在本機以 Dependabot 同一條指令驗證，但修正之後還沒有一次排程 run 的結果（`docs/DECISIONS.md:361-380`；Dependabot 深掃報告 2026-10-26）。上游審查水位在 `b937ae5`（v2.9.0，`tools/upstream_baseline.json`）；它不是本 fork HEAD 的祖先（本 fork 起點是上游 `6d1b08b`），這是已知情況、不是缺陷。
 
@@ -20,7 +20,6 @@
 
 | 項目 | 觸發條件 | 驗收方式 | 建議執行者 | 證據 |
 | --- | --- | --- | --- | --- |
-| 發下一個修補版（v2.6.1 或之後）：把 v2.6.0 之後的使用者可見修正打進安裝檔 | 維護者決定發版。這幾項在 v2.6.0 安裝檔裡仍存在：HTML 編輯器開檔遷移後寫入舊內容尾端的 NUL 殘留（`5fb2a00`）、更新對話框的更新說明按鈕打開錯誤連結（`55f0f01`）、圖表匯入 rich text／超連結／日期欄位變 `[object Object]`（`7368dfc`） | `package.json` 版本、tag、Release 一致；CI 與 CodeQL success；Release 資產只有 NSIS 安裝檔且說明如實（無可攜 zip、不含 ffmpeg）；`CHANGELOG.md` 補版本段 | 維護者 | 深掃報告（2026-10-2x） 第二段 F1／F2／F3；`package.json:3`；2026-10-29 `gh` 查詢（最近 release） |
 | 審查上游新項目並判斷採用與否 | `Upstream check` workflow（週一）轉 failure，代表上游有水位之後的新 commit、PR、issue 或網站版本；failure 不是工具壞 | `docs/DECISIONS.md` 新增一筆逐項判斷與證據；`tools/upstream_baseline.json` 水位推進；採用者先有紅燈測試，`pnpm test` 綠。注意上游 v2.9.0 之後的功能原始碼未公開（`docs/DECISIONS.md:3-13`） | Claude Sonnet | `.github/workflows/upstream-check.yml:11`；`docs/DECISIONS.md:3-13`；`AGENTS.md:8` |
 | 移除 `@langchain/langgraph-sdk` 的封裝 patch | 上游 SDK 的 1.x 發行檔不再 import `.pnpm` 內嵌路徑，或 `@langchain/langgraph`／`deepagents` 接受 SDK 2.x 並完成升級 | `package.json` 的 `patchedDependencies` 該鍵、`patches/@langchain__langgraph-sdk@1.12.x.patch`、`tests/unit/security/langgraph-sdk-patch.test.ts` 第二條同一個 commit 移除；`pnpm install --frozen-lockfile`、`pnpm test`、封裝冒煙皆綠；下一次 Dependabot npm run success | Claude Sonnet | `docs/DECISIONS.md:361-380`（觸發條件段） |
 | 重審 Dependabot `http-cache-semantics` 的處置 | advisory 的 `first_patched_version` 出現，或套件 4.3.x 之後確實處理 `max-stale`（見 `docs/DECISIONS.md:21` 的重審條件） | 以同一組實測（shared cache、`max-age=60`＋`Set-Cookie`、`max-stale=99999999`）驗證新版 `evaluateRequest` 不再直接 hit；升版後移除 `patches/http-cache-semantics@4.2.0.patch` 與 `tests/unit/security/dependency-boundaries.test.ts` 對應斷言；`gh api repos/SanHsien/oh-my-ppt/dependabot/alerts?state=open` 無該筆 | Claude Opus | `docs/DECISIONS.md:21`；2026-10-29 `gh` 查詢（安全告警） |

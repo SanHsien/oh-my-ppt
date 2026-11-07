@@ -14,6 +14,8 @@
 **決定**：不改 manifest／lock、不 dismiss，告警保持開啟。漏洞類型是 minimatch 處理特製 glob 模式時的放大（DoS）；本次沒有逐一稽核各消費者的模式來源，所以不以「用不到」為由 dismiss。
 **重審條件**（任一成立就重看）：`exceljs`／`archiver`／`archiver-utils`／`glob` 發布改用 minimatch ≥ 11（或放寬範圍）的版本；`pnpm why minimatch` 不再出現 < 11 的版本；公告新增 3.x、5.x、9.x、10.x 的修補版。
 
+**狀態更新（2026-11-07）**：GHSA-g3hv-75wg-m249 在 2026-11-04T16:50:04Z 被更新，`gh api advisories/GHSA-g3hv-75wg-m249` 現在回報 `vulnerable_version_range` 為 `>= 7.0.0, < 11.0.1`（不再涵蓋 3.x、5.x）。2026-11-03 Dependabot 失敗的 job（run 41628835765 等三次）之後，`gh api repos/SanHsien/oh-my-ppt/dependabot/alerts?state=open` 回 0 筆，`alerts/72` 回 HTTP 410「has been withdrawn」。lockfile 仍有 9.0.9、10.2.5、10.2.6，結論不變：不套全域 override；重審條件照舊。
+
 ## 2026-11-02：上游審查（`b937ae5` → `4cd11c6`，3 筆 commit、0 筆新 PR、2 筆新 issue、網站 2.9.0 不變）
 
 | 項目 | 判斷 | 證據與觸發條件 |

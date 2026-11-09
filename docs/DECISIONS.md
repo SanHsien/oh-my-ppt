@@ -1,5 +1,17 @@
 # 維護決策
 
+## 2026-11-09：上游審查（`4cd11c6` → `1f1da52`，1 筆 commit、0 筆新 PR、2 筆新 issue、網站 2.9.0 → 2.10.0）
+
+| 項目 | 判斷 | 證據與觸發條件 |
+| --- | --- | --- |
+| `1f1da52`（`feat: v2.10.0`） | 跳過 | `git diff --numstat 4cd11c6 upstream/main` 只有 `CHANGELOG.md`（+46/-0）與 `package.json`（+1/-1，版號）；`git ls-tree -r --name-only` 計 `src/` 檔數 `4cd11c6` 與 `upstream/main` 皆 534，**沒有任何 `src/` 變動**。CHANGELOG 宣稱的資產工作台、單頁換版式、大綱編輯、版式 AI 生成 Agent、統一選模型彈窗等功能沒有公開原始碼可審，無從移植（同 2026-10-24 `e669aa9` 的判斷）。其中「修復創建草稿互相覆蓋」「失敗提示改白話」亦無原始碼可對照。fork 自有版號（2.6.1）不跟，未把上游 CHANGELOG 段落併入本 fork 的 `CHANGELOG.md`。**觸發條件**：上游把這些功能的原始碼推上 `main` 時，逐項審查。 |
+| open PR | 無新增 | `--strict` 報告 PR 水位 `#151` 之上無新項目；`gh pr list --repo arcsin1/oh-my-ppt --state open` 仍是 #150、#143、#106，編號皆低於水位，前幾輪已審（#150 見 `docs/UPSTREAM.md` 2026-10-17 列），此次無新 head 需讀 diff。 |
+| issue #156（Windows 演示預覽包被 360 誤報木馬） | 不處理 | 已 CLOSED。上游回覆原因是安裝檔沒有程式碼簽章，屬啟發式誤報，可關閉防毒後安裝，或把預覽包打成 zip 直接開 `index.html`。本 fork 同樣沒有程式碼簽章憑證，無原始碼可修；`README.md` 的安裝段不另加防毒誤報說明（避免替未驗證的第三方防毒行為背書）。**觸發條件**：本 fork 的 Release 安裝檔有人回報被同類防毒攔截，或維護者取得簽章憑證時改走簽章流程。 |
+| issue #157（"Is the editor not open source?"） | 不處理 | 仍 OPEN，為提問；上游回覆編輯器開源、可本機執行並提供安裝檔，連結指向 v2.10.0 release（資產只有 `mac_arm64.dmg`、`mac_x64.dmg`、`win.exe`）。但 `main` 上 v2.10.0 沒有對應 `src/` 變動（見上列），表示上游發版內容與公開原始碼脫節；這是上游 repo 的事，本 fork 的 `src/` 以 `4cd11c6` 為止的公開內容為準。**觸發條件**：上游公開對應原始碼時回到上列 `1f1da52` 的觸發條件。 |
+| 網站 2.10.0 | 跳過 | `https://www.ohmyppt.cc/version.json` 回 `version: 2.10.0`；版本變動對應上述未公開原始碼的功能，本 fork 沒有這些功能，文件不需跟進。 |
+
+Baseline 推進：`reviewed_through` → `1f1da525616f1508111b820800865c7783ca7145`、`reviewed_issue_through` → 157、`reviewed_website_version` → 2.10.0、`reviewed_date` → 2026-11-09。
+
 ## 2026-11-08：Dependabot #73（minimatch，GHSA-g3hv-75wg-m249，`>= 7.0.0, < 11.0.1`）— 只在開發工具鏈，判定可容忍並關閉告警
 
 **現況**：#73 建立於 2026-11-07T15:39:06Z，`dependency.scope` 為 `development`，唯一修補版 11.0.1（`gh api repos/SanHsien/oh-my-ppt/dependabot/alerts/73`）。公告範圍已不含 3.x、5.x（見下方 2026-11-04 條目的狀態更新），lockfile 內落在範圍的是 9.0.9、10.2.5、10.2.6。

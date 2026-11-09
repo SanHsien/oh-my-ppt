@@ -1,11 +1,11 @@
 {
   "repo": "https://github.com/arcsin1/oh-my-ppt.git",
   "branch": "main",
-  "reviewed_through": "4cd11c66d67b826b322f34cebae1476c300112e2",
-  "reviewed_date": "2026-11-02",
-  "notes": "Fork created from upstream main 6d1b08b (feat: v2.5.0 doc). PR baseline 143, issue baseline 142. Windows 11 first maintenance setup. 2026-10-17：審查至 56bc56d（v2.8.1）；PR 151，字體修復（f5f311c、539c9cb）列為 adoption pending，見 docs/DECISIONS.md。 2026-10-24：審查至 b937ae5（v2.9.0 只有文件／贊助商／版號，無 src 變動），全數跳過，見 docs/DECISIONS.md。 2026-11-02：審查至 4cd11c6（僅 README／贊助商），全數跳過，見 docs/DECISIONS.md。",
+  "reviewed_through": "1f1da525616f1508111b820800865c7783ca7145",
+  "reviewed_date": "2026-11-09",
+  "notes": "Fork created from upstream main 6d1b08b (feat: v2.5.0 doc). PR baseline 143, issue baseline 142. Windows 11 first maintenance setup. 2026-10-17：審查至 56bc56d（v2.8.1）；PR 151，字體修復（f5f311c、539c9cb）列為 adoption pending，見 docs/DECISIONS.md。 2026-10-24：審查至 b937ae5（v2.9.0 只有文件／贊助商／版號，無 src 變動），全數跳過，見 docs/DECISIONS.md。 2026-11-02：審查至 4cd11c6（僅 README／贊助商），全數跳過，見 docs/DECISIONS.md。 2026-11-09：審查至 1f1da52（v2.10.0 只有 CHANGELOG／版號，無 src 變動），全數跳過，見 docs/DECISIONS.md。",
   "reviewed_pr_through": 151,
-  "reviewed_issue_through": 155,
+  "reviewed_issue_through": 157,
   "website": "https://www.ohmyppt.cc",
-  "reviewed_website_version": "2.9.0"
+  "reviewed_website_version": "2.10.0"
 }

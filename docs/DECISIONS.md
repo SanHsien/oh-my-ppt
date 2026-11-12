@@ -1,5 +1,15 @@
 # 維護決策
 
+## 2026-11-12：Dependabot 警示 #74 fast-xml-parser 改以 pnpm override 修補
+
+**背景**：GHSA-474x-hrwr-fgx4（CVE-2026-126066，stop-node 標籤掃描的二次方 CPU 消耗）影響 `<= 5.11.2`，修補版 5.12.0。傳遞路徑是 `@arcsin1/pptx2json@0.2.1` 把 `fast-xml-parser` 釘死在 `5.11.2`，Dependabot 能解析的最新版也是 5.11.2，因此更新 run 以 `update_not_possible` 失敗。
+
+**處置**：`package.json` 的 `pnpm.overrides` 加入 `"fast-xml-parser": "^5.12.0"`，`pnpm install --lockfile-only` 只改動 `fast-xml-parser` 的兩處條目（5.11.2 → 5.12.0），其餘鎖檔不動。與 `ws`、`js-yaml` 等既有安全 override 同一寫法；覆蓋範圍是整個依賴樹，目前只有 `pptx2json` 一條路徑使用此套件。
+
+**驗證（2026-11-12，Windows 原生）**：`pnpm install --frozen-lockfile --ignore-scripts` 解析為 `fast-xml-parser` 5.12.0、`pptx2json` 0.2.1；`pnpm test` 239 個檔案、1331 項通過、15 項既有 skip；`pnpm typecheck:node` 通過；`tools\dev_check.ps1` 全綠；以 jszip 合成一份最小 pptx，經 `parse()` 解析成功，文字與 XML 跳脫正確（`&amp;`、`&lt;`）。
+
+**重開條件**：無（修補已套用）。若 `@arcsin1/pptx2json` 升到會自行釘到 5.12.0 以上的版本，可移除此 override，並以 `pnpm why fast-xml-parser` 確認。
+
 ## 2026-11-09：上游審查（`4cd11c6` → `1f1da52`，1 筆 commit、0 筆新 PR、2 筆新 issue、網站 2.9.0 → 2.10.0）
 
 | 項目 | 判斷 | 證據與觸發條件 |

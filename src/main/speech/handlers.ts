@@ -32,7 +32,7 @@ async function removeSpeechScript(projectDir: string): Promise<void> {
   }
 }
 
-async function readSpeechScript(projectDir: string): Promise<string | null> {
+export async function readSpeechScript(projectDir: string): Promise<string | null> {
   try {
     return await fs.promises.readFile(resolveSpeechScriptPath(projectDir), 'utf-8')
   } catch {
@@ -89,6 +89,48 @@ export function upsertSpeechSection(existingScript: string | null, pageNumber: n
     })
   }
   return sections.join('\n\n---\n\n')
+}
+
+function sectionMatchesPageNumber(section: string, pageNumber: number): boolean {
+  const heading = normalizeHeadingText(
+    section.split(/\r?\n/).find((line) => line.trim().length > 0) || ''
+  )
+  return hanTolerant(new RegExp(`(?:第\\s*${pageNumber}\\s*頁|slide\\s*${pageNumber}\\b)`, 'i')).test(
+    heading
+  )
+}
+
+function sectionHasPageNumber(section: string): boolean {
+  const heading = normalizeHeadingText(
+    section.split(/\r?\n/).find((line) => line.trim().length > 0) || ''
+  )
+  return SPEECH_PAGE_HEADING_NUMBER_PATTERN.test(heading) || /slide\s*\d+\b/i.test(heading)
+}
+
+/**
+ * Speaker notes for one exported slide: the body of that page's section in the saved speech
+ * script, without its heading. A section numbered for the page wins; a title match is used only
+ * for sections that carry no page number, so a repeated title cannot borrow another page's notes.
+ */
+export function extractSpeechNotesForPage(
+  script: string | null,
+  pageNumber: number,
+  title: string | undefined
+): string | undefined {
+  if (!script?.trim()) return undefined
+  const sections = script
+    .replace(/\r\n/g, '\n')
+    .split(/\n\s*---\s*\n/g)
+    .map((item) => item.trim())
+    .filter(Boolean)
+  const section =
+    sections.find((item) => sectionMatchesPageNumber(item, pageNumber)) ??
+    sections.find(
+      (item) => !sectionHasPageNumber(item) && isSpeechSectionForPage(item, pageNumber, title ?? '')
+    )
+  if (!section) return undefined
+  const body = section.replace(/^#{1,6}\s+[^\n]*(?:\n+|$)/, '').trim()
+  return body || undefined
 }
 
 function extractTextFromHtml(html: string): string {

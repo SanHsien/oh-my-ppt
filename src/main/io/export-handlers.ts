@@ -16,6 +16,8 @@ import {
 } from '@arcsin1/html2pptx'
 import { writeHtmlToPptx } from '@arcsin1/html2pptx/node'
 import { collectEmbeddedFonts } from './html-pptx/font-collect'
+import { applySpeakerNotesToPptxFile } from './html-pptx/notes-paragraphs'
+import { extractSpeechNotesForPage, readSpeechScript } from '../speech/handlers'
 import {
   captureHtmlPageToPptxImageSlide,
   extractHtmlPageToPptxSlide
@@ -609,6 +611,15 @@ export function registerExportHandlers(ctx: IpcContext): void {
         }
       }
 
+      // Speaker notes come from the session speech script, page by page (upstream issue #159).
+      const speechScript = await readSpeechScript(projectDir)
+      if (speechScript) {
+        pages.forEach((page, index) => {
+          const notes = extractSpeechNotesForPage(speechScript, page.pageNumber, page.title)
+          if (notes && slides[index]) slides[index].notes = notes
+        })
+      }
+
       if (!imageOnly) {
         const pagesWithoutText = slides.filter((s) => s.texts.length === 0).length
         if (pagesWithoutText > 0) {
@@ -675,6 +686,9 @@ export function registerExportHandlers(ctx: IpcContext): void {
             heightIn: pptxLayout.slideHeightIn
           }
         })
+      }
+      if (slides.some((slide) => slide.notes)) {
+        await applySpeakerNotesToPptxFile(saveResult.filePath)
       }
       const project = await db.getProject(sessionId)
       if (project?.id) {

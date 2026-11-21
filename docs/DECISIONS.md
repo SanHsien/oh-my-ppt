@@ -1,5 +1,18 @@
 # 維護決策
 
+## 2026-11-21：上游審查（`1f1da52` → `a1c740c`，1 筆 commit、0 筆新 PR、3 筆新 issue、網站 2.10.0 → 2.11.0）
+
+| 項目 | 判斷 | 證據與觸發條件 |
+| --- | --- | --- |
+| `a1c740c`（`feat: v2.11.0`） | 跳過 | `git diff --numstat 1f1da52 upstream/main` 只有 `CHANGELOG.md`（+38/-0）與 `package.json`（+1/-1，版號）；`git ls-tree -r --name-only upstream/main` 的 `src/` 檔數仍是 534，**沒有任何 `src/` 變動**。CHANGELOG 宣稱的元素級 AI 編輯、清空對話、一鍵美化、38 種動畫、會話體檢、Linux 安裝包、用量統計等沒有公開原始碼可審，無從移植（同 2026-11-09 `1f1da52` 的判斷）。其中「修復 kimi 系列 temperature」：本 fork 已有使用者可切換的「關閉 temperature」選項（`src/main/agent-runtime/model/runtime.ts` 的 `disableTemperature`，設定頁說明點名 kimi），上游「固定送 1.0」的寫法看不到原始碼，不另做。fork 自有版號（2.6.1）不跟。**觸發條件**：上游把這些功能的原始碼推上 `main` 時逐項審查；有人回報 kimi 在關閉 temperature 後仍失敗時，改評估固定 1.0。 |
+| open PR | 無新增 | `--strict` 報告 PR 水位 `#151` 之上無新項目。 |
+| issue #158（Version Plan — v3.0） | 觀察 | OPEN，內文只有一張規劃圖與徵才字句，沒有可審的程式或缺陷。**觸發條件**：上游 `main` 出現 v3.0 對應的 `src/` 變動，或該 issue 補上具體項目清單。 |
+| issue #159（可編輯 PPTX 導出缺少演講者備註） | 採用（fork 自行實作） | 缺陷在本 fork 同樣存在：`export:pptx` 從不讀 `speech/speech-script.md`，傳給 `writeHtmlToPptx` 的投影片沒有 `notes` 欄位。上游只回「感谢提供反馈」、未公開修正，因此依 issue 描述的行為自行實作：匯出時讀會話講稿，按頁碼取該頁段落（去掉標題行）寫入 `notes`；頁碼優先，只有沒有頁碼的段落才用標題比對，避免同名頁借到別頁講稿。另外實測 `@arcsin1/html2pptx` 0.2.1 把整段備註寫成單一 `<a:p>`、換行留在 `<a:t>` 裡，寫檔後以 `src/main/io/html-pptx/notes-paragraphs.ts` 改寫成每行一段、空行為空段落；備註母版與其 theme 關聯由套件本身產生，已有測試釘住。圖片模式同樣帶備註（備註與投影片渲染無關）。測試 `tests/unit/export/pptx-speaker-notes.test.ts` 先紅（模組不存在）後綠。**未驗證**：沒有在 Microsoft PowerPoint 實際開檔看備註，只驗了 OOXML 結構。**重開條件**：PowerPoint 開檔回報備註遺失或段落錯亂；或 `@arcsin1/html2pptx` 升版後自行輸出多段落，屆時移除改寫步驟。 |
+| issue #160（設定中 codex 反代生圖失敗） | 跳過 | 已 CLOSED；上游判定是使用者的 codex 反向代理問題，不是 Oh My PPT 的缺陷，文字對話同樣失敗也指向代理端。本 fork 沒有可重現的程式路徑。**觸發條件**：有人用官方端點（非反代）重現同樣的自動生圖失敗。 |
+| 網站 2.11.0 | 跳過 | `https://www.ohmyppt.cc/version.json` 回 `version: 2.11.0`；版本變動對應上述未公開原始碼的功能，文件不需跟進。 |
+
+Baseline 推進：`reviewed_through` → `a1c740cd33c04efac736e1dafe4f36f7117cbcf7`、`reviewed_issue_through` → 160、`reviewed_website_version` → 2.11.0、`reviewed_date` → 2026-11-21。
+
 ## 2026-11-12：Dependabot 警示 #74 fast-xml-parser 改以 pnpm override 修補
 
 **背景**：GHSA-474x-hrwr-fgx4（CVE-2026-126066，stop-node 標籤掃描的二次方 CPU 消耗）影響 `<= 5.11.2`，修補版 5.12.0。傳遞路徑是 `@arcsin1/pptx2json@0.2.1` 把 `fast-xml-parser` 釘死在 `5.11.2`，Dependabot 能解析的最新版也是 5.11.2，因此更新 run 以 `update_not_possible` 失敗。

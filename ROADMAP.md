@@ -12,7 +12,8 @@
 
 | 項目 | 為什麼 | 驗收方式 | 建議執行者 | 證據 |
 | --- | --- | --- | --- | --- |
-| （目前沒有）| `HANDOFF.md` 已移除（其三項決策 xlsx→exceljs、`extract-zip` 覆寫、CodeQL TOCTOU 在 `REVIEW.md` R-15、R-16、R-17 有記錄），README 版本標示已對到 `package.json` 並有測試釘住 | — | — | — |
+| 審查上游 `1f1da52` 之後的 1 個 commit、issue #158–#160 與網站 2.11.0 | 中期「審查上游新項目」的觸發條件已成立：`Upstream check` 在 `main` 最近兩次 run（2026-11-20，run 44792418152）皆 failure；2026-11-21 本機 `python tools/check_upstream_updates.py` 回報上游 tip `a1c740c`（baseline behind 1）、issue 3 筆新項目、網站版本 2.10.0 → 2.11.0，PR 軸無新項目 | 同中期該列：`docs/DECISIONS.md` 新增逐項判斷；`tools/upstream_baseline.json` 水位推進；採用者先有紅燈測試，`pnpm test` 綠；`Upstream check` 轉 success | Claude Sonnet | 2026-11-21 艦隊中期觸發巡檢；`tools/upstream_baseline.json`（`reviewed_through` `1f1da52`） |
+| 重審 `minimatch` 告警處置：評估升 `eslint` 10.15 | 中期「重審 `minimatch`」的觸發條件已成立：`eslint` 10.15.0（2026-11-13 發布）是第一個依賴 `minimatch ^11.0.5` 的版本（10.14.0 仍是 `^10.2.6`，`npm view eslint@<版本> dependencies.minimatch`）；`electron-builder` 26.18.0 的 `app-builder-lib` 仍是 `^10.2.5`。要判斷的點：本 repo 是 `eslint ^9.39.1`，升 10 是主版本，而 `eslint-plugin-react` 7.37.5 的 peer 只到 `^9.7` | 升級後 `pnpm install --frozen-lockfile`、`pnpm test`、`pnpm run build` 與封裝冒煙皆綠；`gh api repos/SanHsien/oh-my-ppt/dependabot/alerts?state=open` 無 minimatch 項目；Dependabot 的 minimatch 更新 run 不再 failure。外掛不支援 eslint 10 而續延時，在 `docs/DECISIONS.md` 記下理由，並把新的重審條件寫回中期表（2026-11-08 條目的其他兩個條件：`pnpm why minimatch --prod` 出現 `>= 7.0.0, < 11.0.1`、`electron-builder` 改用 minimatch >= 11） | Claude Sonnet | 2026-11-21 `npm view`；`docs/DECISIONS.md` 2026-11-08 條目的重審條件 |
 
 ## 中期：等條件成立再做
 
@@ -20,7 +21,6 @@
 | --- | --- | --- | --- | --- |
 | 審查上游新項目並判斷採用與否 | `Upstream check` workflow（週一）轉 failure，代表上游有水位之後的新 commit、PR、issue 或網站版本；failure 不是工具壞 | `docs/DECISIONS.md` 新增一筆逐項判斷與證據；`tools/upstream_baseline.json` 水位推進；採用者先有紅燈測試，`pnpm test` 綠。注意上游 v2.9.0 之後的功能原始碼未公開（`docs/DECISIONS.md` 2026-11-02 與 2026-10-24 的上游審查條目） | Claude Sonnet | `.github/workflows/upstream-check.yml:11`；`docs/DECISIONS.md` 2026-11-02 與 2026-10-24 的上游審查條目；`AGENTS.md:8` |
 | 移除 `@langchain/langgraph-sdk` 的封裝 patch | 上游 SDK 的 1.x 發行檔不再 import `.pnpm` 內嵌路徑，或 `@langchain/langgraph`／`deepagents` 接受 SDK 2.x 並完成升級 | `package.json` 的 `patchedDependencies` 該鍵、`patches/@langchain__langgraph-sdk@1.12.x.patch`、`tests/unit/security/langgraph-sdk-patch.test.ts` 第二條同一個 commit 移除；`pnpm install --frozen-lockfile`、`pnpm test`、封裝冒煙皆綠；下一次 Dependabot npm run success | Claude Sonnet | `docs/DECISIONS.md` 2026-10-26 條目（觸發條件段） |
-| 重審 `minimatch` 告警的處置 | `pnpm why minimatch --prod` 出現 `>= 7.0.0, < 11.0.1` 的版本，或 `eslint`／`electron-builder` 發布改用 minimatch >= 11 的版本（見 `docs/DECISIONS.md` 2026-11-08 條目的重審條件） | 升級後 `pnpm install --frozen-lockfile`、`pnpm test`、`pnpm run build` 與封裝冒煙皆綠；`gh api repos/SanHsien/oh-my-ppt/dependabot/alerts?state=open` 無 minimatch 項目；Dependabot 的 minimatch 更新 run 不再 failure | Claude Sonnet | `docs/DECISIONS.md` 2026-11-08、2026-11-04 條目；2026-11-08 `pnpm why minimatch` |
 | 把 geometry inspector 接進生成、編輯或預覽流程，並一併處理寫死 1920×1080 的畫布尺寸 | 維護者決定要讓版面量測實際影響產出（目前未接線，不影響產出） | 模組接上後，9:16、1:1 等比例投影片不再誤報下緣溢出（先有重現測試）；`FORK.md` 與 `README.md:149` 的「尚未接上」敘述同一個 commit 更新；`pnpm test` 綠 | Claude Opus | `FORK.md:37`；`src/shared/geometry-inspector.ts:73`；深掃報告 F9b |
 
 ## 刻意不做

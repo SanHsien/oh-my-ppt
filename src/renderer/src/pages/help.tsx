@@ -55,8 +55,8 @@ const MODEL_GUIDES = [
   {
     name: 'Anthropic Claude',
     provider: 'anthropic',
-    baseUrl: 'https://api.anthropic.com/v1',
-    models: 'claude-3-7-sonnet-20250219, claude-3-5-haiku-20241022',
+    baseUrl: 'https://api.anthropic.com',
+    models: 'claude-opus-5-5, claude-sonnet-5-5, claude-haiku-5-5',
     notes: '支援擴展思考推理（Thinking），長文理解與版面排版指令遵循能力極佳。'
   },
   {

@@ -19,6 +19,18 @@ import {
 import { ModelUsageCallbackHandler } from './usage'
 import type { ModelRuntimeConfig } from './usage'
 
+// Claude Opus 4.7 and later, the Claude 5 family (Opus, Sonnet, Haiku), Fable and
+// Mythos reject non-default temperature/top_p/top_k with a 400 (LangChain throws
+// before sending for most of them). Older Claude models and non-Claude models served
+// through an Anthropic-compatible endpoint still accept temperature.
+const ANTHROPIC_NO_SAMPLING_MODEL_PATTERN =
+  /^claude-(?:opus-4-[7-9]|opus-[5-9]|sonnet-[5-9]|haiku-[5-9]|fable-|mythos-)/
+
+export function anthropicModelAcceptsTemperature(model: string): boolean {
+  const name = model.trim().toLowerCase().split('/').pop() ?? ''
+  return !ANTHROPIC_NO_SAMPLING_MODEL_PATTERN.test(name)
+}
+
 export function resolveModel(
   provider: string,
   apiKey: string,
@@ -59,7 +71,10 @@ export function resolveModel(
     provider,
     model: resolvedModel,
     baseUrl: resolvedBaseUrl,
-    temperature: resolvedTemperature ?? null,
+    temperature:
+      provider === 'anthropic' && !anthropicModelAcceptsTemperature(resolvedModel)
+        ? null
+        : (resolvedTemperature ?? null),
     temperatureEnabled: isCurrentModelTemperatureEnabled(),
     temperatureControlBound: temperatureControl !== undefined,
     modelConfigId: temperatureControl?.modelConfigId ?? null,
@@ -99,7 +114,7 @@ export function resolveModel(
       return new ChatAnthropic({
         model: resolvedModel,
         apiKey,
-        ...temperatureOptions,
+        ...(anthropicModelAcceptsTemperature(resolvedModel) ? temperatureOptions : {}),
         maxTokens: resolvedMaxTokens,
         anthropicApiUrl: resolvedBaseUrl || undefined,
         callbacks: [usageCallback]

@@ -56,7 +56,7 @@ describe('style fidelity prompt placement', () => {
 
     const currentTaskIndex = prompt.indexOf('## Current Task')
     const finalStyleIndex = prompt.indexOf('## 最終風格校準（寫入前）')
-    const finalReminderIndex = prompt.indexOf('⛔ FINAL REMINDER')
+    const finalReminderIndex = prompt.indexOf('## Final check')
 
     expect(deckSystem.slice(0, deckSystem.indexOf("} from './shared'"))).toContain(
       'STYLE_FIDELITY_RULES'

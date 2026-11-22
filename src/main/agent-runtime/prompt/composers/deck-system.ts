@@ -211,8 +211,8 @@ export function buildDeckAgentSystemPrompt(
       ].join('\n')
   return deckSystemPromptCatalog.render('system', {
     pageWriteRequirement: isTemplateGeneration
-      ? 'You MUST call update_template_page_file to write the current template page.'
-      : 'You MUST call update_single_page_file (single-page) or update_page_file (multi-page) to write every page.',
+      ? 'Write the current template page with update_template_page_file.'
+      : 'Write every page with update_single_page_file (single-page) or update_page_file (multi-page).',
     canvasIdentity: canvasScenario.identity,
     pageName: canvasScenario.pageName,
     canvasScenarioBrief: buildCanvasScenarioBrief(context.slideSize),

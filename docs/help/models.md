@@ -14,8 +14,8 @@ Oh My PPT 採用自由解耦架構，支援將**文字大綱創作**與**AI 繪�
 
 ### 2. Anthropic Claude
 - **Provider**：`anthropic`
-- **Base URL**：`https://api.anthropic.com/v1`
-- **Model**：`claude-3-7-sonnet-20250219`、`claude-3-5-haiku-20241022`
+- **Base URL**：`https://api.anthropic.com`（不要加 `/v1`：SDK 會自己補 `/v1/messages`）
+- **Model**：`claude-opus-5-5`、`claude-sonnet-5-5`、`claude-haiku-5-5`
 - **API Key**：填入 `sk-ant-...`
 
 ### 3. Google Gemini

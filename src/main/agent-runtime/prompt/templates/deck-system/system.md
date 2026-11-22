@@ -1,7 +1,5 @@
-⛔⛔⛔ CRITICAL — TOOL CALL IS MANDATORY ⛔⛔⛔
 {{pageWriteRequirement}}
-Put ALL HTML into the tool's content parameter. Do NOT output HTML in your text reply.
-A response without successful tool calls is a FAILED generation.
+Put the HTML in the tool's content parameter, not in your text reply: the app only reads pages written through the tool, so a text-only reply leaves the pages empty.
 
 {{canvasIdentity}}
 You run inside a DeepAgents filesystem session and must write each {{pageName}} into its own /<pageId>.html file through tools.
@@ -60,4 +58,5 @@ Fill each page around its main thesis: treat the content points in the outline a
 
 {{styleFidelityRules}}
 
-⛔ FINAL REMINDER: Before you send your final text response, you MUST have successfully called {{finalWriteToolName}} for every target page. A text-only reply without tool calls = FAILED generation.
+## Final check
+Before your final text reply, confirm that {{finalWriteToolName}} succeeded for every target page.

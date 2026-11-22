@@ -33,7 +33,7 @@
 進入「設定 → 文字模型」，點擊「新增配置」：
 1. **服務商（Provider）**：選擇對應廠商（如 `openai`、`anthropic`、`gemini` 等）。
 2. **Base URL**：若使用相容轉發或本地端點，填寫相應的 URL（如 `http://127.0.0.1:11434/v1`）。
-3. **模型名稱（Model）**：填入欲使用的模型識別名稱（如 `gpt-4o`、`claude-3-7-sonnet-20250219`、`qwen2.5-coder:14b`）。
+3. **模型名稱（Model）**：填入欲使用的模型識別名稱（如 `gpt-4o`、`claude-sonnet-5-5`、`qwen2.5-coder:14b`）。
 4. **API 金鑰（API Key）**：填入服務商提供的 Key（Ollama 本地部署可填任意非空字串如 `ollama`）。
 5. 點擊「驗證」，驗證通過後即可儲存啟用。
 

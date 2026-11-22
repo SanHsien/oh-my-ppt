@@ -468,3 +468,18 @@ Windows 驗收使用未發布 x64 目錄包。`tools/windows-security-smoke.ts` 
 **觸發條件（何時移除 patch）**：上游 SDK 的 1.x 發行檔不再 import `.pnpm` 路徑，或 `@langchain/langgraph`／`deepagents` 接受 SDK 2.x 並完成升級後，刪除 `patchedDependencies` 的該鍵、patch 檔與上述測試的第二條。
 
 **未處理**：Dependabot #53 `http-cache-semantics`（`first_patched_version=null`）維持開啟；沿用 2026-10-10 的本地 patch 緩解，不 dismiss、不宣稱歸零。
+
+## 2026-11-22：prompt audit 第 3 批——Anthropic 分支只對接受 sampling 的模型送 temperature、提示語去壓力語言、說明中心模型與 Base URL 更正
+
+**採用（fork 產品修正）**：
+
+1. **temperature（H）**：`src/main/agent-runtime/model/resolve.ts` 的 Anthropic 分支原本一律展開 `temperatureOptions`；`disable_temperature` 預設 0，call site 又寫死 0.2–0.65。Claude Opus 4.7 以後、Claude 5 系列（Opus／Sonnet／Haiku）、Fable、Mythos 對非預設 temperature 回 400；`@langchain/anthropic` 1.6.0 的 `validateInvocationParamCompatibility` 對其中多數直接在送出前丟錯（`dist/utils/params.js`，前綴清單不含 `claude-haiku-5`）。改成 `anthropicModelAcceptsTemperature(model)` 判斷：上述家族省略 temperature，舊版 Claude 與經 Anthropic 相容端點的非 Claude 模型照舊送；log 的 `temperature` 欄位同步顯示實際送出的值。新增 `tests/unit/agent-runtime/anthropic-sampling.test.ts` 釘住兩邊。`@anthropic-ai/sdk` 0.129.0 送 `anthropic-version: 2023-06-01`，所以舊模型仍可用 temperature。
+2. **deck-system 提示語（M）**：`templates/deck-system/system.md` 開頭的「⛔⛔⛔ CRITICAL — TOOL CALL IS MANDATORY」、「FAILED generation」與結尾「⛔ FINAL REMINDER…MUST」，以及 `composers/deck-system.ts` 的「You MUST call …」，改成說明理由的正常語氣（app 只讀經工具寫入的頁面）。工具寫入已由程式強制：`src/main/generation/agent-runner.ts` 在頁面未寫入時直接丟錯，另有 `verify_completion` 工具；`model/output-budget.ts` 記錄的實際根因是 reasoning 吃光輸出預算。測試 `style-fidelity.test.ts` 改用 `## Final check` 定位。
+3. **說明中心（M＋查證過的 L）**：`help.tsx`、`docs/help/models.md`、`docs/help/faq.md` 的已退役 `claude-3-7-sonnet-20250219`、`claude-3-5-haiku-20241022` 換成現行 ID。Base URL 原寫 `https://api.anthropic.com/v1`：實測 `@anthropic-ai/sdk` 0.129.0 以該值建 client，`buildURL('/v1/messages')` 得到 `https://api.anthropic.com/v1/v1/messages`；本 repo 也沒有任何去掉 `/v1` 的正規化。改成 `https://api.anthropic.com`。
+
+**只記錄、不改（證據不足）**：
+- `resolve.ts` 的 `max_tokens` 預設 4096（planning、design contract、JSON repair 路由）：現行 Claude 一定思考、thinking 算進 max_tokens，有截斷風險；但只有頁面寫入輪有實測截斷紀錄（已由 `AGENT_MIN_OUTPUT_TOKENS=16384` 處理），其他路由沒有失敗證據，下限也要配合使用者模型上限。觸發條件：這些路由出現 `finish_reason=length`／`stop_reason=max_tokens`。
+- `options.ts` 在 `auto` 模式對非 api.openai.com 的 OpenAI 相容端點送 `thinking: {type:'disabled'}`：Claude Opus 5.5／Sonnet 5.5 直連 Anthropic API 會 400，但經第三方 gateway 怎麼轉譯沒有實測證據，且已有 `omit` 模式可避開。觸發條件：使用者回報經 gateway 接 Claude 5 系列出現 400。
+- style-import 的 JSON-only＋解析失敗重試：跨 provider，不換成 Anthropic structured outputs。
+
+適合回貢上游（1、2 項），需維護者在當次對話同意。

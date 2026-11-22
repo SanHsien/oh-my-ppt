@@ -33,6 +33,16 @@ describe('extractSpeechNotesForPage', () => {
     expect(extractSpeechNotesForPage(script, 3, '市場')).toBeUndefined()
   })
 
+  it('reads only the leading page number of a heading', () => {
+    // Slide 1 has no section; slide 2's heading mentions "slide 1" later on.
+    const recap = '## Slide 2: recap of slide 1\n\n回顧第一頁'
+    expect(extractSpeechNotesForPage(recap, 1, '')).toBeUndefined()
+    expect(extractSpeechNotesForPage(recap, 2, '')).toBe('回顧第一頁')
+    const zhRecap = '## 第 2 頁：回顧第 1 頁\n\n回顧'
+    expect(extractSpeechNotesForPage(zhRecap, 1, '')).toBeUndefined()
+    expect(extractSpeechNotesForPage(zhRecap, 2, '')).toBe('回顧')
+  })
+
   it('returns undefined when there is no script or the section has no body', () => {
     expect(extractSpeechNotesForPage(null, 1, '開場')).toBeUndefined()
     expect(extractSpeechNotesForPage('## Slide 1: 開場', 1, '開場')).toBeUndefined()
@@ -63,13 +73,42 @@ describe('splitPptxNotesParagraphs', () => {
     expect(body).not.toMatch(/<a:t>[^<]*\n/)
   })
 
-  it('keeps the notes master and its theme relationship so PowerPoint can open the notes', async () => {
-    const raw = await generatePptx({ title: 't', slides: [{ texts: [], notes: 'a\nb' }] })
+  // PowerPoint rejects a package whose notes master shares the slide master's theme part
+  // ("file is corrupt", 0x80070570); html2pptx 0.2.1 points both at theme1.xml.
+  it.each([
+    ['multi-line notes', 'a\nb'],
+    ['single-line notes', 'one line']
+  ])('gives the notes master its own theme part (%s)', async (_label, notes) => {
+    const raw = await generatePptx({ title: 't', slides: [{ texts: [], notes }] })
     const files = unzipSync(splitPptxNotesParagraphs(new Uint8Array(raw)))
-    expect(Object.keys(files)).toContain('ppt/notesMasters/notesMaster1.xml')
-    expect(strFromU8(files['ppt/notesMasters/_rels/notesMaster1.xml.rels'])).toContain(
-      'Target="../theme/theme1.xml"'
+    const themeTarget = (rels: string): string | undefined =>
+      rels.match(/Type="[^"]*\/theme" Target="\.\.\/theme\/([^"]+)"/)?.[1]
+    const masterTheme = themeTarget(strFromU8(files['ppt/slideMasters/_rels/slideMaster1.xml.rels']))
+    const notesTheme = themeTarget(strFromU8(files['ppt/notesMasters/_rels/notesMaster1.xml.rels']))
+    expect(masterTheme).toBe('theme1.xml')
+    expect(notesTheme).toBeDefined()
+    expect(notesTheme).not.toBe(masterTheme)
+    expect(Object.keys(files)).toContain(`ppt/theme/${notesTheme}`)
+    expect(strFromU8(files['[Content_Types].xml'])).toContain(
+      `<Override PartName="/ppt/theme/${notesTheme}" ContentType="application/vnd.openxmlformats-officedocument.theme+xml"/>`
     )
+  })
+
+  it('drops characters that XML 1.0 forbids so the notes slide stays well-formed', async () => {
+    const raw = await generatePptx({
+      title: 't',
+      slides: [
+        { texts: [], notes: 'A\u0001B\u0008C D\uFFFF' },
+        { texts: [], notes: 'x\u001F\ny' }
+      ]
+    })
+    const fixed = splitPptxNotesParagraphs(new Uint8Array(raw))
+    // eslint-disable-next-line no-control-regex
+    const forbidden = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/
+    expect(notesXml(fixed, 1)).not.toMatch(forbidden)
+    expect(notesXml(fixed, 1)).toContain('<a:t>ABC D</a:t>')
+    expect(notesXml(fixed, 2)).not.toMatch(forbidden)
+    expect(notesXml(fixed, 2)).toContain('<a:t>x</a:t>')
   })
 
   it('leaves a package without notes byte-for-byte untouched', () => {

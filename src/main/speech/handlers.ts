@@ -91,20 +91,17 @@ export function upsertSpeechSection(existingScript: string | null, pageNumber: n
   return sections.join('\n\n---\n\n')
 }
 
-function sectionMatchesPageNumber(section: string, pageNumber: number): boolean {
-  const heading = normalizeHeadingText(
-    section.split(/\r?\n/).find((line) => line.trim().length > 0) || ''
-  )
-  return hanTolerant(new RegExp(`(?:第\\s*${pageNumber}\\s*頁|slide\\s*${pageNumber}\\b)`, 'i')).test(
-    heading
-  )
-}
+// Only the number that opens the heading identifies the page: "## Slide 2: recap of slide 1"
+// belongs to page 2, never to page 1.
+const LEADING_PAGE_NUMBER_PATTERN = hanTolerant(/^(?:slide\s*(\d+)\b|第\s*(\d+)\s*頁)/i)
 
-function sectionHasPageNumber(section: string): boolean {
+function leadingPageNumber(section: string): number | undefined {
   const heading = normalizeHeadingText(
     section.split(/\r?\n/).find((line) => line.trim().length > 0) || ''
   )
-  return SPEECH_PAGE_HEADING_NUMBER_PATTERN.test(heading) || /slide\s*\d+\b/i.test(heading)
+  const match = heading.match(LEADING_PAGE_NUMBER_PATTERN)
+  const digits = match?.[1] ?? match?.[2]
+  return digits ? Number(digits) : undefined
 }
 
 /**
@@ -124,9 +121,11 @@ export function extractSpeechNotesForPage(
     .map((item) => item.trim())
     .filter(Boolean)
   const section =
-    sections.find((item) => sectionMatchesPageNumber(item, pageNumber)) ??
+    sections.find((item) => leadingPageNumber(item) === pageNumber) ??
     sections.find(
-      (item) => !sectionHasPageNumber(item) && isSpeechSectionForPage(item, pageNumber, title ?? '')
+      (item) =>
+        leadingPageNumber(item) === undefined &&
+        isSpeechSectionForPage(item, pageNumber, title ?? '')
     )
   if (!section) return undefined
   const body = section.replace(/^#{1,6}\s+[^\n]*(?:\n+|$)/, '').trim()
